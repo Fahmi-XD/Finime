@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  username String   @unique
+  password String
+  name     String
+  token    String?
+  avatar   String?
+  bio      String?
+  isVerify Boolean  @default(false)
+  badge    String[]
+
+  role Role @default(MEMBER)
+
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contactId String?  @unique @db.ObjectId
+
+  metadata   Metadata? @relation(fields: [metadataId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  metadataId String?   @unique @db.ObjectId
+
+  favorite           Favorite[]           @relation()
+  created_at         DateTime             @default(now())
+  updated_at         DateTime?            @map("updated_at")
+  Comment            Comment[]
+  ResetPasswordToken ResetPasswordToken[]
+  ReplyComment       ReplyComment[]
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model Contact {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  first_name String
+  last_name  String
+  email      String? @unique
+  phone      String?
+
+  user       User?     @relation()
+  userId     String?   @db.ObjectId
+  created_at DateTime  @default(now())
+  updated_at DateTime? @map("updated_at")
+
+  @@map("contacts")
+}
+
+model Favorite {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  animeId String
+
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @db.ObjectId
+  created_at DateTime  @default(now())
+  updated_at DateTime? @map("updated_at")
+
+  @@map("favorites")
+}
+
+model Comment {
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
+  animeId    String
+  content    String
+  user       User           @relation(fields: [userId], references: [id])
+  userId     String         @db.ObjectId
+  replies    ReplyComment[] @relation("CommentReplies")
+  created_at DateTime       @default(now())
+
+  @@map("comments")
+}
+
+model ReplyComment {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  content    String
+  comment    Comment  @relation("CommentReplies", fields: [commentId], references: [id])
+  commentId  String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  created_at DateTime @default(now())
+
+  @@map("reply_comments")
+}
+
+model ResetPasswordToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("reset_password_tokens")
+}
+
+model Metadata {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  AnimeRead Int
+  mangaRead Int
+
+  user User?
+
+  created_at DateTime @default(now())
+
+  @@map("metadata")
+}

@@ -1,58 +1,256 @@
-# ComicHive
-<p>
-  <img src="https://github.com/user-attachments/assets/daa69afc-268f-468f-926f-9920dbb0c55a" alt="ComicHive Logo" width="200"/>
-</p>
+# <img src="https://media.tenor.com/7hiQYhUQY2QAAAAM/dis.gif" alt="ComicHive Logo" width="30"/> Finime
 
-**ComicHive** adalah platform open-source untuk membaca manga, manhwa, dan menonton anime tanpa iklan. Temukan ribuan judul favoritmu dan nikmati pengalaman membaca yang nyaman serta interaktif!
+
+
+> **Finime** — Aplikasi web streaming Anime & Manga gratis, tanpa iklan, dan bebas gangguan, dikembangkan untuk developer dan open‑source.  
+
+---
+
+## 📋 Daftar Isi
+
+1. [Tentang Finime](#tentang-finime)  
+2. [Fitur Utama](#fitur-utama)  
+3. [Stack & Library](#stack--library)  
+4. [Struktur Proyek](#struktur-proyek)  
+5. [Getting Started](#getting-started)  
+   - [Prerequisites](#prerequisites)  
+   - [Setup & Instalasi](#setup--instalasi)  
+   - [Menjalankan Server](#menjalankan-server)  
+6. [Environment Variables](#environment-variables)  
+7. [Arsitektur & Alur Kerja](#arsitektur--alur-kerja)  
+8. [Guidelines Kontribusi](#guidelines-kontribusi)  
+9. [License](#license)  
+
+---
+
+## 🔍 Tentang Finime
+
+Finime adalah proyek open‑source yang bertujuan menyediakan platform **streaming Anime & Manga** secara gratis, tanpa iklan, dan tanpa gangguan lainnya.  
+Dirancang sebagai full‑stack web application dengan **frontend** Svelte dan **backend** ElysiaJS + TypeScript, Finime mendorong kolaborasi antar developer untuk menambah fitur, memperbaiki bug, atau mengintegrasikan layanan baru.
+
+---
 
 ## 🚀 Fitur Utama
-- 📖 Baca manga dan manhwa secara gratis tanpa gangguan iklan.
-- 🎥 Streaming anime dengan kualitas terbaik.
-- 🔍 Pencarian cepat dan kategori lengkap untuk menemukan konten favorit.
-- 🎨 UI modern dan responsif dengan dukungan tema gelap.
-- 🔓 Open-source! Kontribusi dari komunitas sangat diterima.
 
-## 📂 Teknologi yang Digunakan
-- **Frontend**: [SvelteKit](https://kit.svelte.dev/) + Tailwind CSS
-- **Backend**: [NestJS](https://nestjs.com/) + Prisma ORM
-- **Database**: MySQL / PostgreSQL
-- **Autentikasi**: JWT
-- **Penyimpanan Media**: Cloud Storage (S3 Compatible)
+- **Profile Badge**  
+- **User Authentication** (Login & Register)  
+- **Dashboard Admin** (Manajemen konten & user)  
+- **Search** Anime & Manga  
+- **No Ads**  
+- **Database**: MongoDB  
+- **Open Source** & Mudah Dikembangkan  
 
-## 📜 Cara Install dan Menjalankan
-1. Clone repository ini:
-   ```sh
-   git clone https://github.com/tuxedo-labs/ComicHive.git
-   cd ComicHive
-   ```
-2. Install dependencies:
-   ```sh
-   pnpm install  # atau npm install / yarn install
-   ```
-3. Buat file `.env` dari contoh yang tersedia:
-   ```sh
-   cp .env.example .env
-   ```
-   Sesuaikan konfigurasi di dalamnya.
-4. Jalankan aplikasi:
-   ```sh
-   pnpm dev  # atau npm run dev / yarn dev
-   ```
-5. Buka di browser: [http://localhost:3000](http://localhost:3000)
-
-## 🤝 Kontribusi
-Kami menerima kontribusi dari komunitas! Jika ingin berkontribusi:
-1. Fork repository ini.
-2. Buat branch baru: `git checkout -b fitur-baru`.
-3. Commit perubahan: `git commit -m 'Menambahkan fitur baru'`.
-4. Push branch: `git push origin fitur-baru`.
-5. Buat Pull Request.
-
-## 📄 Lisensi
-Proyek ini dirilis di bawah lisensi **MIT**.
-
-## 📬 Kontak & Komunitas
-- 🌐 Website: [ComicHive](https://comic-hive.tuxedolabs.xyz)
-- ✉️ Email: me@tuxedolabs.xyz
 ---
-Selamat membaca dan menikmati anime favoritmu di **ComicHive**! 🎉
+
+## 🛠 Stack & Library
+
+### Frontend  
+- **[Svelte](https://svelte.dev/)**  
+- **@lucide/svelte** (Icon pack)  
+- **js-cookie** (Manage cookies auth)  
+- **Tailwind CSS** (Utility‑first styling)  
+- **Axios** (HTTP client)  
+
+### Backend  
+- **[Elysia JS](https://elysiajs.dev/)** (Web framework)  
+- **Prisma** (Type‑safe ORM)  
+- **bcrypt** (Hashing password)  
+- **NodeMailer** (Email & notifikasi)  
+- **Zod** (Schema validation)  
+
+### Database  
+- **MongoDB**  
+
+---
+
+## 📂 Struktur Proyek
+
+```
+Finime
+├ backend                
+├─ prisma/
+├─ src/
+│  ├─ @types/
+│  ├─ controllers/
+│  ├─ databases/
+│  ├─ lib/
+│  ├─ middleware/
+│  ├─ routes/
+│  ├─ scrapers/
+│  ├─ services/
+│  ├─ validations/
+│  ├─ env.ts/                  
+│  └─ index.ts/                
+├─ bun.lock                   
+├─ package.json               
+├─ README.md                  
+├─ tsconfig.json              
+├─ vercel.json
+├
+├ frontend                               
+├─ src                                 
+│  ├─ components/                     
+│  │  ├─ elements/        
+│  │  ├─ fragments/         
+│  │  ├─ layouts/           
+│  ├─ data/             
+│  ├─ hooks/            
+│  ├─ lib/
+│  ├─ routes/      
+│  │  ├─ 500/     
+│  │  ├─ about/  
+│  │  ├─ anime/
+│  │  │  ├─ watch/ 
+│  │  │  │  └─ [episode_id]/
+│  │  │  ├─ [anime_slug]/      
+│  │  ├─ auth/            
+│  │  │  ├─ login/
+│  │  │  ├─ logout/  
+│  │  │  └─ register/
+│  │  ├─ chapter/            
+│  │  │  └─ [chapter_slug]/          
+│  │  ├─ community/     
+│  │  ├─ dashboard/      
+│  │  ├─ genres/             
+│  │  │  └─ [genres_slug]/       
+│  │  ├─ manga/              
+│  │  │  ├─ [manga_slug]/          
+│  │  │  └─ +page.svelte               
+│  │  ├─ map.xml/      
+│  │  ├─ profile/      
+│  │  ├─ robots.txt/            
+│  │  ├─ sitemap.xml/           
+│  │  ├─ u/                
+│  │  │  └─ [username]/      
+│  ├─ stores/           
+│  ├─ types/             
+│  ├─ utils/           
+│  ├─ app.css                          
+│  ├─ app.d.ts                         
+│  ├─ app.html                         
+│  └─ env.ts                           
+├─ static/             
+├─ bun.lock                            
+├─ docker-compose.yml                  
+├─ Dockerfile                          
+├─ package-lock.json                   
+├─ package.json                        
+├─ README.md                           
+├─ svelte.config.js                    
+├─ tsconfig.json                       
+├─ vite.config.ts                      
+│
+├── tmp/                     # ⚠️ Unused, aman untuk dihapus
+└── README.md
+````
+
+> **Catatan:** Folder `tmp/` tidak digunakan dalam workflow. Bisa dihapus atau di‑ignore.
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js v18+ & npm/yarn/bun
+- MongoDB instance (lokal atau Atlas)  
+- CLI Prisma (`npm install -g prisma`)
+
+### Setup & Instalasi
+
+1. **Clone repo**  
+   ```bash
+   git clone https://github.com/.../finime.git
+   cd finime
+   ```
+
+2. **Setup Backend**
+
+   ```bash
+   cd backend
+   bun install
+   cp .env.example .env
+   # Edit .env sesuai konfigurasi Anda
+   bunx prisma generate
+   bunx prisma migrate dev
+   ```
+
+3. **Setup Frontend**
+
+   ```bash
+   cd ../frontend
+   npm install
+   cp .env.example .env
+   # Atur PUBLIC_API sesuai url backend
+   ```
+
+### Menjalankan Server
+
+* **Backend**
+
+  ```bash
+  cd backend
+  bun run dev
+  ```
+
+* **Frontend**
+
+  ```bash
+  cd frontend
+  bun run dev
+  ```
+
+---
+
+## 🔑 Environment Variables
+
+Buat file `.env` di masing‑masing folder dengan variabel berikut:
+
+### Backend `.env`
+
+```env
+DATABASE_URL=mongodb://localhost:27017/finime
+```
+
+### Frontend `.env`
+
+```env
+PUBLIC_API=http://localhost:3000
+```
+
+---
+
+## 🏗 Arsitektur & Alur Kerja
+
+1. **Client (Svelte)** berkomunikasi via **Axios** ke endpoint **ElysiaJS**
+2. Semua request masuk divalidasi dengan **Zod**, lalu diteruskan ke **Prisma** untuk operasi DB
+3. Autentikasi & session-cookie (menggunakan `js-cookie`)
+<!-- 4. Bagian Admin pada frontend melindungi route dengan guard dan role check
+5. Notifikasi email mendaftar & reset password via **NodeMailer** -->
+
+---
+
+## 🤝 Guidelines Kontribusi
+
+1. **Fork** repositori ini.
+2. **Buat branch** baru untuk fitur/bugfix:
+
+   ```bash
+   git checkout -b feature/nama-fitur
+   ```
+3. **Commit** dengan pesan jelas.
+4. **Push** ke fork Anda dan ajukan **Pull Request** ke `main`.
+5. Kami akan review dan merge setelah lulus CI & code review.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. Silakan lihat [LICENSE](./LICENSE) untuk detail.
+
+---
+
+**Selamat ngoding!**
+Ingin fitur baru atau menemukan bug? Jangan ragu untuk membuka issue atau langsung submit PR.
+
+![app icon](./.github/readme-images/logo.gif)

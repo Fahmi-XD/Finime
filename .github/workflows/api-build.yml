@@ -23,10 +23,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd api/anime-api
+        cd backend
         npm install
 
     - name: Run build
       run: |
-        cd api/anime-api
+        cd backend
         npm run build

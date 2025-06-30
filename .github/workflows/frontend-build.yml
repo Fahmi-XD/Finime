@@ -3,10 +3,10 @@ name: Front End build test
 on:
   push:
     branches:
-      - main
+      - patch/fix-api-errors
   pull_request:
     branches:
-      - main
+      - patch/fix-api-errors
 
 jobs:
   build:
@@ -23,10 +23,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd app
+        cd frontend
         npm install
 
     - name: Run build
       run: |
-        cd app
+        cd frontend
         npm run build

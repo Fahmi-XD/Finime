@@ -1,5 +1,6 @@
 <script lang="ts">
   import Link from "svelte-link";
+
   import { title } from "$data/index";
   import {
     ArrowRight,
@@ -64,7 +65,7 @@
   <div
     class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col md:flex-row items-center justify-between gap-12"
   >
-    <div class="text-center md:text-left mb-8 md:mb-0 z-10 max-w-2xl">
+    <div class="text-center md:text-left mb-8 md:mb-0 z-10">
       <div
         class="inline-flex items-center gap-2 px-4 py-2 bg-[hsl(var(--accent)/0.2)] rounded-full mb-6 border border-[hsl(var(--border)/0.3)]"
       >

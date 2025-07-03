@@ -7,6 +7,7 @@
   import TopManga from "$components/TopManga.svelte";
   import Donation from "$components/Donation.svelte";
   import { fetchPopularManga } from "$hooks/mangaHook";
+  import UpdateList from "$components/UpdateList.svelte";
   // import Network from "$components/Network.svelte";
 
   let mangaList: {
@@ -61,8 +62,9 @@
 <main>
   {#if !isLoading}
     <Hero />
+    <UpdateList />
   {/if}
-  <SearchManga />
+  <!-- <SearchManga /> -->
   {#if isLoading}
     <LoadingElements />
   {:else}

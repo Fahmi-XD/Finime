@@ -6,10 +6,12 @@
   import ProfileMenu from "$components/fragments/ProfileMenu.svelte";
   import { fade } from "svelte/transition";
   import { title } from "$data";
+  import Search from "$components/fragments/Search.svelte";
 
   let isMenuOpen = false;
   let isProfileMenuOpen = false;
   let isLoadUser: boolean = true;
+  let text: "manga" | "anime" = "manga";
 
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
@@ -28,6 +30,11 @@
     await fetchUser();
     isLoadUser = false;
     window.addEventListener("click", closeProfileMenu);
+
+    setInterval(() => {
+      if (text == "manga") text = "anime"
+      else text = "manga"
+    }, 5_000)
   });
 
   $: profile = $user;
@@ -94,6 +101,10 @@
           <Bot />
           {title}
         </a>
+
+        <div class="ml-10">
+          <Search varian="navbar" placeholder="Search {text}..." onSearch={(e) => {}} />
+        </div>
       </div>
 
       <nav data-sveltekit-preload-data="false" class="hidden md:flex gap-6">

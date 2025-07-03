@@ -1,12 +1,28 @@
 import { Elysia } from "elysia";
 import { cors } from '@elysiajs/cors'
+import { helmet } from "elysia-helmet";
+import cache from "elysia-cache";
+
 import authRoute from "@routes/authRoute";
 import userRoute from "@routes/userRoute";
+import mangaRoute from "@routes/mangaRoute";
 import publicRoute from "@routes/publicRoute";
 import HttpException from "@lib/httpException";
+import { authMiddleware } from "middleware/authMiddleware";
+
+const protectedRoute = new Elysia()
+  // Middlewarenya
+  .onBeforeHandle(authMiddleware)
+
+  // Subrouter User
+  .use(userRoute)
 
 const app = new Elysia()
   .use(cors())
+  .use(helmet())
+  .use(cache({
+    max: 80
+  }))
 
   .onError(({ code }) => {
     if (code === "NOT_FOUND") {
@@ -14,6 +30,7 @@ const app = new Elysia()
     }
   })
 
+  // Route Utama ( Gakguna jir 😂 )
   .get("/", () => {
     return {
       message: "Service active."
@@ -22,14 +39,13 @@ const app = new Elysia()
 
   // v1
   .group("/api/v1", (app) => app
-    // Subrouter Auth
-    .use(authRoute)
-
-    // Subrouter User + Middleware
-    .use(userRoute)
-
     // Subrouter Public ( No protect middleware )
+    .use(authRoute)
     .use(publicRoute)
+    .use(mangaRoute)
+
+    // Subrouter Anime & Manga ( Protect middleware )
+    .use(protectedRoute)
   )
 
   .listen(3000);

@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import Cookies from "js-cookie";
-  import { user } from "../../../stores/user";
+  import { user } from "$stores/user";
   import { tick } from "svelte";
 
   let showMessage = false;

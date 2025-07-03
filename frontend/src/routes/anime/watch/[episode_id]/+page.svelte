@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import type { EpisodeIdSlug } from "./proxy+page";
-  import { FetchAnimeApi } from "../../../../utils/Fetch";
-  import WatchAnimeLayout from "../../../../components/layouts/WatchAnimeLayout.svelte";
-  import LoadingElements from "../../../../components/elements/LoadingElements.svelte";
+  import { FetchApi } from "$utils/Fetch";
+  import WatchAnimeLayout from "$components/layouts/WatchAnimeLayout.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
 
   export let data: EpisodeIdSlug;
   let episodeData: any = null;
@@ -14,7 +14,7 @@
 
   async function fetchEpisode() {
     try {
-      const response = await FetchAnimeApi.get(`/episode/${data.episodeId}`);
+      const response = await FetchApi.get(`/episode/${data.episodeId}`);
 
       if (response.status === 404) {
         notFound = true;
@@ -42,7 +42,7 @@
 
   async function fetchVideoUrl(serverId: string) {
     try {
-      const serverResponse = await FetchAnimeApi.get(`/server/${serverId}`);
+      const serverResponse = await FetchApi.get(`/server/${serverId}`);
       const fetchedUrl =
         serverResponse.data.data.url || episodeData?.defaultStreamingUrl;
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
+  import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
   export let currentPage: number = 1;
   export let totalPages: number = Infinity;
   export let onPageChange: (page: number) => void;
@@ -9,20 +9,17 @@ import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
   let startPage = 1;
   let endPage = PAGE_RANGE;
 
+  $: {
+    startPage = Math.max(1, currentPage - Math.floor(PAGE_RANGE / 2));
+    endPage = Math.min(
+      totalPages === Infinity ? (currentPage + 2) + Math.floor(PAGE_RANGE / 2) : totalPages,
+      startPage + PAGE_RANGE - 1,
+    );
+  }
+
   const goToPage = (page: number) => {
     if (page < 1 || (totalPages !== Infinity && page > totalPages)) return;
     onPageChange(page);
-    updateRange(page);
-  };
-
-  const updateRange = (newPage: number) => {
-    if (newPage >= endPage) {
-      startPage = newPage;
-      endPage = newPage + PAGE_RANGE - 1;
-    } else if (newPage < startPage) {
-      endPage = newPage;
-      startPage = newPage - PAGE_RANGE + 1;
-    }
   };
 
   const handlePrevious = () => {
@@ -38,9 +35,7 @@ import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
   };
 </script>
 
-<div
-  class="flex justify-center py-8 space-x-2 bg-[hsl(var(--background))] sm:px-0 px-[100px]"
->
+<div class="flex justify-center py-8 space-x-2 bg-[hsl(var(--background))] sm:px-0 px-[100px]">
   <button
     class="px-4 py-2 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-md hover:bg-[hsl(var(--primary))]"
     on:click={handlePrevious}
@@ -51,7 +46,7 @@ import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
 
   {#each Array(endPage - startPage + 1)
     .fill(0)
-    .map((_, i) => startPage + i) as pageNumber}
+    .map((_, i) => startPage + i) as pageNumber, i (i)}
     <button
       class={`px-4 py-2 rounded-md ${
         currentPage === pageNumber
@@ -69,6 +64,6 @@ import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
     on:click={handleNext}
     disabled={totalPages !== Infinity && currentPage === totalPages}
   >
-  <ArrowBigRight/>
+    <ArrowBigRight />
   </button>
 </div>

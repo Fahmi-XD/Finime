@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { FetchApi } from "../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
   import { writable } from "svelte/store";
-  import Role from "../elements/Role.svelte";
-  import { user } from "../../stores/user";
+  import Role from "$components/elements/Role.svelte";
+  import { user } from "$stores/user";
   import { slide } from "svelte/transition";
   import {
     MessageSquare,

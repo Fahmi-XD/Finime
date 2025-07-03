@@ -5,9 +5,10 @@
   export let classes: string = ""; 
   export let disabled: boolean = false; 
   export let required: boolean = false; 
+  export let handleOnKeyDown: () => void;
 
   function handleInput(event: Event) {
-    const target = event.target as HTMLInputElement;
+    const target = (event.target as HTMLInputElement) || (event.currentTarget as HTMLInputElement);
     value = target.value;
     dispatch("input", value); 
   }
@@ -24,4 +25,9 @@
   disabled={disabled}
   required={required}
   on:input={handleInput}
+  on:keydown={(e) => {
+    if (e.key == "Enter") {
+      handleOnKeyDown()
+    }
+  }}
 />

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Link from "svelte-link";
-  import { title } from "../data/index";
+  import { title } from "$data/index";
   import {
     ArrowRight,
     BookmarkCheck,
@@ -82,7 +82,7 @@
         class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-[hsl(var(--background-foreground))]"
       >
         <span
-          class="animate-slide-right flex text-[hsl(var(--primary))]"
+          class="animate-slide-right flex text-center justify-center sm:justify-start text-[hsl(var(--primary))]"
         >
           Welcome to {title}!
         </span>

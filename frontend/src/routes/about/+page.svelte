@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import axios from "axios";
-  import LoadingElements from "../../components/elements/LoadingElements.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
 
   interface Contributor {
     login: string;

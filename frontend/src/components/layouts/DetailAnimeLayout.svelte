@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AnimeData } from "../../types/types";
+  import type { AnimeData } from "$types/types";
   export let anime: AnimeData = {
     title: "",
     poster: "",

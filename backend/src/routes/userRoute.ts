@@ -5,12 +5,8 @@
 import UserController from "@controllers/userController";
 import { Elysia } from "elysia";
 import { adminMiddleware } from "middleware/adminMiddleware";
-import { authMiddleware } from "middleware/authMiddleware";
 
 const userRoute = new Elysia()
-
-  // Middleware Auth X-Token
-  .onBeforeHandle(authMiddleware)
 
   .get("/user", UserController.getUser)
   .get("/users", UserController.getAllUser, { beforeHandle: adminMiddleware }) // Memerlukan Token + Role Admin

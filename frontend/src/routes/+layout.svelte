@@ -1,10 +1,10 @@
 <script lang="ts">
   import { ModeWatcher } from "mode-watcher";
-  import Navbar from "../components/Navbar.svelte";
-  import Footer from "../components/Footer.svelte";
+  import Navbar from "$components/Navbar.svelte";
+  import Footer from "$components/Footer.svelte";
   import "../app.css";
   import { onMount } from "svelte";
-  import { fetchUser } from "../stores/user";
+  import { fetchUser } from "$stores/user";
   import { page } from "$app/state";
 
   let loading: boolean = true;

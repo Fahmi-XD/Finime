@@ -4,7 +4,7 @@
 
 import prismaClient from '@databases/prismaClient'
 
-export const authMiddleware = async ({ headers, store }: any) => {
+export const authMiddleware = async ({ headers, store, set }: any) => {
   const token = headers['x-token']
 
   if (!token) {

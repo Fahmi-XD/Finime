@@ -39,6 +39,7 @@ model User {
 enum Role {
   ADMIN
   MEMBER
+  MODERATOR
 }
 
 model Contact {

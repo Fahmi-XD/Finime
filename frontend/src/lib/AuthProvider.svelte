@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fetchAuth } from "../stores/auth";
+  import { fetchAuth } from "$stores/auth";
 
   onMount(() => {
     fetchAuth();

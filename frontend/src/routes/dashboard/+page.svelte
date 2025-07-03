@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Table from "../../components/fragments/Table.svelte";
-  import { FetchApi } from "../../utils/Fetch";
+  import Table from "$components/fragments/Table.svelte";
+  import { FetchApi } from "$utils/Fetch";
 
   interface Contact {
     email: string;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { user } from "../stores/user";
+  import { user } from "$stores/user";
 </script>
 
 {#if $user?.role === "ADMIN"}

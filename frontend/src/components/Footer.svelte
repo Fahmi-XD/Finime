@@ -1,6 +1,6 @@
 <script lang="ts">
   import Link from "svelte-link";
-  import { title } from "../data";
+  import { title } from "$data";
   import { Facebook, Twitter, Instagram, Send } from "@lucide/svelte";
 </script>
 

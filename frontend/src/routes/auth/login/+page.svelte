@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FetchApi } from "../../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
   import Link from "svelte-link";
   import Cookies from "js-cookie";
   import { Eye, EyeClosed } from "@lucide/svelte";

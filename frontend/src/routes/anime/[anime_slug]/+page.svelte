@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { FetchAnimeApi } from "../../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
   import type { AnimeSlug } from "./proxy+page";
-  import DetailAnimeLayout from "../../../components/layouts/DetailAnimeLayout.svelte";
-  import LoadingElements from "../../../components/elements/LoadingElements.svelte";
+  import DetailAnimeLayout from "$components/layouts/DetailAnimeLayout.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
 
   export let data: AnimeSlug;
   let animeData: any;
@@ -13,7 +13,7 @@
 
   onMount(async () => {
     try {
-      const response = await FetchAnimeApi.get(`/anime/${data.slug}`);
+      const response = await FetchApi.get(`/anime/${data.slug}`);
       if (response.status === 404) {
         error = "Anime not found.";
         return;

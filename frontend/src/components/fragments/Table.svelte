@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { BadgeCheckIcon } from "@lucide/svelte";
+
   export let headers: string[] = [];
   export let rows: any[][] = [];
   export let striped: boolean = false;
@@ -83,9 +85,16 @@
             {#each row as cell, j (j)}
               <td
                 class="px-4 py-3 whitespace-nowrap text-[hsl(var(--muted-foreground))] font-normal
-                {j === 0 ? 'text-[hsl(var(--foreground))] font-medium' : ''}"
+                {j === 0 ? 'text-[hsl(var(--foreground))] font-medium' : cell === "admin" ? "text-red-500" : ''}"
               >
+              {#if j === 0 && (row.includes("admin") || row.includes("moderator"))}
+              <div class="flex items-center gap-1">
                 {cell}
+                <BadgeCheckIcon size={15} fill="#1DA1F2" />
+              </div>
+              {:else}
+                {cell}
+              {/if}
               </td>
             {/each}
           </tr>

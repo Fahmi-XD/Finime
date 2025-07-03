@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import SearchManga from "../../components/SearchManga.svelte";
-  import MangaLayout from "../../components/layouts/MangaLayout.svelte";
-  import LoadingElements from "../../components/elements/LoadingElements.svelte";
-  import Pagination from "../../components/elements/Pagination.svelte";
-  import MenuHero from "../../components/MenuHero.svelte";
-  import { fetchMangaPage } from "../../hooks/MangaHooks";
+  import SearchManga from "$components/SearchManga.svelte";
+  import MangaLayout from "$components/layouts/MangaLayout.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import Pagination from "$components/elements/Pagination.svelte";
+  import MenuHero from "$components/MenuHero.svelte";
+  import { fetchMangaPage } from "$hooks/mangaHook";
 
   let mangaList: any[] = [];
   let currentPage = 1;

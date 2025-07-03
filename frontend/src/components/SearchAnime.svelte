@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { FetchAnimeApi } from "../utils/Fetch";
-  import Search from "./fragments/Search.svelte";
-  import ResultSearchAnime from "./layouts/ResultSearchAnime.svelte";
+  import { FetchApi } from "$utils/Fetch";
+  import Search from "$components/fragments/Search.svelte";
+  import ResultSearchAnime from "$components/layouts/ResultSearchAnime.svelte";
   
   let searchResults: any;
 
@@ -13,7 +13,7 @@
     isLoading = true;
 
     try {
-      const response = await FetchAnimeApi.get(`/search?q=${query}`);
+      const response = await FetchApi.get(`/search?q=${query}`);
       if (response.status && response.data.data.animeList) {
         searchResults = response.data.data.animeList;
       } else {

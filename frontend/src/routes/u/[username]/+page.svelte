@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { UsernameSlug } from "./proxy+page";
   export let data: UsernameSlug;
-  import { FetchApi } from "../../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
   import { onMount } from "svelte";
   import { Film, BookOpen, Mail, User, Shield, Zap, Heart, Bitcoin, Gamepad2, Handshake, BadgeCheckIcon } from "@lucide/svelte";
-  import LoadingElements from "../../../components/elements/LoadingElements.svelte";
-  import Role from "../../../components/elements/Role.svelte";
-  import { fetchAllBadge } from "../../../stores/user";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import Role from "$components/elements/Role.svelte";
+  import { fetchAllBadge } from "$stores/user";
 
   let user: any = null;
   let isLoading = true;
@@ -138,7 +138,7 @@
                     <div
                       class="w-5 h-5 rounded-full bg-[hsl(var(--primary)/10%)] flex items-center justify-center text-[hsl(var(--primary))]"
                     >
-                      {#if user.role === "ADMIN"}
+                      {#if user.role === "ADMIN" || user.role === "MODERATOR"}
                         <Shield size={12} />
                       {:else}
                         <User size={12} />

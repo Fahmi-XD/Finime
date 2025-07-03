@@ -101,7 +101,7 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "paths": {
       "@routes/*": ["routes/*"],
-      "@scraper/*": ["scraper/*"],
+      "@scrapers/*": ["scrapers/*"],
       "@lib/*": ["lib/*"],
       "@controllers/*": ["controllers/*"],
       "@typing/*": ["@types/*"],

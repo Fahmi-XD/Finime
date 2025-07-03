@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { listChapter, currentChapterReading, type MangaChapterType } from "$/stores/chapterStore";
+
   export let manga: {
     title: string;
     type: string;
@@ -9,6 +11,8 @@
     genre_list: { genre_name: string }[];
     chapter: { chapter_title: string; chapter_endpoint: string }[];
   } | null;
+
+  listChapter.set(manga?.chapter as MangaChapterType[]);
 </script>
 
 <section class="bg-[hsl(var(--background))] py-12 mt-5 text-[hsl(var(--foreground))]">
@@ -74,9 +78,10 @@
       <div class="mt-12">
         <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-[hsl(var(--border))]">Chapters</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {#each manga.chapter as chapter}
+          {#each manga.chapter as chapter, i (i)}
             <a
               href={`/chapter${chapter.chapter_endpoint}`}
+              onclick={() => { currentChapterReading.set(manga.chapter.length - (i + 1)) }}
               data-sveltekit-preload-data="hover"
               class="block px-4 py-3 bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[hsl(var(--primary)/0.1)] hover:border-[hsl(var(--primary)/0.3)] hover:shadow-sm"
             >

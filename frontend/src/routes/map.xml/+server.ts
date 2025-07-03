@@ -1,10 +1,10 @@
-import { FetchAnimeApi, FetchMangaApi } from "../../utils/Fetch";
-import { title } from "../../data"
+import { FetchApi } from "$utils/Fetch";
+import { title } from "$data"
 
 export async function GET() {
   const [animeResponse, mangaResponse] = await Promise.all([
-    FetchAnimeApi.get('/recent'),
-    FetchMangaApi.get('/api/manga/popular/1')
+    FetchApi.get('/recent'),
+    FetchApi.get('/api/manga/popular/1')
   ]);
 
   const domain = "https://c.tuxedolabs.xyz";

@@ -1,8 +1,6 @@
 # <img src="https://media.tenor.com/7hiQYhUQY2QAAAAM/dis.gif" alt="ComicHive Logo" width="30"/> Finime
 
-
-
-> **Finime** — Aplikasi web streaming Anime & Manga gratis, tanpa iklan, dan bebas gangguan, dikembangkan untuk developer dan open‑source.  
+> **Finime** — Tempat asik buat streaming Anime & Manga gratis, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekadar nonton santai! 🚀
 
 ---
 
@@ -25,8 +23,7 @@
 
 ## 🔍 Tentang Finime
 
-Finime adalah proyek open‑source yang bertujuan menyediakan platform **streaming Anime & Manga** secara gratis, tanpa iklan, dan tanpa gangguan lainnya.  
-Dirancang sebagai full‑stack web application dengan **frontend** Svelte dan **backend** ElysiaJS + TypeScript, Finime mendorong kolaborasi antar developer untuk menambah fitur, memperbaiki bug, atau mengintegrasikan layanan baru.
+Finime itu proyek open-source yang pengen bikin streaming Anime & Manga jadi gampang, gratis, dan bebas gangguan. Dibangun full-stack: frontend pakai Svelte, backend pakai ElysiaJS + TypeScript. Kamu bisa ikut nimbrung, nambah fitur, benerin bug, atau sekadar ngasih ide. Pokoknya, makin rame makin seru!
 
 ---
 
@@ -34,11 +31,11 @@ Dirancang sebagai full‑stack web application dengan **frontend** Svelte dan **
 
 - **Profile Badge**  
 - **User Authentication** (Login & Register)  
-- **Dashboard Admin** (Manajemen konten & user)  
+- **Dashboard Admin** (Buat ngatur konten & user)  
 - **Search** Anime & Manga  
-- **No Ads**  
+- **No Ads** (Beneran, nggak ada iklan!)  
 - **Database**: MongoDB  
-- **Open Source** & Mudah Dikembangkan  
+- **Open Source** & Super Gampang Dikembangin  
 
 ---
 
@@ -46,17 +43,17 @@ Dirancang sebagai full‑stack web application dengan **frontend** Svelte dan **
 
 ### Frontend  
 - **[Svelte](https://svelte.dev/)**  
-- **@lucide/svelte** (Icon pack)  
-- **js-cookie** (Manage cookies auth)  
-- **Tailwind CSS** (Utility‑first styling)  
-- **Axios** (HTTP client)  
+- **@lucide/svelte** (Icon kece)  
+- **js-cookie** (Buat ngatur cookies auth)  
+- **Tailwind CSS** (Styling biar cakep)  
+- **Axios** (HTTP client andalan)  
 
 ### Backend  
-- **[Elysia JS](https://elysiajs.dev/)** (Web framework)  
-- **Prisma** (Type‑safe ORM)  
-- **bcrypt** (Hashing password)  
-- **NodeMailer** (Email & notifikasi)  
-- **Zod** (Schema validation)  
+- **[Elysia JS](https://elysiajs.dev/)** (Web framework ringan)  
+- **Prisma** (ORM yang aman & nyaman)  
+- **bcrypt** (Biar password aman)  
+- **NodeMailer** (Buat kirim email & notifikasi)  
+- **Zod** (Validasi schema, anti typo!)  
 
 ### Database  
 - **MongoDB**  
@@ -65,7 +62,7 @@ Dirancang sebagai full‑stack web application dengan **frontend** Svelte dan **
 
 ## 📂 Struktur Proyek
 
-```
+``` 
 Finime
 ├ backend                
 ├─ prisma/
@@ -140,25 +137,26 @@ Finime
 ├─ tsconfig.json                       
 ├─ vite.config.ts                      
 │
-├── tmp/                     # ⚠️ Unused, aman untuk dihapus
+├── tmp/                     # ⚠️ Folder ini nggak dipake, aman buat dihapus
 └── README.md
-````
+```
 
-> **Catatan:** Folder `tmp/` tidak digunakan dalam workflow. Bisa dihapus atau di‑ignore.
+<br>
+> Folder `tmp/` itu cuma numpang lewat, nggak dipake di workflow. Mau dihapus juga nggak masalah kok!
 
 ---
 
 ## ⚙️ Getting Started
 
-### Prerequisites
+### Prasyarat
 
 - Node.js v18+ & npm/yarn/bun
-- MongoDB instance (lokal atau Atlas)  
+- MongoDB (boleh lokal, boleh Atlas)
 - CLI Prisma (`npm install -g prisma`)
 
-### Setup & Instalasi
+### Cara Setup & Instalasi
 
-1. **Clone repo**  
+1. **Clone repo dulu**
    ```bash
    git clone https://github.com/.../finime.git
    cd finime
@@ -170,7 +168,7 @@ Finime
    cd backend
    bun install
    cp .env.example .env
-   # Edit .env sesuai konfigurasi Anda
+   # Edit .env sesuai selera & kebutuhanmu
    bunx prisma generate
    bunx prisma migrate dev
    ```
@@ -181,7 +179,7 @@ Finime
    cd ../frontend
    npm install
    cp .env.example .env
-   # Atur PUBLIC_API sesuai url backend
+   # Jangan lupa atur PUBLIC_API ke url backend kamu
    ```
 
 ### Menjalankan Server
@@ -204,7 +202,7 @@ Finime
 
 ## 🔑 Environment Variables
 
-Buat file `.env` di masing‑masing folder dengan variabel berikut:
+Bikin file `.env` di masing-masing folder, isinya kayak gini:
 
 ### Backend `.env`
 
@@ -222,35 +220,35 @@ PUBLIC_API=http://localhost:3000
 
 ## 🏗 Arsitektur & Alur Kerja
 
-1. **Client (Svelte)** berkomunikasi via **Axios** ke endpoint **ElysiaJS**
-2. Semua request masuk divalidasi dengan **Zod**, lalu diteruskan ke **Prisma** untuk operasi DB
-3. Autentikasi & session-cookie (menggunakan `js-cookie`)
-<!-- 4. Bagian Admin pada frontend melindungi route dengan guard dan role check
-5. Notifikasi email mendaftar & reset password via **NodeMailer** -->
+1. **Client (Svelte)** ngobrol ke backend (**ElysiaJS**) lewat **Axios**
+2. Semua request dicek & divalidasi sama **Zod**, baru lanjut ke **Prisma** buat urusan database
+3. Autentikasi & session pakai cookies (dengan `js-cookie`)
+<!-- 4. Bagian Admin di frontend ada guard & role check
+5. Notifikasi email buat daftar & reset password via **NodeMailer** -->
 
 ---
 
 ## 🤝 Guidelines Kontribusi
 
-1. **Fork** repositori ini.
-2. **Buat branch** baru untuk fitur/bugfix:
+1. **Fork** repo ini dulu, ya.
+2. **Bikin branch** baru buat fitur/bugfix:
 
    ```bash
    git checkout -b feature/nama-fitur
    ```
-3. **Commit** dengan pesan jelas.
-4. **Push** ke fork Anda dan ajukan **Pull Request** ke `main`.
-5. Kami akan review dan merge setelah lulus CI & code review.
+3. **Commit** dengan pesan yang jelas & singkat.
+4. **Push** ke fork kamu, lalu bikin **Pull Request** ke `main`.
+5. Tenang, nanti bakal direview & di-merge kalau udah oke!
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. Silakan lihat [LICENSE](./LICENSE) untuk detail.
+Proyek ini pakai MIT License. Cek [LICENSE](./LICENSE) buat detailnya.
 
 ---
 
-**Selamat ngoding!**
-Ingin fitur baru atau menemukan bug? Jangan ragu untuk membuka issue atau langsung submit PR.
+**Selamat ngoding & have fun!** 🚀
+Punya ide fitur baru atau nemu bug? Langsung aja buka issue atau submit PR, jangan malu-malu!
 
 ![app icon](./.github/readme-images/logo.gif)

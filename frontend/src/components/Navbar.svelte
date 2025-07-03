@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { user, fetchUser } from "../stores/user";
-  import ModeButton from "./elements/ModeButton.svelte";
+  import { user, fetchUser } from "$stores/user";
+  import ModeButton from "$components/elements/ModeButton.svelte";
   import { onMount } from "svelte";
   import { Bot } from "@lucide/svelte";
-  import ProfileMenu from "./fragments/ProfileMenu.svelte";
+  import ProfileMenu from "$components/fragments/ProfileMenu.svelte";
   import { fade } from "svelte/transition";
-  import { title } from "../data";
+  import { title } from "$data";
 
   let isMenuOpen = false;
   let isProfileMenuOpen = false;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EpisodeData } from "../../types/episodes";
+  import type { EpisodeData } from "$types/episodes";
   import { slide } from "svelte/transition";
   import {
     ArrowBigRight,
@@ -13,10 +13,10 @@
     Download,
     X,
   } from "@lucide/svelte";
-  import { FetchAnimeApi } from "../../utils/Fetch";
-  import { user } from "../../stores/user";
-  import CommentList from "../fragments/CommentList.svelte";
-  import AddComment from "../fragments/AddComment.svelte";
+  import { FetchApi } from "$utils/Fetch";
+  import { user } from "$stores/user";
+  import CommentList from "$components/fragments/CommentList.svelte";
+  import AddComment from "$components/fragments/AddComment.svelte";
 
   export let videoUrl: string;
   export let episode: EpisodeData;
@@ -39,7 +39,7 @@
 
   async function fetchServerUrl(serverId: string) {
     try {
-      const response = await FetchAnimeApi.get(`/server/${serverId}`);
+      const response = await FetchApi.get(`/server/${serverId}`);
       return response.data.ok ? response.data.data.url : null;
     } catch (error) {
       console.error("Error fetching server URL:", error);

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Eye, EyeClosed } from "@lucide/svelte";
-  import { FetchApi } from "../../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
   import { goto } from "$app/navigation";
   import { toBase64 } from "$lib/base64";
 

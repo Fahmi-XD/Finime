@@ -10,8 +10,8 @@
     ChevronLeft,
     ChevronRight,
   } from "@lucide/svelte";
-  import { title } from "../data";
-  import { user } from "../stores/user";
+  import { title } from "$data";
+  import { user } from "$stores/user";
 
   export let expanded = true;
   export let mobileOpen = false;
@@ -173,7 +173,7 @@
       </button>
 
       <div class="flex items-center space-x-3">
-        <button class="p-2 rounded-full hover:bg-[hsl(var(--muted)/0.5)]">
+        <button class="p-2 rounded-full hover:bg-[hsl(var(--muted)/0.5]">
           <Bell size={20} class="text-[hsl(var(--foreground))]" />
         </button>
 

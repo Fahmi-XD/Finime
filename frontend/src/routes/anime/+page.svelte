@@ -1,10 +1,10 @@
 <script lang="ts">
-  import AnimeLayout from "../../components/layouts/AnimeLayout.svelte";
-  import MenuHero from "../../components/MenuHero.svelte";
-  import LoadingElements from "../../components/elements/LoadingElements.svelte";
-  import { FetchAnimeApi } from "../../utils/Fetch";
+  import AnimeLayout from "$components/layouts/AnimeLayout.svelte";
+  import MenuHero from "$components/MenuHero.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import { FetchAnimeApi } from "$utils/Fetch";
   import { onMount } from "svelte";
-  import SearchAnime from "../../components/SearchAnime.svelte";
+  import SearchAnime from "$components/SearchAnime.svelte";
 
   let animeList: any[] = [];
   let isLoading = true;

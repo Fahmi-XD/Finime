@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { FetchApi } from "../utils/Fetch";
+import { FetchApi } from "$utils/Fetch";
 import { goto } from "$app/navigation";
 import Cookies from "js-cookie";
 export interface User {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import { Send, MessageSquare, Smile, Loader2 } from "@lucide/svelte";
-  import { FetchApi } from "../../utils/Fetch";
+  import { FetchApi } from "$utils/Fetch";
 
   export let animeId: string;
   let comment = "";

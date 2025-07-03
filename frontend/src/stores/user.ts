@@ -1,5 +1,5 @@
 import { writable, fromStore, type Writable } from "svelte/store";
-import { FetchApi } from "../utils/Fetch";
+import { FetchApi } from "$utils/Fetch";
 import Cookies from "js-cookie";
 import * as Icons from "@lucide/svelte";
 

@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { user, fetchUser, fetchAllBadge } from "../../stores/user";
+  import { user, fetchUser, fetchAllBadge } from "$stores/user";
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
-  import LoadingElements from "../../components/elements/LoadingElements.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
   import { User, BookOpen, Film, Edit, Mail, Shield, BadgeCheckIcon, History, Star } from "@lucide/svelte";
-  import { FetchApi } from "../../utils/Fetch";
-  import Button from "../../components/elements/Button.svelte";
-  import ProfileForm from "../../components/fragments/ProfileForm.svelte";
-  import Role from "../../components/elements/Role.svelte";
+  import { FetchApi } from "$utils/Fetch";
+  import Button from "$components/elements/Button.svelte";
+  import ProfileForm from "$components/fragments/ProfileForm.svelte";
+  import Role from "$components/elements/Role.svelte";
 
   let isLoading = writable(true);
   let isModalOpen = writable(false);
@@ -232,7 +232,7 @@
                   </div>
                 </div>
                 <div>
-                  {#if $user.role === "ADMIN"}
+                  {#if $user.role === "ADMIN" || $user.role === "MODERATOR"}
                     <Role variant="admin">{$user.role}</Role>
                   {:else}
                     <Role variant="member">{$user.role}</Role>

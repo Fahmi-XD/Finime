@@ -1,7 +1,7 @@
 <script lang="ts">
-  import DetailMangaLayout from "../../../components/layouts/DetailMangaLayout.svelte";
-  import Loading from "../../../components/elements/Loading.svelte";
-  import { fetchMangaDetail } from "../../../hooks/MangaHooks";
+  import DetailMangaLayout from "$components/layouts/DetailMangaLayout.svelte";
+  import Loading from "$components/elements/Loading.svelte";
+  import { fetchMangaDetail } from "$hooks/mangaHook";
   import { onMount } from "svelte";
   import type { MangaSlug } from "./proxy+page";
 
@@ -10,7 +10,7 @@
   let manga: any;
   let isLoading = true;
   let isFound = false;
-  let title: string = "ComicHive";
+  let title: string = "Finime";
   let description: string = "Platform baca manga & nonton anime";
   let genres: string = "";
 
@@ -21,8 +21,8 @@
     isFound = result.isFound;
     
     if (isFound) {
-      title = manga.title || "ComicHive";
-      description = manga.synopsis ? manga.synopsis.substring(0, 160) + "..." : "Baca manga " + title + " di ComicHive";
+      title = manga.title || "Finime";
+      description = manga.synopsis ? manga.synopsis.substring(0, 160) + "..." : "Baca manga " + title + " di Finime";
       genres = manga.genre_list?.map((g: any) => g.genre_name).join(", ") || "";
     }
     

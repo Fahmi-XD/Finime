@@ -1,5 +1,5 @@
 /**
- * Kirim Email
+ * Kirim Email ( Entah lah )
  */
 
 import nodemailer from 'nodemailer';

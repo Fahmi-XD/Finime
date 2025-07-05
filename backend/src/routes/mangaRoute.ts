@@ -2,21 +2,18 @@
  * SubRoute Manga
  */
 
-import MangaController from "@controllers/mangaController";
+import { komikuRoute } from "@scrapers/index";
+
 import Elysia from "elysia";
 import cacheMiddleware from "middleware/cacheMiddleware";
 
 const mangaRoute = new Elysia()
 
   // Middlware Cache
-  .use(cacheMiddleware())
+  .use(cacheMiddleware()) // 1 menit
 
   .group("/manga", (app) => app
-    .get("/page/:page", MangaController.paginationManga)
-    .get("/popular/:page", MangaController.getPopularMangaPage)
-    .get("/search", MangaController.searchManga)
-    .get("/detail/:slug", MangaController.getMangaDetail)
-    .get("/chapter/:slug", MangaController.getChapterDetail)
+    .use(komikuRoute) // Scrape dari website komiku
 
   )
 

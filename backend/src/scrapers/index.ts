@@ -1,8 +1,9 @@
 /**
  * Manga Scrapers
  */
-export { Komiku } from "@scrapers/manga/komiku";
+export { komikuRoute } from "@scrapers/manga/komiku/routes/komikuRoute";
 
 /**
  * Anime Scrapers
  */
+export { otakudesuRoute } from "@scrapers/anime/otakudesu/routes/otakudesuRoute";

@@ -12,6 +12,7 @@ export type UserProfile = {
   bio?: string | null
   badge?: string[]
   isVerify: boolean;
+  banner?: string;
   contact: {
     email: string
     first_name: string

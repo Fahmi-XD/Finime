@@ -4,7 +4,17 @@
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
-  import { User, BookOpen, Film, Edit, Mail, Shield, BadgeCheckIcon, History, Star } from "@lucide/svelte";
+  import {
+    User,
+    BookOpen,
+    Film,
+    Edit,
+    Mail,
+    Shield,
+    BadgeCheckIcon,
+    History,
+    Star,
+  } from "@lucide/svelte";
   import { FetchApi } from "$utils/Fetch";
   import Button from "$components/elements/Button.svelte";
   import ProfileForm from "$components/fragments/ProfileForm.svelte";
@@ -21,7 +31,8 @@
     first_name: "",
     last_name: "",
     bio: "",
-    badge: [""]
+    badge: [""],
+    banner: "",
   });
   let error = writable("");
   let success = writable("");
@@ -42,7 +53,8 @@
         first_name: $user.contact?.first_name || "",
         last_name: $user.contact?.last_name || "",
         bio: $user.bio || "",
-        badge: $user.badge || []
+        badge: $user.badge || [],
+        banner: $user.banner || "",
       });
       avatarFile = null;
       avatarPreview.set(null);
@@ -126,7 +138,7 @@
   onMount(async () => {
     await fetchUser();
     badges = await fetchAllBadge();
-    badges = (badges as Array<any>).filter(item => $user?.badge?.includes(item?.id as string))
+    badges = (badges as Array<any>).filter((item) => $user?.badge?.includes(item?.id as string));
 
     if (!$user) {
       window.location.href = "/";
@@ -150,22 +162,25 @@
     >
       <div class="flex flex-col md:flex-row">
         <div
-          class="w-full md:w-1/3 p-8 bg-gradient-to-b from-[hsl(var(--primary)/10%)] to-transparent flex flex-col items-center text-center"
+          class="w-full md:w-1/2 p-8 bg-gradient-to-b from-[hsl(var(--primary)/10%)] to-transparent flex flex-col"
         >
-          <div class="relative group mb-6">
+          <div class="relative w-auto flex">
+            {#if $user?.banner}
+              <img class="h-[160px] w-full object-cover" src={$user?.banner} alt="Banner Gif" />
+            {/if}
             <div
-              class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-[hsl(var(--primary)/30%)] bg-white/50 backdrop-blur-sm flex items-center justify-center"
+              class="w-auto {$user?.banner ? "absolute left-0 -bottom-20" : ""} h-auto rounded-full overflow-hidden flex bg-red-500"
             >
               {#if $user}
                 {#if $user.avatar}
                   <img
                     src={$user.avatar}
                     alt="Profile picture of {$user.name}"
-                    class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
+                    class="w-32 h-32 border-4 border-[hsl(var(--primary)/30%)] bg-white/50 rounded-full object-cover transition-all duration-300 hover:scale-110"
                   />
                 {:else}
                   <div
-                    class="flex items-center justify-center h-full w-full text-4xl font-bold text-white bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--secondary))]"
+                    class="flex items-center border-4 border-[hsl(var(--primary)/30%)] bg-white/50 justify-center w-32 h-32 text-4xl font-bold text-white bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--secondary))]"
                   >
                     {getInitials($user.name)}
                   </div>
@@ -180,7 +195,7 @@
             </div>
           </div>
 
-          <div class="flex gap-3 items-center">
+          <div class="flex gap-3 {$user?.banner ? "mt-20" : "mt-3"} items-center">
             <h1 class="text-2xl font-bold tracking-tight">
               {$user?.name || "Guest User"}
             </h1>

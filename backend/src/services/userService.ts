@@ -5,7 +5,7 @@
 import prismaClient from "@databases/prismaClient";
 import HttpException from "@lib/httpException";
 import { Prisma } from "@prisma/client";
-import { UpdateUserRequest } from "@typing/userType";
+import { UpdateUserRequest } from "models/userModel";
 import { UserValidation } from "@validations/userValidation";
 import { ZodError } from "zod";
 
@@ -20,6 +20,7 @@ export default class UserService {
         username: true,
         name: true,
         avatar: true,
+        banner: true,
         role: true,
         isVerify: true,
         bio: true,
@@ -95,13 +96,15 @@ export default class UserService {
           avatar: data.avatar ?? undefined,
           contact: contactData,
           bio: data.bio ?? undefined,
-          badge: data.badge ?? undefined
+          badge: data.badge ?? undefined,
+          banner: data.banner ?? undefined
         },
         select: {
           id: true,
           username: true,
           name: true,
           avatar: true,
+          banner: true,
           bio: true,
           isVerify: true,
           badge: true,
@@ -127,7 +130,7 @@ export default class UserService {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(400, { message: (error as any).message })
+        return HttpException.standarException(500, { message: "Error" })
       }
     }
   }
@@ -144,6 +147,7 @@ export default class UserService {
           username: true,
           name: true,
           avatar: true,
+          banner: true,
           role: true,
           bio: true,
           isVerify: true,
@@ -170,7 +174,7 @@ export default class UserService {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(400, { message: (error as any).message })
+        return HttpException.standarException(500, { message: "Error" })
       }
     }
   }
@@ -226,6 +230,7 @@ export default class UserService {
         username: true,
         name: true,
         avatar: true,
+        banner: true,
         role: true,
         contact: {
           select: {

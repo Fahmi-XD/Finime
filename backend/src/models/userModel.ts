@@ -26,6 +26,7 @@ export type UpdateUserRequest = {
   last_name?: string;
   bio?: string;
   badge?: string[];
+  banner?: string;
 }
 
 export type ChangePasswordRequest = {

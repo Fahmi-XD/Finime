@@ -9,7 +9,8 @@
     class="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary))] via-[hsl(var(--secondary))] to-[hsl(var(--tertiary))] opacity-30 blur-lg"
   ></div>
 
-  <div class="relative max-w-5xl mx-auto px-4 text-center z-10">
+  <div class="relative max-w-5xl mx-auto px-4 -translate-y-10 text-center z-10">
+    <img class="w-[200px] h-auto mx-auto" src="/logo.gif" alt="">
     <h1 class="text-4xl font-extrabold text-[hsl(var(--background-foreground))] drop-shadow-lg">
       Welcome to the Finime Community
     </h1>

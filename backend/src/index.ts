@@ -9,6 +9,7 @@ import mangaRoute from "@routes/mangaRoute";
 import publicRoute from "@routes/publicRoute";
 import HttpException from "@lib/httpException";
 import { authMiddleware } from "middleware/authMiddleware";
+import animeRoute from "@routes/animeRoute";
 
 const protectedRoute = new Elysia()
   // Middlewarenya
@@ -33,7 +34,8 @@ const app = new Elysia()
   // Route Utama ( Gakguna jir 😂 )
   .get("/", () => {
     return {
-      message: "Service active."
+      message: "Service active.",
+      source: "Finime"
     }
   })
 
@@ -43,6 +45,7 @@ const app = new Elysia()
     .use(authRoute)
     .use(publicRoute)
     .use(mangaRoute)
+    .use(animeRoute)
 
     // Subrouter Anime & Manga ( Protect middleware )
     .use(protectedRoute)

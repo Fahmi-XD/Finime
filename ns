@@ -1,0 +1,24 @@
+<!-- <section class="bg-[#1a1a1a] rounded-xl p-4 ml-10 max-w-xl">
+        <div class="flex items-center space-x-3">
+          <button aria-label="Play" class="bg-red-600 text-white rounded-full p-2 hover:bg-red-700">
+            <Play size="20" fill="white" />
+          </button>
+          <span class="text-red-400 font-semibold text-sm"> Continue Watching </span>
+        </div>
+        <p class="text-xs text-white/70 mb-2 mt-4">EP 11 | EP 24</p>
+        <p class="text-xs text-white/70 mb-3">
+          The appearance of "quirks," newly discovered super powers, has been steadily increasing
+          over the years, with 80 percent of humanity possessing...+ More
+        </p>
+        <div class="flex items-center text-xs text-white/70">
+          <span> 02:23 </span>
+          <div class="flex-1 mx-3 h-1 rounded-full bg-gray-700 overflow-hidden">
+            <div class="h-1 rounded-full bg-red-500" style="width: 75%"></div>
+          </div>
+          <span> 24:12 </span>
+        </div>
+      </section> -->
+
+      <!-- <p class="text-[12px] text-white/70 leading-tight">
+                The appearance of "quirks," newly discovered super powers...+ More
+              </p> -->

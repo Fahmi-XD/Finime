@@ -1,6 +1,6 @@
 import * as IOPE from "./IOtakudesuParserExtra";
-import type { Pagination } from "@helpers/payload";
-import type { Format, Quality } from "@interfaces/IGlobal";
+import type { Pagination } from "../../helper/payload";
+import type { Format, Quality } from "../../interface/IGlobal";
 
 export interface Home {
   ongoing: {

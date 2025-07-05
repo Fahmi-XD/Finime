@@ -3,7 +3,7 @@
  */
 
 import AuthService from "@services/authService";
-import { RegisterUserRequest, LoginUserRequest } from "@typing/userType";
+import { RegisterUserRequest, LoginUserRequest } from "models/userModel";
 import { Context } from "elysia";
 import { ZodIssue } from "zod";
 

@@ -11,11 +11,11 @@
   export let text: string = "Last post";
 </script>
 
-<section class="bg-[hsl(var(--background))] py-10 sm:py-14 text-[hsl(var(--foreground))]">
+<section class="bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <slot />
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-      {#each mangaList as manga}
+      {#each mangaList as manga, i (i)}
         <a 
           href={`/manga/${manga.endpoint}`} 
           class="group relative flex flex-col rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"

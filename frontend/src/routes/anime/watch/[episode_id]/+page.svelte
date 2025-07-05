@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import type { EpisodeIdSlug } from "./proxy+page";
-  import { FetchApi } from "$utils/Fetch";
   import WatchAnimeLayout from "$components/layouts/WatchAnimeLayout.svelte";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import { fetchAnimeEpisode, fetchAnimeServer } from "$/hooks/animeHook";
 
   export let data: EpisodeIdSlug;
   let episodeData: any = null;
@@ -14,12 +14,12 @@
 
   async function fetchEpisode() {
     try {
-      const response = await FetchApi.get(`/episode/${data.episodeId}`);
+      const response = await fetchAnimeEpisode(data.episodeId);
 
-      if (response.status === 404) {
+      if (response.statusCode === 404) {
         notFound = true;
       } else {
-        episodeData = response.data.data;
+        episodeData = response.data;
         title = episodeData.title;
 
         const firstServer = episodeData.server.qualities?.find(
@@ -37,14 +37,15 @@
       notFound = true;
     } finally {
       isLoading = false;
+      console.log({isLoading})
     }
   }
 
   async function fetchVideoUrl(serverId: string) {
     try {
-      const serverResponse = await FetchApi.get(`/server/${serverId}`);
-      const fetchedUrl =
-        serverResponse.data.data.url || episodeData?.defaultStreamingUrl;
+      const serverResponse = await fetchAnimeServer(serverId);
+      const fetchedUrl = serverResponse?.data?.url || episodeData?.defaultStreamingUrl;
+      console.log({fetchedUrl});
 
       await checkVideo(fetchedUrl);
     } catch (error) {
@@ -90,7 +91,7 @@
   {:else}
     <WatchAnimeLayout
       episode={episodeData}
-      {videoUrl}
+      videoUrl={videoUrl as string}
       episodeId={data.episodeId}
     />
   {/if}

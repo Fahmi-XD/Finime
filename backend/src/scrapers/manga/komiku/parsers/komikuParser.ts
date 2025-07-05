@@ -3,8 +3,9 @@
  */
 
 import Scrape from "@scrapers/scrape";
+import * as IKOMIKU from "../models/komikuModel";
 
-export class Komiku extends Scrape {
+export class KomikuParser extends Scrape {
 
   private static readonly baseUrl = "https://api.komiku.org/";
   private static readonly replaceMangaPage = "https://komiku.org";
@@ -39,6 +40,51 @@ export class Komiku extends Scrape {
             thumb,
             endpoint,
             upload_on,
+            sortDesc
+          });
+        });
+
+        return {
+          status: true,
+          message: "success",
+          manga_list,
+        }
+      }
+    );
+  }
+
+  static async getUpdateManga(orderBy: string) {
+    const path = `other/hot/?orderby=${orderBy}&tipe=manga`;
+
+    return this.htmlParser(
+      {
+        url: this.baseUrl + path,
+        initial: {
+          status: false,
+          message: "Tidak dapat menemukan manga update.",
+          manga_list: [],
+        }
+      },
+
+      async ($) => {
+        const element = $(".bge");
+        let thumb, title, endpoint, type, upload_on, sortDesc, view;
+        let manga_list: any = [];
+        element.each((idx, el) => {
+          title = $(el).find(".kan").find("h3").text().trim();
+          endpoint = $(el)?.find("a")?.attr("href")?.replace(this.replaceMangaPage, "").replace("/manga/", "");
+          type = $(el).find("div.bgei > a > div.tpe1_inf > b").text();
+          thumb = $(el).find("div.bgei > a > img").attr("src");
+          view = $(el).find("div.kan > .judul2").text();
+          sortDesc = $(el).find("div.kan > p").text().trim();
+          upload_on = $(el).find("div.kan > span.judul2").text().split("•")[1].trim();
+          manga_list.push({
+            title,
+            type,
+            thumb,
+            endpoint,
+            upload_on,
+            view,
             sortDesc
           });
         });
@@ -144,7 +190,7 @@ export class Komiku extends Scrape {
   static async getMangaDetail(slug: string) {
     const url = this.replaceMangaPage + `/manga/${slug}`;
 
-    return this.htmlParser(
+    return this.htmlParser<IKOMIKU.IDetailKomikuModel>(
       {
         url,
         initial: {
@@ -156,25 +202,34 @@ export class Komiku extends Scrape {
           thumb: "",
           genre_list: [],
           synopsis: "",
-          chapter: []
+          chapter: [],
+          card_info: {
+            judul_komik: "",
+            judul_indonesia: "",
+            jenis_komik: "",
+            Konsep_cerita: "",
+            author: "",
+            status: "",
+            umur_pembaca: "",
+            cara_baca: ""
+          }
         }
       },
 
-      async ($) => {
+      async ($, data) => {
         const element = $(".perapih");
         let genre_list: any = [];
         let chapter = [];
-        const obj: any = {};
 
         const getMeta = element.find(".inftable > tbody").first();
-        obj.title = $("#Judul > h1").text().trim();
-        obj.type = $("tr:nth-child(2) > td:nth-child(2)").find("b").text();
-        obj.author = $("#Informasi > table > tbody > tr:nth-child(4) > td:nth-child(2)").text().trim();
-        obj.status = $(getMeta).children().eq(4).find("td:nth-child(2)").text();
+        data.title = $("#Judul > h1").text().trim();
+        data.type = $("tr:nth-child(2) > td:nth-child(2)").find("b").text();
+        data.author = $("#Informasi > table > tbody > tr:nth-child(4) > td:nth-child(2)").text().trim();
+        data.status = $(getMeta).children().eq(4).find("td:nth-child(2)").text();
 
-        obj.manga_endpoint = slug;
+        data.manga_endpoint = slug;
 
-        obj.thumb = element.find(".ims > img").attr("src");
+        data.thumb = element.find(".ims > img").attr("src") || "";
 
         element.find(".genre > li").each((idx, el) => {
           let genre_name = $(el).find("a").text();
@@ -183,10 +238,10 @@ export class Komiku extends Scrape {
           });
         });
 
-        obj.genre_list = genre_list || [];
+        data.genre_list = genre_list || [];
 
         const getSinopsis = element.find("#Sinopsis").first();
-        obj.synopsis = $(getSinopsis).find("p").text().trim();
+        data.synopsis = $(getSinopsis).find("p").text().trim();
 
         const chapterList = $("#Daftar_Chapter > tbody").find("tr");
         for (let i = 0; i < chapterList.length; i++) {
@@ -200,10 +255,31 @@ export class Komiku extends Scrape {
               chapter_endpoint: rep,
             });
           }
-          obj.chapter = chapter;
+          data.chapter = chapter;
         }
 
-        return obj;
+        const inftable = $(".inftable").first();
+        const card_info = {
+          judul_komik: "",
+          judul_indonesia: "",
+          jenis_komik: "",
+          Konsep_cerita: "",
+          author: "",
+          status: "",
+          umur_pembaca: "",
+          cara_baca: ""
+        };
+        for (let i = 0; i < Object.entries(card_info).length; i++) {
+          const key = Object.keys(card_info)[i];
+          const value = inftable.find(`tr:nth-child(${i + 1}) > td:nth-child(2)`).text().trim();
+          if (value) {
+            card_info[key as keyof typeof card_info] = value;
+          }
+        }
+
+        data.card_info = card_info;
+
+        return data;
       }
     )
   }

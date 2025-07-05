@@ -2,15 +2,17 @@
   "name": "Finime",
   "version": "1.0.50",
   "scripts": {
-    "build": "tsc && prisma generate",
-    "dev": "bun run --watch src/index.ts"
+    "build": "tsc",
+    "build:prisma": "tsc && prisma generate",
+    "dev": "bun run --watch src/index.ts",
+    "clean": "bun scripts/clean.js"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.3.3",
     "@prisma/client": "^6.10.1",
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
-    "cheerio": "^1.1.0",
+    "cheerio": "1.0.0-rc.12",
     "dotenv": "^17.0.0",
     "elysia": "latest",
     "elysia-cache": "^0.1.0",

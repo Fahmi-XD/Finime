@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { FetchApi } from "$utils/Fetch";
   import type { AnimeSlug } from "./proxy+page";
   import DetailAnimeLayout from "$components/layouts/DetailAnimeLayout.svelte";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import { fetchAnimeDetail } from "$/hooks/animeHook";
 
   export let data: AnimeSlug;
   let animeData: any;
@@ -13,12 +13,12 @@
 
   onMount(async () => {
     try {
-      const response = await FetchApi.get(`/anime/${data.slug}`);
-      if (response.status === 404) {
+      const response = await fetchAnimeDetail(data.slug);
+      if (response.statusCode === 404) {
         error = "Anime not found.";
         return;
       }
-      animeData = response.data.data;
+      animeData = response.data;
       title = animeData.english || animeData.japanese || "ComicHive";
       description = `Watch ${title} - ${animeData.type} | Status: ${animeData.status} | Rating: ${animeData.score?.value || 'N/A'}`;
     } catch (err) {

@@ -1,162 +1,179 @@
-import type { NextFunction, Request, Response } from "express";
-import { getPageParam, getQParam } from "@helpers/queryParams";
-import OtakudesuParser from "@otakudesu/parsers/OtakudesuParser";
-import otakudesuInfo from "@otakudesu/info/otakudesuInfo";
-import generatePayload from "@helpers/payload";
+import { getPageParam, getQParam } from "@lib/queryParams";
+import OtakudesuParser from "../parsers/OtakudesuParser";
+import otakudesuInfo from "../info/otakudesuInfo";
+import generatePayload from "../helper/payload";
 import path from "path";
+import fs from "fs";
+import { Context } from "elysia";
 
 const { baseUrl, baseUrlPath } = otakudesuInfo;
 const parser = new OtakudesuParser(baseUrl, baseUrlPath);
 
 const otakudesuController = {
-  getMainView(req: Request, res: Response, next: NextFunction): void {
+  getMainView: async (ctx: Context) => {
     try {
       const getViewFile = (filePath: string) => {
         return path.join(__dirname, "..", "..", "..", "public", "views", filePath);
       };
-
-      res.sendFile(getViewFile("anime-source.html"));
+      const filePath = getViewFile("anime-source.html");
+      ctx.set.headers["Content-Type"] = "text/html";
+      const html = fs.readFileSync(filePath, "utf-8");
+      return html;
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  getMainViewData(req: Request, res: Response, next: NextFunction): void {
+  getMainViewData: async (ctx: Context) => {
     try {
       const data = otakudesuInfo;
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getHome(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getHome: async (ctx: Context) => {
     try {
       const data = await parser.parseHome();
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getSchedule(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getSchedule: async (ctx: Context) => {
     try {
       const data = await parser.parseSchedule();
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getAllAnimes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getAllAnimes: async (ctx: Context) => {
     try {
       const data = await parser.parseAllAnimes();
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getAllGenres(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getAllGenres: async (ctx: Context) => {
     try {
       const data = await parser.parseAllGenres();
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getOngoingAnimes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getOngoingAnimes: async (ctx: Context) => {
     try {
-      const page = getPageParam(req);
-      const { data, pagination } = await parser.parseOngoingAnimes(page);
-
-      res.json(generatePayload(res, { data, pagination }));
+      const page = getPageParam(ctx.query);
+      if (page instanceof Response) {
+        return page;
+      }
+      const { data, pagination } = await parser.parseOngoingAnimes(page as number);
+      return generatePayload({ data, pagination });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getCompletedAnimes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getCompletedAnimes: async (ctx: Context) => {
     try {
-      const page = getPageParam(req);
-      const { data, pagination } = await parser.parseCompletedAnimes(page);
-
-      res.json(generatePayload(res, { data, pagination }));
+      const page = getPageParam(ctx.query);
+      if (page instanceof Response) {
+        return page;
+      }
+      const { data, pagination } = await parser.parseCompletedAnimes(page as number);
+      return generatePayload({ data, pagination });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getSearch(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getSearch: async (ctx: Context) => {
     try {
-      const q = getQParam(req);
-      const data = await parser.parseSearch(q);
-
-      res.json(generatePayload(res, { data }));
+      const q = getQParam(ctx.query);
+      if (q instanceof Response) {
+        return q;
+      }
+      const data = await parser.parseSearch(q as string);
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      console.log(error)
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getGenreAnimes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getGenreAnimes: async (ctx: Context) => {
     try {
-      const page = getPageParam(req);
-      const { genreId } = req.params;
-      const { data, pagination } = await parser.parseGenreAnimes(genreId, page);
-
-      res.json(generatePayload(res, { data, pagination }));
+      const page = getPageParam(ctx.query);
+      if (page instanceof Response) {
+        return page;
+      }
+      const { genreId } = ctx.params;
+      const { data, pagination } = await parser.parseGenreAnimes(genreId, page as number);
+      return generatePayload({ data, pagination });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getAnimeDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getAnimeDetails: async (ctx: Context) => {
     try {
-      const { animeId } = req.params;
+      const { animeId } = ctx.params;
       const data = await parser.parseAnimeDetails(animeId);
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getAnimeEpisode(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getAnimeEpisode: async (ctx: Context) => {
     try {
-      const { episodeId } = req.params;
+      const { episodeId } = ctx.params;
       const data = await parser.parseAnimeEpisode(episodeId);
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getServerUrl(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getServerUrl: async (ctx: Context) => {
     try {
-      const { serverId } = req.params;
+      const { serverId } = ctx.params;
       const data = await parser.parseServerUrl(serverId);
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 
-  async getAnimeBatch(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getAnimeBatch: async (ctx: Context) => {
     try {
-      const { batchId } = req.params;
+      const { batchId } = ctx.params;
       const data = await parser.parseAnimeBatch(batchId);
-
-      res.json(generatePayload(res, { data }));
+      return generatePayload({ data });
     } catch (error) {
-      next(error);
+      ctx.set.status = 500;
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   },
 };

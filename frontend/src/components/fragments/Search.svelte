@@ -10,6 +10,7 @@
   export let placeholder: string;
   export let onSearch: (query: string) => void;
   export let varian: "navbar" | "default" = "default";
+  export let size: "small" | "large" = "small";
 
   function handleSearch() {
     if (timeoutId) clearTimeout(timeoutId);
@@ -31,7 +32,7 @@
   }
 </script>
 
-<div class="flex items-center space-x-2 w-full md:px-0 px-5 max-w-md">
+<div class="space-x-2 w-full {varian === "default" ? "max-w-md" : ""}">
   <div class="relative items-center">
     {#if varian == "navbar"}
       <Search class="absolute top-0 bottom-0 left-3 opacity-70 my-auto" />
@@ -41,9 +42,9 @@
       value={query}
       {placeholder}
       {varian}
-      classes="flex-grow px-4 py-2 {varian == 'default'
+      classes="flex px-4 py-2 {varian == 'default'
         ? 'border border-[hsl(var(--primary))] rounded-l-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-        : 'pl-12 outline-none'} transition-colors duration-300 bg-[hsl(var(--background))] text-[hsl(var(--foreground))]"
+        : 'pl-12 outline-none'} {size === "small" ? "min-w-[350px]" : "min-w-[100%]"} transition-colors duration-300 bg-[hsl(var(--background))] text-[hsl(var(--foreground))]"
       on:input={(e) => handleInputChange(e.detail)}
       handleOnKeyDown={handleSearch}
     />

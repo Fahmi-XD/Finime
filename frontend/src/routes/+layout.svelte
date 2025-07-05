@@ -6,6 +6,7 @@
   import { onMount } from "svelte";
   import { fetchUser } from "$stores/user";
   import { page } from "$app/state";
+  import SettingsProvider from "$components/fragments/ProviderSettings.svelte"
 
   let loading: boolean = true;
   let isHidden: boolean = $state<boolean>(false);
@@ -24,8 +25,9 @@
   });
 </script>
 
-<main class="bg-[hsl(var(--background))]">
+<main class="bg-transparent relative">
   <ModeWatcher />
+  <SettingsProvider />
   {#if !isHidden}
     <Navbar />
   {/if}

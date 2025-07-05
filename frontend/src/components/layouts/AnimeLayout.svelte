@@ -5,10 +5,10 @@
     title?: string;
     poster?: string;
     episodes?: string;
-    releasedOn?: string;
+    latestReleaseDate?: string;
     animeId?: string;
     href?: string;
-    samehadakuUrl?: string;
+    url?: string;
   }[] = [];
 
   export let text: string = "Last episode";
@@ -34,7 +34,7 @@
                 />
                 <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
                   <div class="text-xs text-white/90 mb-1">
-                    {text} {anime.releasedOn}
+                    {text} {anime.latestReleaseDate}
                   </div>
                   <div class="text-xs text-white/70">{anime.episodes} episodes</div>
                 </div>

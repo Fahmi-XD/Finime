@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EpisodeData } from "$types/episodes";
+  import type { EpisodeData } from "$/types/episodes";
   import { slide } from "svelte/transition";
   import {
     ArrowBigRight,
@@ -208,7 +208,12 @@
           <h2 class="text-xl font-bold">Episode Synopsis</h2>
         </div>
         <div class="prose prose-invert max-w-none">
-          {#each episode.synopsis.paragraphs as paragraph}
+          {#if !episode?.synopsis}
+            <p class="mb-4 last:mb-0 text-[hsl(var(--foreground))]">
+              Unavailable
+            </p>
+          {/if}
+          {#each episode?.synopsis?.paragraphs as paragraph}
             <p class="mb-4 last:mb-0 text-[hsl(var(--foreground))]">
               {paragraph}
             </p>
@@ -222,15 +227,14 @@
           Genres
         </h3>
         <div class="flex flex-wrap gap-2">
-          {#each episode.genreList as genre}
-            <a
-              href={genre.href}
+          {#each (episode as any)?.info?.genreList as genre}
+            <div
               class="px-4 py-2 text-sm font-medium bg-[hsl(var(--primary)/0.1)] hover:bg-[hsl(var(--primary)/0.2)] text-[hsl(var(--primary))] rounded-full transition-colors flex items-center gap-2"
               data-sveltekit-preload-data="hover"
             >
               {genre.title}
               <ChevronRight class="w-4 h-4" />
-            </a>
+            </div>
           {/each}
         </div>
       </div>

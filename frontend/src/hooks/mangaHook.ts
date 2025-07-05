@@ -1,8 +1,10 @@
 import { FetchApi } from "$utils/Fetch";
+import { fromStore } from "svelte/store";
+import { mangaProvider } from "$/stores/providerStore";
 
 export const fetchPopularManga = async () => {
   try {
-    const response = await FetchApi.get("/manga/popular/1");
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/popular/1`);
 
     const apiData = response.data;
     if (apiData.status && apiData.manga_list) {
@@ -21,9 +23,50 @@ export const fetchPopularManga = async () => {
   }
 };
 
+export const fetchNewsManga = async () => {
+  try {
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/news`);
+
+    const apiData = response.data;
+    if (apiData.status && apiData.manga_list) {
+      return apiData.manga_list.map((item: any, index: number) => ({
+        id: index + 1,
+        title: item.title,
+        image: item.thumb,
+        endpoint: item.endpoint,
+        view: item.view,
+        upload_on: item.upload_on,
+      }));
+    }
+  } catch (error) {
+    console.error("Error fetching news manga:", error);
+    return [];
+  }
+};
+
+export const fetchDateManga = async () => {
+  try {
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/news?orderBy=date`);
+
+    const apiData = response.data;
+    if (apiData.status && apiData.manga_list) {
+      return apiData.manga_list.map((item: any, index: number) => ({
+        id: index + 1,
+        title: item.title,
+        image: item.thumb,
+        endpoint: item.endpoint,
+        view: item.view
+      }));
+    }
+  } catch (error) {
+    console.error("Error fetching date manga:", error);
+    return [];
+  }
+};
+
 export const fetchMangaPage = async (page: number = 1) => {
   try {
-    const response = await FetchApi.get(`/manga/page/${page}`);
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/page/${page}`);
     const apiData = response.data;
 
     if (apiData.status && apiData.manga_list) {
@@ -44,7 +87,7 @@ export const fetchMangaPage = async (page: number = 1) => {
 
 export const fetchMangaDetail = async (slug: string) => {
   try {
-    const response = await FetchApi.get(`/manga/detail/${slug}`);
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/detail/${slug}`);
 
     if (response.status === 200 && response.data.status !== false) {
       return { manga: response.data, isFound: true };

@@ -5,7 +5,7 @@
 import HttpException from "@lib/httpException";
 import ImageUpload from "@lib/uploadImage";
 import UserService from "@services/userService";
-import { UpdateUserRequest } from "@typing/userType";
+import { UpdateUserRequest } from "models/userModel";
 import { UserValidation } from "@validations/userValidation";
 import { Context } from "elysia";
 import { ZodError } from "zod";
@@ -42,7 +42,7 @@ export default class UserController {
           request.avatar = avatar;
         }
 
-        ["username", "name", "email", "first_name", "last_name", "bio"].forEach(
+        ["username", "name", "email", "first_name", "last_name", "bio", "banner"].forEach(
           (field) => {
             const value = formData.get(field);
             request[field as keyof UpdateUserRequest] = value as any

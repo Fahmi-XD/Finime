@@ -2,9 +2,10 @@
   import AnimeLayout from "$components/layouts/AnimeLayout.svelte";
   import MenuHero from "$components/MenuHero.svelte";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
-  import { FetchAnimeApi } from "$utils/Fetch";
   import { onMount } from "svelte";
   import SearchAnime from "$components/SearchAnime.svelte";
+  import AnimeHero from "$/components/AnimeHero.svelte";
+  import { fetchAnimeHome } from "$/hooks/animeHook";
 
   let animeList: any[] = [];
   let isLoading = true;
@@ -18,9 +19,8 @@
 
   onMount(async () => {
     try {
-      const response = await FetchAnimeApi.get("/anime");
-      console.log(response.data.data.list);
-      animeList = response.data.data.list;
+      const response = await fetchAnimeHome();
+      animeList = response.ongoing.animeList || [];
     } catch (error) {
       console.error("Error fetching data:", error);
       isLoading = false;
@@ -39,13 +39,9 @@
   {#if isLoading}
     <LoadingElements />
   {:else}
-    <MenuHero {...MenuHeroData} />
-    <h1
-      class="text-3xl font-bold text-[hsl(var(--foreground))] text-center mt-10 bg-[hsl(var(--background))]"
-    >
-      Latest Anime Releases
-    </h1>
-    <SearchAnime />
-    <AnimeLayout {animeList} />
+    {#if animeList.length !== 0}
+      <AnimeHero {animeList} />
+      <AnimeLayout {animeList} />
+    {/if}
   {/if}
 </div>

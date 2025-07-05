@@ -106,7 +106,7 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
   parseAllAnimes(): Promise<IOP.AllAnimes> {
     return this.scrape<IOP.AllAnimes>(
       {
-        path: "/anime-list",
+        path: "  ",
         initialData: { list: [] },
       },
       async ($, data) => {

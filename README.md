@@ -1,6 +1,21 @@
+![Home Page](.github/readme-images/home.png)
+
 # <img src="https://media.tenor.com/7hiQYhUQY2QAAAAM/dis.gif" alt="ComicHive Logo" width="30"/> Finime
 
 > **Finime** — Tempat asik buat streaming Anime & Manga gratis, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekadar nonton santai! 🚀
+
+---
+
+# Screenshot
+#### Home
+![Home Page](.github/readme-images/home.png)
+#### Anime
+![Anime Page](.github/readme-images/anime.png)
+#### Manga
+![Manga Page](.github/readme-images/manga.png)
+
+> [!NOTE]
+> Website masih dalam tahap development, jadi ada kemungkin error selama kamu menggunakan website ini ( Error itu fitur 😅 ).
 
 ---
 

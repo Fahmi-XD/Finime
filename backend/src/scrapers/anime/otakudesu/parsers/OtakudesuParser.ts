@@ -1,9 +1,9 @@
 import * as IOP from "./interfaces/IOtakudesuParser";
 import * as IOPE from "./interfaces/IOtakudesuParserExtra";
-import type { Quality, Server, Url } from "@interfaces/IGlobal";
-import { wajikFetch } from "@services/dataFetcher";
-import { cache } from "@libs/lruCache";
+import type { Quality, Server, Url } from "../interface/IGlobal";
+import { wajikFetch } from "../services/dataFetcher";
 import OtakudesuParserExtra from "./OtakudesuParserExtra";
+import { cache } from "@lib/cache";
 
 export default class OtakudesuParser extends OtakudesuParserExtra {
   parseHome(): Promise<IOP.Home> {
@@ -106,7 +106,7 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
   parseAllAnimes(): Promise<IOP.AllAnimes> {
     return this.scrape<IOP.AllAnimes>(
       {
-        path: "/anime-list",
+        path: "  ",
         initialData: { list: [] },
       },
       async ($, data) => {
@@ -558,6 +558,8 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
     const nonceCacheKey = "otakudesuNonce";
     const serverIdArr = this.derawr(serverId).split("-");
 
+    console.log(data, nonceCacheKey, serverIdArr)
+
     const getUrlData = async (nonce: any) => {
       return await wajikFetch(`${this.baseUrl}/wp-admin/admin-ajax.php`, this.baseUrl, {
         method: "POST",
@@ -579,11 +581,13 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
     const getUrl = (html: string) => this.generateSrcFromIframeTag(html);
 
     try {
-      // HIT
+      console.log("HITTTTTTTTTTTTT")
       const nonce = cache.get(nonceCacheKey);
       const url = await getUrlData(nonce);
+      console.log({url})
 
       data.url = getUrl(getHtml(url.data));
+      console.log(data.url);
     } catch (error: any) {
       if (error.status === 403) {
         // MISS
@@ -610,6 +614,8 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
     const isEmpty = !data.url || data.url === "No iframe found";
 
     this.checkEmptyData(isEmpty);
+
+    console.log({data});
 
     return data;
   }

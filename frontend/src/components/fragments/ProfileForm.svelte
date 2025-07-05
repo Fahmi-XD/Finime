@@ -13,6 +13,7 @@
     last_name: string;
     bio: string;
     badge: string[];
+    banner: string;
   }>;
   export let error: Writable<string>;
   export let success: Writable<string>;
@@ -200,6 +201,16 @@
           class="w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--input))]"
           placeholder="Enter Bio"
         ></textarea>
+      </div>
+
+      <div>
+        <label for="bio" class="block text-sm font-medium mb-1">Banner Url</label>
+        <input
+          type="url"
+          bind:value={$formData.banner}
+          class="w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--input))] text-sm"
+          placeholder="Paste image URL"
+        />
       </div>
     </div>
 

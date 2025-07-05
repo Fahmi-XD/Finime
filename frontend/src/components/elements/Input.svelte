@@ -22,7 +22,7 @@
   type={type}
   value={value}
   placeholder={placeholder}
-  class={`w-full px-4 py-2 text-base ${varian == "default" ? "border rounded-md border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" : "border border-white/20 rounded-4xl"} transition-colors duration-300 bg-[hsl(var(--background))] text-[hsl(var(--foreground))] ${classes}`}
+  class={`w-full px-4 py-2 text-base ${varian == "default" ? "border rounded-md border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" : "border border-white/20 rounded-4xl"} transition-colors duration-300 text-[hsl(var(--foreground))] ${classes}`}
   disabled={disabled}
   required={required}
   on:input={handleInput}

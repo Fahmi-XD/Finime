@@ -3,11 +3,11 @@
   export let description: string;
 </script>
 
-<section class="relative w-full h-[300px] flex flex-col items-center justify-center text-center bg-[hsl(var(--background))] rounded-lg p-8 mt-5 lg:pt-0">
-  <h1 class="text-5xl font-extrabold text-primary-foreground drop-shadow-lg tracking-wide animate-fade-in">
+<section class="relative w-full h-[150px] mt-18 flex flex-col items-start justify-center text-start bg-[hsl(var(--background))] rounded-lg p-8 pl-16 lg:pt-0">
+  <h1 class="text-4xl font-extrabold text-primary-foreground drop-shadow-lg tracking-wide animate-fade-in">
     {title}
   </h1>
-  <p class="mt-3 text-lg text-muted-foreground max-w-2xl opacity-90 animate-slide-up">
+  <p class="mt-3 opacity-50 text-lg text-muted-foreground max-w-2xl animate-slide-up">
     {description}
   </p>
 </section>

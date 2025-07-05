@@ -32,6 +32,7 @@
     isSubmitting = true;
     const params = new URLSearchParams(window.location.search);
     const redirectTo = params.get("from") || "/";
+    errorMessages = [""]
 
     try {
       const response = await FetchApi.post("/auth/login", formData);

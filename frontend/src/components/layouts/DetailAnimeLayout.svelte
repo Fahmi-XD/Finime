@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AnimeData } from "$types/types";
+  import type { AnimeData } from "$/types/types";
   export let anime: AnimeData = {
     title: "",
     poster: "",
@@ -25,7 +25,7 @@
 </script>
 
 <section
-  class="bg-[hsl(var(--background))] py-12 text-[hsl(var(--foreground))] mt-6"
+  class="bg-[hsl(var(--background))] py-12 text-[hsl(var(--foreground))] mt-12"
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">

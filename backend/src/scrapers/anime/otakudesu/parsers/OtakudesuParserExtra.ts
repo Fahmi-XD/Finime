@@ -1,8 +1,8 @@
 import * as IOPE from "./interfaces/IOtakudesuParserExtra";
 import type { CheerioAPI, Cheerio, Element } from "cheerio";
-import type { Pagination } from "@helpers/payload";
-import { getFinalUrl, getFinalUrls } from "@services/dataFetcher";
-import AnimeScraper from "@scrapers/AnimeScraper";
+import type { Pagination } from "../helper/payload";
+import { getFinalUrl, getFinalUrls } from "../services/dataFetcher";
+import AnimeScraper from "./AnimeScraper";
 
 export default class OtakudesuParserExtra extends AnimeScraper {
   protected parseAnimeCard1(el: Cheerio<Element>): IOPE.AnimeCard1 {
@@ -210,7 +210,7 @@ export default class OtakudesuParserExtra extends AnimeScraper {
             }
 
             const originalUrls = await getFinalUrls(otakudesuUrls, this.baseUrl, {
-              axiosConfig: { timeout: 10000 },
+              fetchConfig: { timeout: 10000 },
               retryConfig: { delay: 100, retries: 2 },
             });
 

@@ -7,7 +7,7 @@ import prismaClient from "@databases/prismaClient";
 import crypto from "node:crypto";
 import bcrypt from "bcrypt";
 
-import type { LoginUserRequest, RegisterUserRequest } from "@typing/userType";
+import type { LoginUserRequest, RegisterUserRequest } from "models/userModel";
 import { ZodError, ZodIssue } from "zod";
 import HttpException from "@lib/httpException";
 
@@ -86,7 +86,7 @@ export default class AuthService {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(400, { message: (error as any).message })
+        return HttpException.standarException(500, { message: "Error" })
       }
     }
   }
@@ -121,10 +121,11 @@ export default class AuthService {
 
       return { token };
     } catch (error) {
+      console.error(error)
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(400, { message: (error as any).message })
+        return HttpException.standarException(500, { message: "Error" })
       }
     }
   }

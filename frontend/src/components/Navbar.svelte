@@ -7,11 +7,14 @@
   import { fade } from "svelte/transition";
   import { title } from "$data";
   import Search from "$components/fragments/Search.svelte";
+  import { page } from "$app/stores";
 
   let isMenuOpen = false;
   let isProfileMenuOpen = false;
   let isLoadUser: boolean = true;
   let text: "manga" | "anime" = "manga";
+
+  $: path = $page.url.pathname;
 
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
@@ -102,19 +105,23 @@
           {title}
         </a>
 
-        <div class="ml-10">
+        <div class="md:ml-10 ml-3 hidden md:block">
           <Search varian="navbar" placeholder="Search {text}..." onSearch={(e) => {}} />
         </div>
       </div>
 
-      <nav data-sveltekit-preload-data="false" class="hidden md:flex gap-6">
+      <nav data-sveltekit-preload-data="false" class="hidden items-center md:flex gap-6">
         {#each links as { name, link }}
           <a
             href={link}
-            class="font-medium text-sm text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-colors"
+            class="font-medium {path == link ? 'text-red-500' : ''} text-sm text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] transition-colors"
             >{name}</a
           >
         {/each}
+
+        <!-- <div class="md:-order-1 bg-red-500 md:mr-15">
+          <Search varian="navbar" placeholder="Search {text}..." onSearch={(e) => {}} />
+        </div> -->
       </nav>
 
       <div class="flex items-center gap-4 relative">
@@ -171,6 +178,10 @@
             >{name}</a
           >
         {/each}
+
+        <div class="block md:hidden mt-8 w-full">
+          <Search varian="navbar" size="large" placeholder="Search {text}..." onSearch={(e) => {}} />
+        </div>
       </div>
     {/if}
   </div>

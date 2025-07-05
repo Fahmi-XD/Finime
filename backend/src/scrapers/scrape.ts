@@ -43,12 +43,12 @@ export default class Scrape {
       url: string;
       initial: T
     },
-    parser: ($: cheerio.CheerioAPI) => Promise<T>
+    parser: ($: cheerio.CheerioAPI, data: T) => Promise<T>
   ): Promise<T> {
     try {
       const response = await this.fetch(url);
       const $ = cheerio.load(response.data);
-      const parserResult = await parser($);
+      const parserResult = await parser($, initial);
       return parserResult as T;
     } catch {
       return initial

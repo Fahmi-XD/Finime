@@ -9,6 +9,7 @@ export class UserValidation {
     first_name: z.string().optional(),
     last_name: z.string().optional(),
     bio: z.string().optional(),
+    banner: z.string().optional(),
   });
 
   static readonly CHANGE_PASSWORD: ZodType = z.object({

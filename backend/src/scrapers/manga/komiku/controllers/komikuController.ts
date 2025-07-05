@@ -4,16 +4,15 @@
 
 import { Context } from "elysia";
 import { AxiosError } from "axios";
+import { KomikuParser } from "../parsers/komikuParser";
 
-import { Komiku } from "../scrapers";
-
-export default class MangaController {
+export default class KomikuParserController {
 
   // Get Popular Manga With Page
   static async getPopularMangaPage(context: Context) {
     try {
       const page = context.params.page || "1";
-      const response = await Komiku.getPopularManga(page);
+      const response = await KomikuParser.getPopularManga(page);
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -26,7 +25,7 @@ export default class MangaController {
   static async searchManga(context: Context) {
     try {
       const query = context.query.q || "roshidere";
-      const response = await Komiku.searchManga(query);
+      const response = await KomikuParser.searchManga(query);
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -39,7 +38,7 @@ export default class MangaController {
   static async paginationManga(context: Context) {
     try {
       const page = context.params.page || "1";
-      const response = await Komiku.mangaPagination(page);
+      const response = await KomikuParser.mangaPagination(page);
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -52,7 +51,7 @@ export default class MangaController {
   static async getMangaDetail(context: Context) {
     try {
       const slug = context.params.slug || "tokidoki";
-      const response = await Komiku.getMangaDetail(slug);
+      const response = await KomikuParser.getMangaDetail(slug);
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -65,7 +64,20 @@ export default class MangaController {
   static async getChapterDetail(context: Context) {
     try {
       const slug = context.params.slug || "tokidoki";
-      const response = await Komiku.getChapterDetail(slug);
+      const response = await KomikuParser.getChapterDetail(slug);
+      return response;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return error.response?.data || {};
+      }
+    }
+  }
+
+  // Get Update Manga
+  static async getMangaUpdate(context: Context) {
+    try {
+      const orderby = context.query.orderBy || "modified";
+      const response = await KomikuParser.getUpdateManga(orderby);
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {

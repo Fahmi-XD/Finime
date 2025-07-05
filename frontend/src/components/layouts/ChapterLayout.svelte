@@ -4,6 +4,7 @@
   import { page } from "$app/state";
   import { FetchApi } from "$/utils/Fetch";
   import Loading from "$components/elements/Loading.svelte";
+  import { mangaProvider } from "$/stores/providerStore";
 
   type ChapterType = {
     chapter_endpoint: string;
@@ -65,7 +66,7 @@
   async function newChapter(slug: string) {
     try {
       isLoading = true;
-      const response = await FetchApi.get(`/manga/chapter/${slug}`);
+      const response = await FetchApi.get(`/manga/${$mangaProvider}/chapter/${slug}`);
       console.log(response);
       currentChapter = response.data;
       isLoading = false;

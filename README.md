@@ -13,6 +13,8 @@
 ![Anime Page](.github/readme-images/anime.png)
 #### Manga
 ![Manga Page](.github/readme-images/manga.png)
+#### Profile
+![Profile Page](.github/readme-images/profile.png)
 
 > [!NOTE]
 > Website masih dalam tahap development, jadi ada kemungkin error selama kamu menggunakan website ini ( Error itu fitur 😅 ).

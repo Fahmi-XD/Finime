@@ -1,4 +1,8 @@
-<div class="fixed inset-0 flex justify-center items-center bg-[hsl(var(--background))] z-50">
+<script lang="ts">
+  export let variant: "fixed" | "absolute" = "fixed";
+</script>
+
+<div class="{variant} inset-0 flex {variant === "absolute" ? "z-[0]" : ""} justify-center items-center bg-[hsl(var(--background))] z-50">
   <div class="text-center">
     <svg
       class="animate-spin h-8 w-8 mx-auto mb-4 text-[hsl(var(--primary))]"

@@ -3,8 +3,10 @@
   import { FetchApi } from "$utils/Fetch";
   import { writable } from "svelte/store";
   import Role from "$components/elements/Role.svelte";
-  import { user } from "$stores/user";
+  import { user, fetchAllBadge } from "$stores/user";
   import { slide } from "svelte/transition";
+  import { PUBLIC_API } from "$env/static/public";
+  import type { IBadges } from "$/types/badgesType";
   import {
     MessageSquare,
     Mail,
@@ -14,6 +16,7 @@
     X,
     MoreVertical,
     User,
+    BadgeCheckIcon,
   } from "@lucide/svelte";
 
   export let animeId: string;
@@ -21,10 +24,15 @@
   type User = {
     id: string;
     username: string;
-    avatar: string | null;
-    role: string | "MEMBER";
-    created_at: string;
-    updated_at: string | null;
+    avatar: string;
+    badge: string[];
+    isVerify: boolean;
+    name: string;
+    banner: string;
+    bio: string;
+    role: string;
+    created_at: Date;
+    updated_at: null;
   };
 
   type Comment = {
@@ -50,6 +58,7 @@
   let replyContent = writable("");
   let openMenuId = writable<string | null>(null);
   let isProcessing = writable(false);
+  let badges: IBadges[] = [];
 
   async function FetchComment() {
     try {
@@ -60,7 +69,6 @@
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       );
       data.forEach((comment: Comment) => (comment.visibleReplies = 5));
-      console.log(response.data.data);
       comments.set(data);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -163,8 +171,10 @@
     );
   }
 
-  onMount(() => {
+  onMount(async () => {
     FetchComment();
+
+    badges = await fetchAllBadge();
   });
 
   function formatDate(dateString: string): string {
@@ -177,8 +187,7 @@
     const isToday = now.toDateString() === date.toDateString();
 
     const isYesterday =
-      new Date(now.setDate(now.getDate() - 1)).toDateString() ===
-      date.toDateString();
+      new Date(now.setDate(now.getDate() - 1)).toDateString() === date.toDateString();
 
     if (isToday) {
       return date.toLocaleTimeString("en-US", {
@@ -197,14 +206,10 @@
 
 <div class="space-y-6">
   <div class="flex items-center gap-3">
-    <div
-      class="p-2 rounded-full bg-[hsl(var(--primary)/0.1)] text-[hsl(var(--primary))]"
-    >
+    <div class="p-2 rounded-full bg-[hsl(var(--primary)/0.1)] text-[hsl(var(--primary))]">
       <Mail class="w-5 h-5" />
     </div>
-    <h3 class="text-lg font-semibold text-[hsl(var(--foreground))]">
-      Community Discussion
-    </h3>
+    <h3 class="text-lg font-semibold text-[hsl(var(--foreground))]">Community Discussion</h3>
   </div>
 
   {#if $isLoading}
@@ -230,7 +235,7 @@
             <div class="flex-shrink-0">
               {#if comment.user.avatar}
                 <img
-                  src={comment.user.avatar}
+                  src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={comment.user.avatar}"
                   alt={comment.user.username}
                   class="w-10 h-10 rounded-full object-cover"
                 />
@@ -245,11 +250,13 @@
 
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2">
-                <p
-                  class="text-sm font-medium text-[hsl(var(--foreground))] truncate"
-                >
+                <p class="text-sm font-medium text-[hsl(var(--foreground))] truncate">
                   @{comment.user.username}
                 </p>
+
+                {#if comment?.user?.role === "ADMIN" || comment?.user?.isVerify}
+                  <BadgeCheckIcon fill="#1DA1F2" size="15" />
+                {/if}
 
                 {#if comment.user.role === "ADMIN"}
                   <Role variant="admin">{comment.user.role}</Role>
@@ -257,9 +264,11 @@
                   <Role variant="member">{comment.user.role}</Role>
                 {/if}
 
-                <p
-                  class="text-xs text-[hsl(var(--muted-foreground))] whitespace-nowrap"
-                >
+                {#each (badges as IBadges[]).filter( (item) => comment?.user?.badge?.includes(item?.id as string), ) as badge, i (i)}
+                  <badge.icon size="15" class={badge.iconColor} title={badge.name} />
+                {/each}
+
+                <p class="text-xs text-[hsl(var(--muted-foreground))] whitespace-nowrap">
                   {formatDate(comment.created_at)}
                 </p>
               </div>
@@ -312,9 +321,7 @@
             </div>
           </div>
 
-          <p
-            class="text-[hsl(var(--foreground))] text-sm whitespace-pre-line break-words mb-3"
-          >
+          <p class="text-[hsl(var(--foreground))] text-sm whitespace-pre-line break-words mb-3">
             {comment.content}
           </p>
 
@@ -347,15 +354,13 @@
           {/if}
 
           {#if comment.replies && comment.replies.length > 0}
-            <div
-              class="mt-4 pl-4 border-l-2 border-[hsl(var(--muted))] space-y-2"
-            >
+            <div class="mt-4 pl-4 border-l-2 border-[hsl(var(--muted))] space-y-2">
               {#each comment.replies.slice(0, comment.visibleReplies || 5) as reply (reply.id)}
                 <div class="flex gap-2 pt-2 relative">
                   <div class="flex-shrink-0">
                     {#if reply.user.avatar}
                       <img
-                        src={reply.user.avatar}
+                        src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={reply.user.avatar}"
                         alt={reply.user.username}
                         class="w-8 h-8 rounded-full object-cover"
                       />
@@ -363,9 +368,7 @@
                       <div
                         class="w-8 h-8 rounded-full bg-[hsl(var(--primary)/0.1)] flex items-center justify-center"
                       >
-                        <UserCircle
-                          class="w-4 h-4 text-[hsl(var(--primary))]"
-                        />
+                        <UserCircle class="w-4 h-4 text-[hsl(var(--primary))]" />
                       </div>
                     {/if}
                   </div>
@@ -410,17 +413,23 @@
 
                     <div class="pr-6">
                       <div class="flex items-center gap-2 mb-1">
-                        <p
-                          class="text-xs font-medium text-[hsl(var(--foreground))]"
-                        >
+                        <p class="text-xs font-medium text-[hsl(var(--foreground))]">
                           @{reply.user.username}
                         </p>
-                        <!-- role badge -->
+
+                        {#if reply?.user?.role === "ADMIN" || reply?.user?.isVerify}
+                          <BadgeCheckIcon fill="#1DA1F2" size="15" />
+                        {/if}
+
                         {#if reply.user.role === "ADMIN"}
                           <Role variant="admin">{reply.user.role}</Role>
                         {:else if reply.user.role === "MEMBER"}
                           <Role variant="member">{reply.user.role}</Role>
                         {/if}
+
+                        {#each (badges as IBadges[]).filter( (item) => reply?.user?.badge?.includes(item?.id as string), ) as badge, i (i)}
+                          <badge.icon size="15" class={badge.iconColor} title={badge.name} />
+                        {/each}
 
                         <p class="text-xs text-[hsl(var(--muted-foreground))]">
                           {formatDate(reply.created_at)}
@@ -440,8 +449,7 @@
                   on:click={() => loadMoreReplies(comment.id)}
                   class="text-sm text-[hsl(var(--primary))] hover:underline mt-2"
                 >
-                  Show more replies ({comment.replies.length -
-                    (comment.visibleReplies || 3)} more)
+                  Show more replies ({comment.replies.length - (comment.visibleReplies || 3)} more)
                 </button>
               {/if}
             </div>
@@ -449,17 +457,12 @@
         </div>
       {/each}
     </div>
-
   {:else}
     <div
       class="text-center py-8 rounded-md bg-[hsl(var(--card))] border border-[hsl(var(--border))]"
     >
-      <MessageSquare
-        class="mx-auto w-8 h-8 text-[hsl(var(--muted-foreground))]"
-      />
-      <h4 class="mt-3 text-base font-medium text-[hsl(var(--foreground))]">
-        No comments yet
-      </h4>
+      <MessageSquare class="mx-auto w-8 h-8 text-[hsl(var(--muted-foreground))]" />
+      <h4 class="mt-3 text-base font-medium text-[hsl(var(--foreground))]">No comments yet</h4>
       <p class="mt-1 text-sm text-[hsl(var(--muted-foreground))]">
         Be the first to share your thoughts!
       </p>

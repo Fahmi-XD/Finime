@@ -9,6 +9,7 @@ import { UpdateUserRequest } from "models/userModel";
 import { UserValidation } from "@validations/userValidation";
 import { Context } from "elysia";
 import { ZodError } from "zod";
+import { CreateCommentRequest, ReplyCommentRequest } from "models/commentModel";
 
 export default class UserController {
 
@@ -33,7 +34,8 @@ export default class UserController {
 
         if (avatar instanceof File) {
           try {
-            const { link } = await ImageUpload.freeHosting(avatar);
+            const { link } = await ImageUpload.zanixonGroup(avatar);
+            // const { link } = await ImageUpload.freeHosting(avatar);
             request.avatar = link;
           } catch (error) {
             return HttpException.standarException(500, { error: "Failed to upload image" });
@@ -69,14 +71,6 @@ export default class UserController {
   static async getUserProfile(context: Context) {
     const username = context.params.username;
     const response = await UserService.getUserProfile(username);
-    
-    return response;
-  }
-
-  // Update Total Menonton ( Controller )
-  static async updateWatch(context: Context) {
-    // params ==> ( userId, animeIncrease? boolean, mangaIncrease? boolean )
-    const response = await UserService.updateWatch((context.store as { userId: string }).userId, true, false);
 
     return response;
   }
@@ -86,6 +80,60 @@ export default class UserController {
     const response = await UserService.getAllUser();
 
     return response;
+  }
+
+  // Reply
+  static async reply(context: Context) {
+    const userId = (context.store as { userId: string }).userId as string
+    const request = (await context.request.json()) as ReplyCommentRequest;
+    const response = await UserService.replyComment(userId, request);
+    return {
+      data: response,
+    };
+  }
+
+  // Delete Reply
+  static async deleteReply(context: Context) {
+    const userId = (context.store as { userId: string }).userId as string
+    const replyId = context.params.replyId as string;
+    if (!replyId) return HttpException.standarException(400, { message: "Error" });
+    const response = await UserService.deleteReplyComment(userId, replyId);
+    return {
+      data: response,
+    };
+  }
+
+  // Comment Anime ID
+  static async commentAnimeId(context: Context) {
+    const animeId = context.params.animeId as string;
+    if (!animeId) return HttpException.standarException(400, { message: "Error" });
+    const response = await UserService.getComment(animeId);
+    return {
+      data: response,
+    };
+  }
+
+  // POST Comment Anime ID
+  static async commentPostAnimeId(context: Context) {
+    const userId = (context.store as { userId: string }).userId as string
+    const animeId = context.params.animeId as string;
+    if (!animeId) return HttpException.standarException(400, { message: "Error" });
+    const request = (await context.request.json()) as CreateCommentRequest;
+    const response = await UserService.postComment(animeId, userId, request);
+    return {
+      data: response,
+    };
+  }
+
+  // Delete Comment ID
+  static async deleteCommentId(context: Context) {
+    const userId = (context.store as { userId: string }).userId as string
+    const commentId = context.params.commentId as string;
+    if (!commentId) return HttpException.standarException(400, { message: "Error" });
+    const response = await UserService.deleteComment(userId, commentId);
+    return {
+      data: response,
+    };
   }
 
 }

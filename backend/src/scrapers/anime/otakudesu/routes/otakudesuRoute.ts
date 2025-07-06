@@ -1,3 +1,4 @@
+import { watchMiddleware } from "middleware/watchMiddleware";
 import controller from "../controllers/otakudesuController";
 import Elysia from "elysia";
 
@@ -15,7 +16,9 @@ export const otakudesuRoute = (app: Elysia) => app
     .get("/genres/:genreId", controller.getGenreAnimes)
     .get("/anime/:animeId", controller.getAnimeDetails)
     .get("/episode/:episodeId", controller.getAnimeEpisode)
-    .get("/server/:serverId", controller.getServerUrl)
+    .get("/server/:serverId", controller.getServerUrl, {
+      beforeHandle: watchMiddleware
+    })
     .post("/server/:serverId", controller.getServerUrl)
     .get("/batch/:batchId", controller.getAnimeBatch)
-)
+  )

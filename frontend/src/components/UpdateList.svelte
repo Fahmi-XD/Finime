@@ -20,7 +20,7 @@
 </script>
 
 <section
-  class="w-[100%] max-w-7xl mx-auto px-4 sm:px-6 mb-15 lg:px-8 manga overflow-x-hidden bg-[var(--background)] text-white"
+  class="w-[100%] max-w-7xl mx-auto px-4 sm:px-6 mb-15 lg:px-8 manga overflow-x-hidden bg-[var(--background)] text-[hsl(var(-- foreground))]"
 >
   <div class="max-w-7xl mx-auto flex flex-col justify-center md:flex-row gap-8 md:gap-20">
     <section class="flex-1">
@@ -44,7 +44,7 @@
                 <span class="text-sm opacity-70">On Going</span>
               </div>
             {/if}
-            <div class="flex items-center text-[10px] mt-auto text-white space-x-4">
+            <div class="flex items-center text-[10px] mt-auto text-[hsl(var(-- foreground))] space-x-4">
               <span class="text-sm opacity-70 flex items-center gap-1">{weak.view}</span>
               <!-- <span class="text-sm opacity-70 flex items-center gap-1"
                 ><Heart size="15" /> 4.6m
@@ -53,7 +53,7 @@
                 ><Eye size="15" />74,107
               </span> -->
             </div>
-            <!-- <div class="flex gap-2 flex-wrap text-[8px] text-white uppercase font-semibold">
+            <!-- <div class="flex gap-2 flex-wrap text-[8px] text-[hsl(var(--foreground))] uppercase font-semibold">
               <span class="text-[10px] bg-red-500/90 p-1 rounded-2xl px-2">fantasy</span>
               <span class="text-[10px] bg-red-500/90 p-1 rounded-2xl px-2">Action</span>
               <span class="text-[10px] bg-red-500/90 p-1 rounded-2xl px-2">Action</span>
@@ -64,7 +64,7 @@
     </section>
 
     <section class="max-w-md min-w-sm w-auto">
-      <h2 class="md:text-4xl text-2xl font-semibold mb-10 border-b border-pink-400 pb-2 w-max text-white">
+      <h2 class="md:text-4xl text-2xl font-semibold mb-10 border-b border-pink-400 pb-2 w-max text-[hsl(var(-- foreground))]">
         New &amp; Trending
       </h2>
 
@@ -72,7 +72,7 @@
         {#each trending as tren, i (i)}
           <li class="flex gap-3 items-center">
             <a href="/manga/{tren.endpoint}" class="flex gap-3 items-center">
-              <span class="text-lg font-semibold text-white w-5">{i + 1}</span>
+              <span class="text-lg font-semibold text-[hsl(var(--foreground))] w-5">{i + 1}</span>
               <img
                 alt="Cover art of Spirit Tracer showing a character with white hair and a mystical background"
                 class="w-[90px] object-cover h-[90px] rounded"
@@ -86,7 +86,7 @@
                     <span class="text-[12px] opacity-70">{tren.status}</span>
                   </div>
                 {/if}
-                <div class="flex items-center text-[10px] text-white space-x-4 mt-1">
+                <div class="flex items-center text-[10px] text-[hsl(var(-- foreground))] space-x-4 mt-1">
                   <span class="text-[11px] opacity-70 flex items-center gap-1">{tren.view}</span>
                   <!-- <span class="text-[11px] opacity-70 flex items-center gap-1"><Heart size="15" />{tren.like}</span> -->
                   <!-- <span class="text-[11px] opacity-70 flex items-center gap-1"><Eye size="15" />{tren.view}</span> -->

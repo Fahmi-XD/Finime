@@ -21,9 +21,17 @@ export async function wajikFetch(
       Referer: ref,
       ...fetchConfig?.headers,
     },
+    body: fetchConfig?.data,
   });
 
   if (callback) callback(response);
+
+  if (response.status === 403) {
+    return {
+      error: "Access denied. You may need to use a different user agent or check the URL.",
+      status: response.status,
+    };
+  }
 
   if (fetchConfig?.responseType === "text") {
     return await response.text();

@@ -1,26 +1,29 @@
 <script lang="ts">
   import AnimeLayout from "$components/layouts/AnimeLayout.svelte";
-  import MenuHero from "$components/MenuHero.svelte";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
   import { onMount } from "svelte";
-  import SearchAnime from "$components/SearchAnime.svelte";
   import AnimeHero from "$/components/AnimeHero.svelte";
-  import { fetchAnimeHome } from "$/hooks/animeHook";
+  import { fetchAnimeDetail, fetchAnimeHome, fetchToAnimeListSearch } from "$/hooks/animeHook";
+  import type { IAnimeDetail } from "$/types/animeType";
+  import type { Characters } from "$/types/toanimelistType";
 
   let animeList: any[] = [];
   let isLoading = true;
   let message = "";
-
-  const MenuHeroData = {
-    title: "Watch Latest Anime",
-    description: "Enjoy streaming your favorite anime only on ComicHive!",
-    imageUrl: "/icon.jpg",
-  };
+  let animeDetail: Partial<IAnimeDetail> = {};
+  let animeCharacters: Characters = { data: [] };
+  let synopsis = "";
 
   onMount(async () => {
     try {
       const response = await fetchAnimeHome();
       animeList = response.ongoing.animeList || [];
+
+      const response2 = await fetchAnimeDetail(animeList[0]?.animeId || "");
+      const responseAnimeList = (await fetchToAnimeListSearch(response2.data.title || ""))[0];
+      animeCharacters = responseAnimeList.characters || { data: [] };
+      animeDetail = response2.data;
+      synopsis = responseAnimeList.fullInfo?.data.synopsis || "";
     } catch (error) {
       console.error("Error fetching data:", error);
       isLoading = false;
@@ -40,7 +43,7 @@
     <LoadingElements />
   {:else}
     {#if animeList.length !== 0}
-      <AnimeHero {animeList} />
+      <AnimeHero {animeList} {animeDetail} {animeCharacters} {synopsis} />
       <AnimeLayout {animeList} />
     {/if}
   {/if}

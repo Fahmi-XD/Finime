@@ -12,9 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      PUBLIC_API: ${{ secrets.PUBLIC_API }}
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -30,7 +27,9 @@ jobs:
         npm install
     
     - name: Copy examle env
-      run: cp .env.example .env
+      run: |
+        cd frontend
+        cp .env.example .env
 
     - name: Run build
       run: |

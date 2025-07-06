@@ -36,11 +36,11 @@
 
   $effect(() => {
     const path = pathName;
-    console.log({ path });
+    // console.log({ path });
     if (time) clearTimeout(time);
     time = setTimeout(() => {
       updatePage(true);
-      console.log(prevChapter, nextChapter);
+      // console.log(prevChapter, nextChapter);
       newChapter(path.replace("/chapter/", ""));
     }, 500);
   });
@@ -48,9 +48,9 @@
   function updatePage(setup: boolean) {
     if (rev[$currentChapterReading + 1]?.chapter_endpoint) {
       if (setup) {
-        console.log({ current });
+        // console.log({ current });
         currentChapterReading.set(current);
-        console.log($currentChapterReading);
+        // console.log($currentChapterReading);
       }
       prevChapter =
         $currentChapterReading == 0
@@ -67,7 +67,7 @@
     try {
       isLoading = true;
       const response = await FetchApi.get(`/manga/${$mangaProvider}/chapter/${slug}`);
-      console.log(response);
+      // console.log(response);
       currentChapter = response.data;
       isLoading = false;
     } catch (error) {

@@ -2,6 +2,8 @@
  * Upload Gambar / Gif Menjadi Publik
  */
 
+import { Pomf } from "@zanixongroup/uploader";
+
 export default class ImageUpload {
 
   /**
@@ -47,6 +49,21 @@ export default class ImageUpload {
     }
 
     return { link: data.image.display_url };
+  }
+
+  /**
+   * ZanixonGroup Uploader ( Pomf )
+   * Thank to zanixonGroup
+   */
+  static async zanixonGroup(file: File): Promise<{ link: string }> {
+    try {
+      const bufferImage = await file.arrayBuffer();
+      const data = await Pomf(Buffer.from(bufferImage));
+
+      return { link: data };
+    } catch (error) {
+      throw new Error("Failed to upload image.");
+    }
   }
 
 }

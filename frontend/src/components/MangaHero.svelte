@@ -60,7 +60,7 @@
                   ? 'bg-red-500'
                   : 'bg-green-500'} rounded-full block"
               ></span>
-              <span class="text-[10px] opacity-70">{mangaDetail.manga.card_info.status}</span>
+              <span class="text-[10px] text-[hsl(var(--foreground))] opacity-70">{mangaDetail.manga.card_info.status}</span>
             </div>
           {/if}
           <p class="text-gray-400 text-xs mb-3">
@@ -107,7 +107,7 @@
                 src={tren.image}
               />
               <div class="text-wrap w-auto">
-                <div class="text-white text-lg mb-1">{truncate(tren.title)}</div>
+                <div class="text-[hsl(var(--foreground))] text-lg mb-1">{truncate(tren.title)}</div>
                 {#if tren.status}
                   <div class="flex gap-2 items-center">
                     <span class="w-[10px] h-[10px] bg-red-500 rounded-full block"></span>
@@ -132,7 +132,7 @@
   <section
     class="rounded-xl relative overflow-hidden bg-transparent border-3 border-red-500 p-6 flex flex-col md:flex-row items-center justify-between gap-6"
   >
-    <div class="flex-1 text-white">
+    <div class="flex-1 text-[hsl(var(--foreground))]">
       <h2 class="font-bold text-base sm:text-lg leading-tight mb-1">
         Read {mangaDetail?.manga?.title.replace("Komik", "")} Online
       </h2>
@@ -140,7 +140,7 @@
       <div class="flex items-center gap-4">
         <a
           href="/manga/{trending[0]?.endpoint}"
-          class="bg-red-500 text-white text-xs sm:text-sm font-semibold rounded w-full text-center md:w-auto px-20 py-1.5"
+          class="bg-red-500 text-[hsl(var(--foreground))] text-xs sm:text-sm font-semibold rounded w-full text-center md:w-auto px-20 py-1.5"
         >
           Read Now
         </a>

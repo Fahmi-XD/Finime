@@ -13,10 +13,11 @@
     Download,
     X,
   } from "@lucide/svelte";
-  import { FetchApi } from "$utils/Fetch";
+  import { fetchAnimeServer } from "$/hooks/animeHook";
   import { user } from "$stores/user";
   import CommentList from "$components/fragments/CommentList.svelte";
   import AddComment from "$components/fragments/AddComment.svelte";
+  import LoadingElements from "$components/elements/LoadingElements.svelte";
 
   export let videoUrl: string;
   export let episode: EpisodeData;
@@ -27,6 +28,7 @@
   let showComments = true;
   let showVideoWarning = true;
   let hasAcceptedWarning = false;
+  let isLoading = true;
   $: users = $user;
 
   let activeFormat: any = null;
@@ -39,8 +41,8 @@
 
   async function fetchServerUrl(serverId: string) {
     try {
-      const response = await FetchApi.get(`/server/${serverId}`);
-      return response.data.ok ? response.data.data.url : null;
+      const response = await fetchAnimeServer(serverId);
+      return response.ok ? response.data.url : null;
     } catch (error) {
       console.error("Error fetching server URL:", error);
       return null;
@@ -48,6 +50,7 @@
   }
 
   async function updateVideoUrl(event: Event) {
+    isLoading = true;
     const selectElement = event.target as HTMLSelectElement;
     const serverId = selectElement.value;
     const url = await fetchServerUrl(serverId);
@@ -61,6 +64,10 @@
 
   function closeDownloadModal() {
     showDownloadModal = false;
+  }
+
+  function handleIframeLoad() {
+    isLoading = false;
   }
 </script>
 
@@ -110,13 +117,17 @@
           </div>
 
         {:else}
-          <div class="aspect-video w-full">
+          <div class="aspect-video w-full relative">
+            {#if isLoading}
+              <LoadingElements variant="absolute" />
+            {/if}
             <iframe
               src={selectedQualityUrl}
               class="w-full h-full"
               allow="fullscreen"
               frameborder="0"
               allowfullscreen
+              on:load={handleIframeLoad}
               loading="eager"
               title={selectedQualityUrl}
             ></iframe>

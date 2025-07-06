@@ -1,6 +1,8 @@
 import { FetchApi } from "$utils/Fetch";
 import { fromStore } from "svelte/store";
 import { mangaProvider } from "$/stores/providerStore";
+import type { IMangaSearchResponse } from "$/types/mangaSearchType";
+import type { IMangaDetailResponse } from "$/types/mangaDetailTypes";
 
 export const fetchPopularManga = async () => {
   try {
@@ -104,6 +106,34 @@ export const fetchMangaDetail = async (slug: string) => {
     console.error("Error fetching manga details:", error);
     return {
       manga: { status: false, message: "Failed to fetch manga details" },
+      isFound: false,
+    };
+  }
+};
+
+export const fetchMangaDetailOri = async (slug: string) => {
+  try {
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/detail/${slug}`);
+
+    return response.data as IMangaDetailResponse;
+  } catch (error) {
+    console.error("Error fetching manga details:", error);
+    return {
+      manga: { status: false, message: "Failed to fetch manga details" },
+      isFound: false,
+    };
+  }
+};
+
+export const fetchMangaSearch = async (query: string) => {
+  try {
+    const response = await FetchApi.get(`/manga/${fromStore(mangaProvider).current}/search?q=${query}`);
+
+    return response.data as IMangaSearchResponse;
+  } catch (error) {
+    console.error("Error fetching manga:", error);
+    return {
+      manga: { status: false, message: "Failed to fetch manga" },
       isFound: false,
     };
   }

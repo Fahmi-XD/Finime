@@ -555,10 +555,8 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
 
   async parseServerUrl(serverId: string): Promise<IOP.ServerUrl> {
     const data: IOP.ServerUrl = { url: "" };
-    const nonceCacheKey = "otakudesuNonce";
+    const nonceCacheKey = "otakuDesuNonce";
     const serverIdArr = this.derawr(serverId).split("-");
-
-    console.log(data, nonceCacheKey, serverIdArr)
 
     const getUrlData = async (nonce: any) => {
       return await wajikFetch(`${this.baseUrl}/wp-admin/admin-ajax.php`, this.baseUrl, {
@@ -568,7 +566,8 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
           id: serverIdArr[0],
           i: serverIdArr[1],
           q: serverIdArr[2],
-          action: this.derawr("7f8A5AhE8g558Ai8k9AAikD7gkECBgD9"),
+          // action: this.derawr("7f8A5AhE8g558Ai8k9AAikD7gkECBgD9"),
+          action: "2a3505c93b0035d3f455df82bf976b84",
           nonce: nonce,
         }),
       });
@@ -581,16 +580,10 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
     const getUrl = (html: string) => this.generateSrcFromIframeTag(html);
 
     try {
-      console.log("HITTTTTTTTTTTTT")
       const nonce = cache.get(nonceCacheKey);
       const url = await getUrlData(nonce);
-      console.log({url})
 
-      data.url = getUrl(getHtml(url.data));
-      console.log(data.url);
-    } catch (error: any) {
-      if (error.status === 403) {
-        // MISS
+      if (url?.error && url?.status === 403) {
         const nonce = await wajikFetch(`${this.baseUrl}/wp-admin/admin-ajax.php`, this.baseUrl, {
           method: "POST",
           responseType: "json",
@@ -607,15 +600,38 @@ export default class OtakudesuParser extends OtakudesuParserExtra {
           data.url = getUrl(getHtml(response.data));
         }
       } else {
-        throw error;
+        data.url = getUrl(getHtml(url.data));
       }
+
+      console.log(data.url)
+    } catch (error: any) {
+      console.log(error);
+      // if (error.status === 403) {
+      //   const nonce = await wajikFetch(`${this.baseUrl}/wp-admin/admin-ajax.php`, this.baseUrl, {
+      //     method: "POST",
+      //     responseType: "json",
+      //     data: new URLSearchParams({
+      //       action: this.derawr("ff675Di7Ck7Ehf895hE7hBBi6E7Bk68k"),
+      //     }),
+      //   });
+
+      //   if (nonce?.data) {
+      //     cache.set(nonceCacheKey, nonce.data);
+
+      //     const response = await getUrlData(nonce.data);
+
+      //     data.url = getUrl(getHtml(response.data));
+      //   }
+      // } else {
+      //   throw error;
+      // }
     }
 
     const isEmpty = !data.url || data.url === "No iframe found";
 
     this.checkEmptyData(isEmpty);
 
-    console.log({data});
+    console.log({ data });
 
     return data;
   }

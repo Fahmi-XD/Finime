@@ -10,16 +10,8 @@
       id: "komiku",
       name: "Komiku",
     },
-    {
-      id: "mangadex",
-      name: "Mangadex",
-    },
   ];
   const animeProvider = [
-    {
-      id: "kuramanime",
-      name: "Kuramanime",
-    },
     {
       id: "otakudesu",
       name: "Otakudesu",
@@ -57,6 +49,7 @@
   function handleClickSave() {
     btnSaveDisabled = true;
     mangaProviderStore.set(mangaProviderSelect);
+    animeProviderStore.set(animeProviderSelect);
     isClick = false;
   }
 

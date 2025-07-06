@@ -37,7 +37,7 @@
       notFound = true;
     } finally {
       isLoading = false;
-      console.log({isLoading})
+      // console.log({isLoading})
     }
   }
 
@@ -45,7 +45,7 @@
     try {
       const serverResponse = await fetchAnimeServer(serverId);
       const fetchedUrl = serverResponse?.data?.url || episodeData?.defaultStreamingUrl;
-      console.log({fetchedUrl});
+      // console.log({fetchedUrl});
 
       await checkVideo(fetchedUrl);
     } catch (error) {

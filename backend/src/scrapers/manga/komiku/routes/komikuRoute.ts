@@ -1,5 +1,6 @@
 import Elysia from "elysia";
 import KomikuController from "../controllers/komikuController";
+import { watchMiddleware } from "middleware/watchMiddleware";
 
 export const komikuRoute = (app: Elysia) => app
   .group("/komiku", (app) => app
@@ -7,7 +8,9 @@ export const komikuRoute = (app: Elysia) => app
     .get("/popular/:page", KomikuController.getPopularMangaPage)
     .get("/search", KomikuController.searchManga)
     .get("/detail/:slug", KomikuController.getMangaDetail)
-    .get("/chapter/:slug", KomikuController.getChapterDetail)
+    .get("/chapter/:slug", KomikuController.getChapterDetail, {
+      beforeHandle: watchMiddleware
+    })
     .get("/news", KomikuController.getMangaUpdate)
 
   )

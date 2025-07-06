@@ -1,6 +1,7 @@
 import { FetchApi } from "$utils/Fetch";
 import { fromStore } from "svelte/store";
 import { animeProvider } from "$/stores/providerStore";
+import type { IToMyAnimeListResponse } from "$/types/toanimelistType";
 
 export const fetchAnimeHome = async () => {
   try {
@@ -43,6 +44,30 @@ export const fetchAnimeServer = async (serverId: string) => {
     const response = await FetchApi.get(`/anime/${fromStore(animeProvider).current}/server/${serverId}`);
 
     const apiData = response.data;
+    return apiData;
+  } catch (error) {
+    console.error("Error fetching popular manga:", error);
+    return [];
+  }
+};
+
+export const fetchAnimeSearch = async (query: string) => {
+  try {
+    const response = await FetchApi.get(`/anime/${fromStore(animeProvider).current}/search?q=${query}`);
+
+    const apiData = response.data;
+    return apiData;
+  } catch (error) {
+    console.error("Error fetching popular manga:", error);
+    return [];
+  }
+};
+
+export const fetchToAnimeListSearch = async (query: string) => {
+  try {
+    const response = await FetchApi.get(`/to-myanimelist/${query}`);
+
+    const apiData = response.data as IToMyAnimeListResponse[];
     return apiData;
   } catch (error) {
     console.error("Error fetching popular manga:", error);

@@ -2,6 +2,7 @@ import { writable, fromStore, type Writable } from "svelte/store";
 import { FetchApi } from "$utils/Fetch";
 import Cookies from "js-cookie";
 import * as Icons from "@lucide/svelte";
+import type { IBadges } from "$/types/badgesType";
 
 export type UserProfile = {
   id: string
@@ -47,5 +48,5 @@ export async function fetchAllBadge() {
   for (let i = 0; i < response.data.length; i++) {
     response.data[i].icon = Icons[response.data[i].icon as keyof typeof Icons]
   }
-  return response.data
+  return response.data as IBadges[];
 }

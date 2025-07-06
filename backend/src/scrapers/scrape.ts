@@ -55,4 +55,23 @@ export default class Scrape {
     }
   }
 
+  protected static async apiParser<R, T>(
+    {
+      url,
+      initial
+    }: {
+      url: string;
+      initial: T
+    },
+    parser: (response: R, data: T) => Promise<T>
+  ): Promise<T> {
+    try {
+      const response = await this.fetch(url);
+      const parserResult = await parser(response.data as R, initial);
+      return parserResult as T;
+    } catch {
+      return initial
+    }
+  }
+
 }

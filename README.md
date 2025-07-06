@@ -2,7 +2,7 @@
 
 # <img src="https://media.tenor.com/7hiQYhUQY2QAAAAM/dis.gif" alt="ComicHive Logo" width="30"/> Finime
 
-> **Finime** — Tempat asik buat streaming Anime & Manga gratis, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekadar nonton santai! 🚀
+> **Finime** — Tempat asik buat streaming Anime & Manga gratis, dengan UI yang modern, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekedar nonton santai! 🚀
 
 ---
 
@@ -15,6 +15,8 @@
 ![Manga Page](.github/readme-images/manga.png)
 #### Profile
 ![Profile Page](.github/readme-images/profile.png)
+#### Isteri gweh
+![Profile Page](.github/readme-images/istri.png)
 
 > [!NOTE]
 > Website masih dalam tahap development, jadi ada kemungkin error selama kamu menggunakan website ini ( Error itu fitur 😅 ).
@@ -40,13 +42,12 @@
 
 ## 🔍 Tentang Finime
 
-Finime itu proyek open-source yang pengen bikin streaming Anime & Manga jadi gampang, gratis, dan bebas gangguan. Dibangun full-stack: frontend pakai Svelte, backend pakai ElysiaJS + TypeScript. Kamu bisa ikut nimbrung, nambah fitur, benerin bug, atau sekadar ngasih ide. Pokoknya, makin rame makin seru!
+Finime itu proyek open-source tempat streaming Anime & Manga, gratis, dan bebas gangguan. Dibangun full-stack: frontend pakai Svelte, backend pakai ElysiaJS + TypeScript. Kamu bisa ikut nimbrung, nambah fitur, benerin bug, atau sekedar ngasih ide. Pokoknya, makin rame makin seru!
 
 ---
 
 ## 🚀 Fitur Utama
 
-- **Profile Badge**  
 - **User Authentication** (Login & Register)  
 - **Dashboard Admin** (Buat ngatur konten & user)  
 - **Search** Anime & Manga  
@@ -71,6 +72,7 @@ Finime itu proyek open-source yang pengen bikin streaming Anime & Manga jadi gam
 - **bcrypt** (Biar password aman)  
 - **NodeMailer** (Buat kirim email & notifikasi)  
 - **Zod** (Validasi schema, anti typo!)  
+- **@zanixongroup/uploader** (Media Uploader)  
 
 ### Database  
 - **MongoDB**  
@@ -154,12 +156,11 @@ Finime
 ├─ tsconfig.json                       
 ├─ vite.config.ts                      
 │
-├── tmp/                     # ⚠️ Folder ini nggak dipake, aman buat dihapus
+├── tmp/
 └── README.md
 ```
 
 <br>
-> Folder `tmp/` itu cuma numpang lewat, nggak dipake di workflow. Mau dihapus juga nggak masalah kok!
 
 ---
 
@@ -169,13 +170,13 @@ Finime
 
 - Node.js v18+ & npm/yarn/bun
 - MongoDB (boleh lokal, boleh Atlas)
-- CLI Prisma (`npm install -g prisma`)
+- CLI Prisma (`bun install -g prisma`)
 
 ### Cara Setup & Instalasi
 
 1. **Clone repo dulu**
    ```bash
-   git clone https://github.com/.../finime.git
+   git clone https://github.com/SyntxFlow/finime.git
    cd finime
    ```
 
@@ -237,7 +238,7 @@ PUBLIC_API=http://localhost:3000
 
 ## 🏗 Arsitektur & Alur Kerja
 
-1. **Client (Svelte)** ngobrol ke backend (**ElysiaJS**) lewat **Axios**
+1. **Client (Svelte)** komunikasi ke backend (**ElysiaJS**) lewat **Axios**
 2. Semua request dicek & divalidasi sama **Zod**, baru lanjut ke **Prisma** buat urusan database
 3. Autentikasi & session pakai cookies (dengan `js-cookie`)
 <!-- 4. Bagian Admin di frontend ada guard & role check
@@ -265,7 +266,7 @@ Proyek ini pakai MIT License. Cek [LICENSE](./LICENSE) buat detailnya.
 
 ---
 
-**Selamat ngoding & have fun!** 🚀
+**Selamat ngoding** 🚀
 Punya ide fitur baru atau nemu bug? Langsung aja buka issue atau submit PR, jangan malu-malu!
 
 ![app icon](./.github/readme-images/logo.gif)

@@ -20,5 +20,7 @@ const publicRoute = new Elysia()
 
   .use(cacheMiddlewareRoute)
   .get("/user/:username", UserController.getUserProfile)
+  .get("/to-myanimelist/:query", PublicController.toAnimeList)
+  .get("/proxy-media", PublicController.proxyMedia)
 
 export default publicRoute;

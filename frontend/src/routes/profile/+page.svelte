@@ -4,6 +4,7 @@
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
+  import { PUBLIC_API } from "$env/static/public";
   import {
     User,
     BookOpen,
@@ -81,6 +82,7 @@
         formDataObj.append("first_name", $formData.first_name);
         formDataObj.append("last_name", $formData.last_name);
         formDataObj.append("bio", $formData.bio);
+        formDataObj.append("banner", $formData.banner);
 
         const response = await FetchApi.patch("/user", formDataObj, {
           headers: {
@@ -148,7 +150,7 @@
 </script>
 
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary)/5%)] to-[hsl(var(--secondary)/5%)] py-12 px-4 sm:px-6 lg:px-8 sm:mt-0 mt-5"
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[hsl(var(--primary)/5%)] to-[hsl(var(--secondary)/5%)] py-12 px-4 sm:px-6 lg:px-8 sm:mt-0 mt-10"
 >
   <div class="w-full max-w-5xl mx-auto">
     {#if $isLoading && !$isModalOpen}
@@ -158,7 +160,7 @@
     {/if}
 
     <div
-      class="bg-[hsl(var(--card))] rounded-2xl shadow-xl overflow-hidden border border-[hsl(var(--border))]"
+      class="bg-[hsl(var(--card))] rounded-2xl md:mt-10 shadow-xl overflow-hidden border border-[hsl(var(--border))]"
     >
       <div class="flex flex-col md:flex-row">
         <div
@@ -166,15 +168,15 @@
         >
           <div class="relative w-auto flex">
             {#if $user?.banner}
-              <img class="h-[160px] w-full object-cover" src={$user?.banner} alt="Banner Gif" />
+              <img class="h-[160px] w-full object-cover" src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={$user.banner}" alt="Banner Gif" />
             {/if}
             <div
-              class="w-auto {$user?.banner ? "absolute left-0 -bottom-20" : ""} h-auto rounded-full overflow-hidden flex bg-red-500"
+              class="w-auto {$user?.banner ? "absolute left-0 -bottom-20" : ""} h-auto rounded-full overflow-hidden flex"
             >
               {#if $user}
                 {#if $user.avatar}
                   <img
-                    src={$user.avatar}
+                    src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={$user.avatar}"
                     alt="Profile picture of {$user.name}"
                     class="w-32 h-32 border-4 border-[hsl(var(--primary)/30%)] bg-white/50 rounded-full object-cover transition-all duration-300 hover:scale-110"
                   />
@@ -195,7 +197,7 @@
             </div>
           </div>
 
-          <div class="flex gap-3 {$user?.banner ? "mt-20" : "mt-3"} items-center">
+          <div class="flex gap-3 {$user?.banner ? "mt-23" : "mt-3"} items-center">
             <h1 class="text-2xl font-bold tracking-tight">
               {$user?.name || "Guest User"}
             </h1>

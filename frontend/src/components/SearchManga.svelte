@@ -42,7 +42,7 @@
 
 <div class="bg-[hsl(var(--background))]">
   <div class="flex justify-center items-center">
-    <Search placeholder="Search manga..." onSearch={(e) => handleSearch(e)} />
+    <Search handleFilterIsOpen={() => {}} placeholder="Search manga..." onSearch={(e) => handleSearch(e)} />
   </div>
 
   {#if hasInteracted}

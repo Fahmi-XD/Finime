@@ -2,7 +2,7 @@
  * SubRoute Anime
  */
 
-import { otakudesuRoute } from "@scrapers/index";
+import { myanimelistRoute, otakudesuRoute } from "@scrapers/index";
 
 import Elysia from "elysia";
 import cacheMiddleware from "middleware/cacheMiddleware";
@@ -14,6 +14,7 @@ const animeRoute = new Elysia()
 
   .group("/anime", (app) => app
     .use(otakudesuRoute) // Scrape dari website Otakudesu
+    .use(myanimelistRoute) // Scrape dari website Myanimelist
 
   )
 

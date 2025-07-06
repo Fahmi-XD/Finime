@@ -3,10 +3,23 @@
   export let data: UsernameSlug;
   import { FetchApi } from "$utils/Fetch";
   import { onMount } from "svelte";
-  import { Film, BookOpen, Mail, User, Shield, Zap, Heart, Bitcoin, Gamepad2, Handshake, BadgeCheckIcon } from "@lucide/svelte";
+  import {
+    Film,
+    BookOpen,
+    Mail,
+    User,
+    Shield,
+    Zap,
+    Heart,
+    Bitcoin,
+    Gamepad2,
+    Handshake,
+    BadgeCheckIcon,
+  } from "@lucide/svelte";
   import LoadingElements from "$components/elements/LoadingElements.svelte";
   import Role from "$components/elements/Role.svelte";
   import { fetchAllBadge } from "$stores/user";
+  import { PUBLIC_API } from "$env/static/public";
 
   let user: any = null;
   let isLoading = true;
@@ -21,7 +34,7 @@
       const response = await FetchApi.get(`/user/${data.slug}`);
       user = response.data;
 
-      badges = (badges as Array<any>).filter(item => user.badge.includes(item?.id as string))
+      badges = (badges as Array<any>).filter((item) => user.badge.includes(item?.id as string));
     } catch (err: any) {
       if (err.response?.status === 404) {
         isNotFound = true;
@@ -68,17 +81,20 @@
       >
         <div class="flex flex-col md:flex-row">
           <div
-            class="w-full md:w-1/3 p-8 bg-gradient-to-b from-[hsl(var(--primary)/10%)] to-transparent flex flex-col items-center text-center"
+            class="w-full md:w-1/2 p-8 bg-gradient-to-b from-[hsl(var(--primary)/10%)] to-transparent flex flex-col"
           >
-            <div class="relative group mb-6">
+            <div class="relative mb-6 w-auto flex">
+              {#if user?.banner}
+                <img class="h-[160px] w-full object-cover" src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.banner}" alt="Banner Gif" />
+              {/if}
               <div
-                class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-[hsl(var(--primary)/30%)] bg-white/50 backdrop-blur-sm flex items-center justify-center"
+                class="w-auto {user?.banner ? "absolute left-0 -bottom-20" : ""} h-auto rounded-full overflow-hidden flex"
               >
                 {#if user.avatar}
                   <img
-                    src={user.avatar}
+                    src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.avatar}"
                     alt="Profile picture of {user.name}"
-                    class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
+                    class="w-32 h-32 border-4 border-[hsl(var(--primary)/30%)] bg-white/50 rounded-full object-cover transition-all duration-300 hover:scale-110"
                   />
                 {:else}
                   <div
@@ -90,7 +106,7 @@
               </div>
             </div>
 
-            <div class="flex gap-3 items-center">
+            <div class="flex gap-3 {user?.banner ? "mt-17" : "mt-3"} items-center">
               <h1 class="text-2xl font-bold tracking-tight">
                 {user?.name || "Guest User"}
               </h1>
@@ -238,11 +254,25 @@
     </div>
   </div>
 {:else}
-  <div class="min-h-screen flex flex-col items-center justify-center bg-[hsl(var(--background))] text-[hsl(var(--foreground))] p-6">
+  <div
+    class="min-h-screen flex flex-col items-center justify-center bg-[hsl(var(--background))] text-[hsl(var(--foreground))] p-6"
+  >
     <div class="max-w-md w-full space-y-6 text-center">
       <div class="space-y-2">
-        <div class="mx-auto h-24 w-24 rounded-full bg-[hsl(var(--destructive)/0.2)] p-4 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--destructive))" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div
+          class="mx-auto h-24 w-24 rounded-full bg-[hsl(var(--destructive)/0.2)] p-4 flex items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="hsl(var(--destructive))"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
           </svg>

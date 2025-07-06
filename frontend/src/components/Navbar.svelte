@@ -8,11 +8,15 @@
   import { title } from "$data";
   import Search from "$components/fragments/Search.svelte";
   import { page } from "$app/stores";
+  import { PUBLIC_API } from "$env/static/public";
+  import FilterSearch from "$components/FilterSearch.svelte";
+  import { goto } from "$app/navigation";
 
   let isMenuOpen = false;
   let isProfileMenuOpen = false;
   let isLoadUser: boolean = true;
   let text: "manga" | "anime" = "manga";
+  let isFilterSearchOpen = false;
 
   $: path = $page.url.pathname;
 
@@ -54,6 +58,21 @@
     { name: "Community", link: "/community" },
     { name: "About", link: "/about" },
   ];
+
+  function handleSearch(query: string) {
+    handleNavbarClick();
+    goto(`/search/${query}`, {
+      invalidateAll: true,
+    });
+  }
+
+  function handleFilterIsOpen() {
+    isFilterSearchOpen = !isFilterSearchOpen;
+  }
+
+  function handleNavbarClick() {
+    isMenuOpen = false;
+  }
 </script>
 
 <nav
@@ -106,7 +125,7 @@
         </a>
 
         <div class="md:ml-10 ml-3 hidden md:block">
-          <Search varian="navbar" placeholder="Search {text}..." onSearch={(e) => {}} />
+          <Search {handleFilterIsOpen} varian="navbar" placeholder="Search {text}..." onSearch={handleSearch} />
         </div>
       </div>
 
@@ -120,7 +139,7 @@
         {/each}
 
         <!-- <div class="md:-order-1 bg-red-500 md:mr-15">
-          <Search varian="navbar" placeholder="Search {text}..." onSearch={(e) => {}} />
+          <Search varian="navbar" placeholder="Search {text}..." onSearch={handleSearch} />
         </div> -->
       </nav>
 
@@ -135,7 +154,7 @@
             >
               {#if profile.avatar}
                 <img
-                  src={profile.avatar}
+                  src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={profile.avatar}"
                   alt="Profile"
                   class="w-8 h-8 rounded-full"
                 />
@@ -174,15 +193,18 @@
         {#each links as { name, link }}
           <a
             href={link}
+            on:click={handleNavbarClick}
             class="block px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] hover:text-[hsl(var(--primary))] hover:bg-[hsl(var(--muted))]/60 rounded-md transition-all"
             >{name}</a
           >
         {/each}
 
         <div class="block md:hidden mt-8 w-full">
-          <Search varian="navbar" size="large" placeholder="Search {text}..." onSearch={(e) => {}} />
+          <Search {handleFilterIsOpen} varian="navbar" size="large" placeholder="Search {text}..." onSearch={handleSearch} />
         </div>
       </div>
     {/if}
   </div>
 </nav>
+
+<FilterSearch {isFilterSearchOpen} {handleFilterIsOpen} />

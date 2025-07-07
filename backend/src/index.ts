@@ -54,12 +54,12 @@ const app = new Elysia()
   )
   .listen(PORT)
 
-export const GET = app.handle 
-export const POST = app.handle 
-export const PATCH = app.handle 
-export const PUT = app.handle 
-export const OPTIONS = app.handle 
-export default app.handle
+// export const GET = app.handle 
+// export const POST = app.handle 
+// export const PATCH = app.handle 
+// export const PUT = app.handle 
+// export const OPTIONS = app.handle 
+// export default app.fetch
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

@@ -65,8 +65,6 @@ export async function wajikFetch(
 
   if (callback) callback(response);
 
-  console.log(await response.text());
-
   if (response.status === 403) {
     return {
       error: "Access denied. You may need to use a different user agent or check the URL.",

@@ -20,6 +20,8 @@
       "@typing/*": ["@types/*"],
       "@services/*": ["services/*"],
       "@validations/*": ["validations/*"],
+      "@middleware/*": ["middleware/*"],
+      "@models/*": ["models/*"],
       "@databases/*": ["databases/*"]
     },
   },

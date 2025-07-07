@@ -2,9 +2,9 @@
  * SubRoute User ( Memerlukan Token Untuk Setiap Request )
  */
 
-import UserController from "@controllers/userController";
+import UserController from "@controllers/userController.js";
 import { Elysia } from "elysia";
-import { adminMiddleware } from "middleware/adminMiddleware";
+import { adminMiddleware } from "@middleware/adminMiddleware.js";
 
 const userRoute = new Elysia()
 

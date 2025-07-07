@@ -2,7 +2,7 @@
  * Controller Untuk Autentikasi
  */
 
-import AuthService from "@services/authService";
+import AuthService from "@services/authService.js";
 import { RegisterUserRequest, LoginUserRequest } from "models/userModel";
 import { Context } from "elysia";
 import { ZodIssue } from "zod";

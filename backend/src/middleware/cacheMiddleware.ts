@@ -4,7 +4,7 @@
 
 import Elysia from "elysia";
 import path from "path";
-import { cache as lruCache, defaultTTL } from "@lib/cache";
+import { cache as lruCache, defaultTTL } from "@lib/cache.js";
 
 const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
   .decorate("key", "")

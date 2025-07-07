@@ -1,6 +1,6 @@
-import * as IOPE from "./IOtakudesuParserExtra";
-import type { Pagination } from "../../helper/payload";
-import type { Format, Quality } from "../../interface/IGlobal";
+import * as IOPE from "./IOtakudesuParserExtra.js";
+import type { Pagination } from "../../helper/payload.js";
+import type { Format, Quality } from "../../interface/IGlobal.js";
 
 export interface Home {
   ongoing: {

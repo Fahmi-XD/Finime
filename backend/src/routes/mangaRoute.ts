@@ -2,10 +2,10 @@
  * SubRoute Manga
  */
 
-import { komikuRoute } from "@scrapers/index";
+import { komikuRoute } from "@scrapers/index.js";
 
 import Elysia from "elysia";
-import cacheMiddleware from "middleware/cacheMiddleware";
+import cacheMiddleware from "@middleware/cacheMiddleware.js";
 
 const mangaRoute = new Elysia()
 

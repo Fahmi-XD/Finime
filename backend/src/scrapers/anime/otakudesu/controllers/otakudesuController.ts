@@ -1,7 +1,7 @@
-import { getPageParam, getQParam } from "@lib/queryParams";
-import OtakudesuParser from "../parsers/OtakudesuParser";
-import otakudesuInfo from "../info/otakudesuInfo";
-import generatePayload from "../helper/payload";
+import { getPageParam, getQParam } from "@lib/queryParams.js";
+import OtakudesuParser from "../parsers/OtakudesuParser.js";
+import otakudesuInfo from "../info/otakudesuInfo.js";
+import generatePayload from "../helper/payload.js";
 import path from "path";
 import fs from "fs";
 import { Context } from "elysia";

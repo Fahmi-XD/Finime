@@ -1,8 +1,8 @@
-import * as IOPE from "./interfaces/IOtakudesuParserExtra";
+import * as IOPE from "./interfaces/IOtakudesuParserExtra.js";
 import type { CheerioAPI, Cheerio, Element } from "cheerio";
-import type { Pagination } from "../helper/payload";
-import { getFinalUrl, getFinalUrls } from "../services/dataFetcher";
-import AnimeScraper from "./AnimeScraper";
+import type { Pagination } from "../helper/payload.js";
+import { getFinalUrl, getFinalUrls } from "../services/dataFetcher.js";
+import AnimeScraper from "./AnimeScraper.js";
 
 export default class OtakudesuParserExtra extends AnimeScraper {
   protected parseAnimeCard1(el: Cheerio<Element>): IOPE.AnimeCard1 {

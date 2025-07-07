@@ -1,9 +1,9 @@
-import * as IOP from "./interfaces/IOtakudesuParser";
-import * as IOPE from "./interfaces/IOtakudesuParserExtra";
-import type { Quality, Server, Url } from "../interface/IGlobal";
-import { wajikFetch } from "../services/dataFetcher";
-import OtakudesuParserExtra from "./OtakudesuParserExtra";
-import { cache } from "@lib/cache";
+import * as IOP from "./interfaces/IOtakudesuParser.js";
+import * as IOPE from "./interfaces/IOtakudesuParserExtra.js";
+import type { Quality, Server, Url } from "../interface/IGlobal.js";
+import { wajikFetch } from "../services/dataFetcher.js";
+import OtakudesuParserExtra from "./OtakudesuParserExtra.js";
+import { cache } from "@lib/cache.js";
 
 export default class OtakudesuParser extends OtakudesuParserExtra {
   parseHome(): Promise<IOP.Home> {

@@ -1,4 +1,4 @@
-import HttpException from "./httpException";
+import HttpException from "./httpException.js";
 
 export function getQParam(query: Record<string, unknown>): string | Response {
   const q = query.q;

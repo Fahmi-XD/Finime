@@ -2,7 +2,7 @@
  * Middleware Route Khusus Admin
  */
 
-import prismaClient from '@databases/prismaClient'
+import prismaClient from '@databases/prismaClient.js'
 
 export const adminMiddleware = async ({ headers, store }: any) => {
   const token = headers['x-token']

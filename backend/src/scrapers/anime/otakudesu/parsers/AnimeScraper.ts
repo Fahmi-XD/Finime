@@ -1,8 +1,8 @@
 import { load, type CheerioAPI } from "cheerio";
-import { wajikFetch } from "../services/dataFetcher";
-import animeConfig from "../configs/animeConfig";
+import { wajikFetch } from "../services/dataFetcher.js";
+import animeConfig from "../configs/animeConfig.js";
 import path from "path";
-import { setResponseError } from "../helper/error";
+import { setResponseError } from "../helper/error.js";
 
 interface FetchConfig {
   method?: string;

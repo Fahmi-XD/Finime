@@ -4,7 +4,7 @@
 
 import { Context } from "elysia";
 import { AxiosError } from "axios";
-import { MyanimeListParser } from "../api/myanimelistApi";
+import { MyanimeListParser } from "../api/myanimelistApi.js";
 
 export default class AnimeListController {
 

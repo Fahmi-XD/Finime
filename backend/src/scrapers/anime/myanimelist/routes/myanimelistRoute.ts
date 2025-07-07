@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import MyanimelistController from "../controllers/myanimelistController";
+import MyanimelistController from "../controllers/myanimelistController.js";
 
 export const myanimelistRoute = (app: Elysia) => app
   .group("/myanimelist", (app) => app

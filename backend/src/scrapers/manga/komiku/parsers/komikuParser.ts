@@ -2,8 +2,8 @@
  * Scraper Dari Website Komiku
  */
 
-import Scrape from "@scrapers/scrape";
-import * as IKOMIKU from "../models/komikuModel";
+import Scrape from "@scrapers/scrape.js";
+import * as IKOMIKU from "../models/komikuModel.js";
 
 export class KomikuParser extends Scrape {
 

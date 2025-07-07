@@ -2,9 +2,9 @@
  * Controller Untuk Route Yang Tidak Perlu Pakai Middleware Auth ( X-Token )
  */
 
-import HttpException from "@lib/httpException";
-import StringSimilarity from "@lib/similarity";
-import { MyanimeListParser } from "@scrapers/anime/myanimelist/api/myanimelistApi";
+import HttpException from "@lib/httpException.js";
+import StringSimilarity from "@lib/similarity.js";
+import { MyanimeListParser } from "@scrapers/anime/myanimelist/api/myanimelistApi.js";
 import { Context } from "elysia";
 import axios from "axios";
 

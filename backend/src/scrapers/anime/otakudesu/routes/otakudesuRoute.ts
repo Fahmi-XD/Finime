@@ -1,5 +1,5 @@
-import { watchMiddleware } from "middleware/watchMiddleware";
-import controller from "../controllers/otakudesuController";
+import { watchMiddleware } from "@middleware/watchMiddleware.js";
+import controller from "../controllers/otakudesuController.js";
 import Elysia from "elysia";
 
 export const otakudesuRoute = (app: Elysia) => app

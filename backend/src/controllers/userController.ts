@@ -2,14 +2,14 @@
  * User Controller
  */
 
-import HttpException from "@lib/httpException";
-import ImageUpload from "@lib/uploadImage";
-import UserService from "@services/userService";
-import { UpdateUserRequest } from "models/userModel";
-import { UserValidation } from "@validations/userValidation";
+import HttpException from "@lib/httpException.js";
+import ImageUpload from "@lib/uploadImage.js";
+import UserService from "@services/userService.js";
+import { UpdateUserRequest } from "@models/userModel.js";
+import { UserValidation } from "@validations/userValidation.js";
 import { Context } from "elysia";
 import { ZodError } from "zod";
-import { CreateCommentRequest, ReplyCommentRequest } from "models/commentModel";
+import { CreateCommentRequest, ReplyCommentRequest } from "@models/commentModel.js";
 
 export default class UserController {
 

@@ -1,6 +1,6 @@
 import Elysia from "elysia";
-import KomikuController from "../controllers/komikuController";
-import { watchMiddleware } from "middleware/watchMiddleware";
+import KomikuController from "../controllers/komikuController.js";
+import { watchMiddleware } from "@middleware/watchMiddleware.js";
 
 export const komikuRoute = (app: Elysia) => app
   .group("/komiku", (app) => app

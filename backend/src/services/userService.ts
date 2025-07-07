@@ -2,14 +2,14 @@
  * Service Untuk Memanipulasi Data User
  */
 
-import prismaClient from "@databases/prismaClient";
-import HttpException from "@lib/httpException";
+import prismaClient from "@databases/prismaClient.js";
+import HttpException from "@lib/httpException.js";
 import { Prisma } from "@prisma/client";
 import { UpdateUserRequest } from "models/userModel";
-import { UserValidation } from "@validations/userValidation";
+import { UserValidation } from "@validations/userValidation.js";
 import { ZodError } from "zod";
-import { CommentValidation } from "@validations/commentValidation";
-import { CreateCommentRequest, ReplyCommentRequest } from "models/commentModel";
+import { CommentValidation } from "@validations/commentValidation.js";
+import { CreateCommentRequest, ReplyCommentRequest } from "@models/commentModel.js";
 
 export default class UserService {
 

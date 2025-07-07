@@ -2,10 +2,10 @@
  * SubRoute Anime
  */
 
-import { myanimelistRoute, otakudesuRoute } from "@scrapers/index";
+import { myanimelistRoute, otakudesuRoute } from "@scrapers/index.js";
 
 import Elysia from "elysia";
-import cacheMiddleware from "middleware/cacheMiddleware";
+import cacheMiddleware from "@middleware/cacheMiddleware.js";
 
 const animeRoute = new Elysia()
 

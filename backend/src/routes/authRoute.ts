@@ -2,7 +2,7 @@
  * SubRoute Autentikasi
  */
 
-import AuthController from "@controllers/authController";
+import AuthController from "@controllers/authController.js";
 import { Elysia } from "elysia";
 
 const authRoute = new Elysia()

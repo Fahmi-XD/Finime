@@ -1,6 +1,6 @@
-import * as par from "../helper/paramsView";
-import type { AnimeSource } from "../interface/IGlobal"
-import animeConfig from "../configs/animeConfig";
+import * as par from "../helper/paramsView.js";
+import type { AnimeSource } from "../interface/IGlobal.js"
+import animeConfig from "../configs/animeConfig.js";
 
 const { baseUrl } = animeConfig;
 

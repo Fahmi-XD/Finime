@@ -1,7 +1,7 @@
-import Scrape from "@scrapers/scrape";
-import type { ISearch, ISearchAnimeResponse } from "../models/animelistModel";
-import type { ICharactersAndActorsResponse } from "../models/charvoiceModel";
-import { IAnimeFUllResponse } from "../models/animeFullModel";
+import Scrape from "@scrapers/scrape.js";
+import type { ISearch, ISearchAnimeResponse } from "../models/animelistModel.js";
+import type { ICharactersAndActorsResponse } from "../models/charvoiceModel.js";
+import { IAnimeFUllResponse } from "../models/animeFullModel.js";
 
 export class MyanimeListParser extends Scrape {
 

@@ -1,4 +1,4 @@
-import type { QueryParam, RouteParam } from "../interface/IGlobal";
+import type { QueryParam, RouteParam } from "../interface/IGlobal.js";
 
 export const qQueryParam: QueryParam = {
   key: "q",

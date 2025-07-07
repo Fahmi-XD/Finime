@@ -1,15 +1,15 @@
+import "dotenv/config.js";
 import { Elysia } from "elysia";
 import { cors } from '@elysiajs/cors'
-import { helmet } from "elysia-helmet";
-import cache from "elysia-cache";
+import * as cache from "elysia-cache";
 
-import authRoute from "@routes/authRoute";
-import userRoute from "@routes/userRoute";
-import mangaRoute from "@routes/mangaRoute";
-import publicRoute from "@routes/publicRoute";
-import HttpException from "@lib/httpException";
-import { authMiddleware } from "middleware/authMiddleware";
-import animeRoute from "@routes/animeRoute";
+import authRoute from "@routes/authRoute.js";
+import userRoute from "@routes/userRoute.js";
+import mangaRoute from "@routes/mangaRoute.js";
+import publicRoute from "@routes/publicRoute.js";
+import HttpException from "@lib/httpException.js";
+import { authMiddleware } from "middleware/authMiddleware.js";
+import animeRoute from "@routes/animeRoute.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -22,8 +22,7 @@ const protectedRoute = new Elysia()
 
 const app = new Elysia()
   .use(cors())
-  .use(helmet())
-  .use(cache({
+  .use(cache.cache({
     max: 80
   }))
 
@@ -52,14 +51,13 @@ const app = new Elysia()
     // Subrouter Anime & Manga ( Protect middleware )
     .use(protectedRoute)
   )
-  .listen(PORT)
+  // .listen(PORT)
 
-// export const GET = app.handle 
-// export const POST = app.handle 
-// export const PATCH = app.handle 
-// export const PUT = app.handle 
-// export const OPTIONS = app.handle 
-// export default app.fetch
+export const GET = app.handle
+export const POST = app.handle
+export const PATCH = app.handle
+export const PUT = app.handle
+export const OPTIONS = app.handle
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

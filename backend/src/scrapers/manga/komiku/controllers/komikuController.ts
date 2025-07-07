@@ -4,7 +4,7 @@
 
 import { Context } from "elysia";
 import { AxiosError } from "axios";
-import { KomikuParser } from "../parsers/komikuParser";
+import { KomikuParser } from "../parsers/komikuParser.js";
 
 export default class KomikuParserController {
 

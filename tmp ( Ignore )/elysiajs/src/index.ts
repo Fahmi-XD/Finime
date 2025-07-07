@@ -1,6 +1,8 @@
 import Elysia from 'elysia'
+import { helmet } from 'elysia-helmet'
+import { Pomf } from "@zanixongroup/uploader";
 
-const app = new Elysia({  prefix: '/api'}).get('/', () => {
+const app = new Elysia({  prefix: '/api'}).use(helmet()).get('/', () => {
   return { message: "Hello Elysia! You've deployed Elysia to Vercel" }
 })
 

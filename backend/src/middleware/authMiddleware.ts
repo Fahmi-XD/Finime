@@ -2,7 +2,7 @@
  * Middleware Untuk Route Yang Membutuhkan Token Ketika Request
  */
 
-import prismaClient from '@databases/prismaClient'
+import prismaClient from '@databases/prismaClient.js'
 
 export const authMiddleware = async ({ headers, store, set }: any) => {
   const token = headers['x-token']

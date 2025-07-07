@@ -139,8 +139,9 @@ const otakudesuController = {
       const data = await parser.parseAnimeDetails(animeId);
       return generatePayload({ data });
     } catch (error) {
+      console.log(error);
       ctx.set.status = 500;
-      return { error: error instanceof Error ? error.message : String(error) };
+      return { error: (error as any).message };
     }
   },
 

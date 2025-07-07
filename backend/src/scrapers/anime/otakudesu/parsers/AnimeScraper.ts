@@ -1,5 +1,5 @@
-import { load, type CheerioAPI } from "cheerio";
-import { wajikFetch } from "../services/dataFetcher.js";
+import { html, load, type CheerioAPI } from "cheerio";
+import { jinaAi, wajikFetch } from "../services/dataFetcher.js";
 import animeConfig from "../configs/animeConfig.js";
 import path from "path";
 import { setResponseError } from "../helper/error.js";
@@ -191,7 +191,7 @@ export default class AnimeScraper {
     parser: ($: CheerioAPI, data: T) => Promise<T>
   ): Promise<T> {
     const path = this.generateUrlPath([props.path]);
-    const htmlData = await wajikFetch(this.baseUrl + path, this.baseUrl, {
+    const htmlData = await jinaAi(this.baseUrl + path, this.baseUrl, {
       method: "GET",
       responseType: "text",
       ...props.fetchConfig,

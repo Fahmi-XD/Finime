@@ -39,7 +39,7 @@ yarn-error.log*
 **/*.tar.gz
 **/*.tgz
 **/*.log
-package-lock.json
+# package-lock.json
 **/*.bun
 
 /dist

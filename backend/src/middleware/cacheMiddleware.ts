@@ -10,7 +10,7 @@ const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
   .decorate("key", "")
   .decorate("newTTL", 0)
 
-  .onBeforeHandle((apps) => {
+  .onBeforeHandle((apps: any) => {
     apps.set.headers["Cache-Control"] = `public, max-age=${1 * 60}`;
     apps.set.headers["x-powered-by"] = "Elysia";
 
@@ -45,7 +45,7 @@ const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
     apps.newTTL = newTTL
   })
 
-  .onAfterHandle(async ({ response, newTTL, key }) => {
+  .onAfterHandle(async ({ response, newTTL, key }: any) => {
     if (!(response instanceof Response)) {
       lruCache.set(key, response as any, { ttl: newTTL });
     }

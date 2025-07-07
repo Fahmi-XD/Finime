@@ -51,7 +51,7 @@ export default class UserController {
           },
         );
       } else if (contentType?.includes("application/json")) {
-        request = await context.request.json();
+        request = (await context.request.json() as UpdateUserRequest);
       } else {
         return HttpException.standarException(400, { error: "Unsupported Content-Type" });
       }

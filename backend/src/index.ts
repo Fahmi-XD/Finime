@@ -11,6 +11,8 @@ import HttpException from "@lib/httpException";
 import { authMiddleware } from "middleware/authMiddleware";
 import animeRoute from "@routes/animeRoute";
 
+const PORT = process.env.PORT || 3000;
+
 const protectedRoute = new Elysia()
   // Middlewarenya
   .onBeforeHandle(authMiddleware)
@@ -25,7 +27,7 @@ const app = new Elysia()
     max: 80
   }))
 
-  .onError(({ code }) => {
+  .onError(({ code }: { code: any }) => {
     if (code === "NOT_FOUND") {
       return HttpException.standarException(404, { message: "halaman tidak ditemukan" });
     }
@@ -50,8 +52,14 @@ const app = new Elysia()
     // Subrouter Anime & Manga ( Protect middleware )
     .use(protectedRoute)
   )
+  .listen(PORT)
 
-  .listen(3000);
+export const GET = app.handle 
+export const POST = app.handle 
+export const PATCH = app.handle 
+export const PUT = app.handle 
+export const OPTIONS = app.handle 
+export default app.handle
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

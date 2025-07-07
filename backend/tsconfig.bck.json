@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "esnext",
     "module": "esnext",
     "lib": ["ES2021"],
     "outDir": "dist",
@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "removeComments": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "baseUrl": "./src",
     "paths": {
       "@routes/*": ["routes/*"],
@@ -20,7 +20,7 @@
       "@typing/*": ["@types/*"],
       "@services/*": ["services/*"],
       "@validations/*": ["validations/*"],
-      "@databases/*": ["databases/*"]
+      "@databases/*": ["databases/*"],
     },
   },
   "include": ["src/**/*"],

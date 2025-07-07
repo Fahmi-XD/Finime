@@ -29,3 +29,4 @@ lerna-debug.log*
 prisma/migrations*
 
 .trash
+.vercel

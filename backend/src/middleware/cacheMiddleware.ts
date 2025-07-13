@@ -12,7 +12,7 @@ const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
 
   .onBeforeHandle((apps: any) => {
     apps.set.headers["Cache-Control"] = `public, max-age=${1 * 60}`;
-    apps.set.headers["x-powered-by"] = "Elysia";
+    apps.set.headers["x-powered-by"] = "Elysia - Finime";
 
     const key = path.join(apps.request.url, "/").replace(/\\/g, "/");
     const cachedData = lruCache.get(key);
@@ -20,7 +20,7 @@ const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
     const newTTL = ttl ? 1000 * 60 * ttl : defaultTTL;
 
     if (cachedData) {
-      console.log("hit");
+      // console.log("hit");
 
       if (typeof cachedData === "object") {
         // console.log("ini object");
@@ -34,12 +34,12 @@ const cacheMiddleware = (ttl: number = 1) => (app: Elysia) => app
         return cachedData;
       }
 
-      console.log("ini bukan object / string");
+      // console.log("ini bukan object / string");
 
       return String(cachedData);
     }
 
-    console.log("miss");
+    // console.log("miss");
 
     apps.key = key
     apps.newTTL = newTTL

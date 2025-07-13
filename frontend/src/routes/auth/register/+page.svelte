@@ -1,232 +1,334 @@
 <script lang="ts">
-  import { Eye, EyeClosed } from "@lucide/svelte";
-  import { FetchApi } from "$utils/Fetch";
-  import { goto } from "$app/navigation";
-  import { toBase64 } from "$lib/base64";
+  import { goto } from '$app/navigation';
+  import { Bot } from '@lucide/svelte';
+  import { AuthClient } from '$lib/api/clients/authClient';
+  import { page } from '$app/state';
+  import toast from 'svelte-french-toast';
+  import { toastOption } from '$lib/config/app';
+  
+  let name = '';
+  let username = '';
+  let password = '';
+  let isLoading = false;
+  let showPassword = false;
+  let email = '';
 
-  let formData = {
-    username: "",
-    password: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-  };
-
-  let errorMessages: string[] = [];
-  let successMessage: string = "";
-  let isSubmitting = false;
-  let hiddenPassword = true;
-
-  const handlePassword = () => {
-    hiddenPassword = !hiddenPassword;
-  }
- 
-  const handleSubmit = async (event: Event) => {
-    event.preventDefault();
-    isSubmitting = true;
-    errorMessages = [];
-    successMessage = "";
-
+  async function handleRegister() {
     try {
-      const response = await FetchApi.post("/auth/register", formData);
-      // successMessage = "Registration successful! Please check your email for verification.";
-      successMessage = "Registration successful! Redirect ...";
-      await new Promise(resolve => setTimeout(resolve, 3_000));
-    } catch (error: any) {
-      console.error("Error:", error);
-      if (error.response && error.response.data.errors) {
-        errorMessages = error.response.data.errors.map(
-          (err: { message: string }) => err.message,
-        );
-      } else if (error.response && error.response.data.message) {
-        errorMessages = [error.response.data.message];
-      } else {
-        errorMessages = ["An unexpected error occurred."];
+      if (!username || !password) {
+        alert('Please fill in all fields');
+        return;
       }
+      
+      isLoading = true;
+      
+      const response = await AuthClient.register({
+        name: name,
+        username: username,
+        email: email,
+        password: password
+      });
+
+      if (response.status !== 200) {
+        alert(response.error.message);
+      }
+
+      const payload = {
+        username: username,
+        password: password
+      }
+
+      toast.success("Berhasil mendaftar, silahkan login", toastOption);
+
+      setTimeout(() => {
+        goto(`/auth/login?${page.url.searchParams.size ? "?" + page.url.searchParams.toString() + "&" : ""}payload=${btoa(JSON.stringify(payload))}`);
+      }, 1000);
+    } catch (error) {
+      toast.error("Gagal mendaftar", toastOption);
     } finally {
-      isSubmitting = false;
-      if (successMessage) {
-        const base64Data = toBase64(JSON.stringify({
-          username: formData.username,
-          password: formData.password
-        }))
-        goto("/auth/login?payload=" + base64Data);
-      }
+      isLoading = false;
     }
-  };
+  }
+  
+  function togglePasswordVisibility() {
+    showPassword = !showPassword;
+  }
 </script>
 
-<div
-  class="relative flex items-center justify-center min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))]"
->
-  <div
-    class="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary))] via-[hsl(var(--secondary))] to-[hsl(var(--tertiary))] opacity-30 blur-lg"
-    aria-hidden="true"
-  ></div>
+<svelte:head>
+  <title>Daftar Finime - Buat Akun Anime & Manga Gratis Tanpa Iklan | Finime</title>
+  <meta
+    name="description"
+    content="Daftar gratis di Finime untuk akses penuh ke koleksi anime dan manga terbaru. Streaming anime sub Indo gratis, baca manga tanpa iklan judi, update episode & chapter harian, kualitas HD. Bergabung dengan komunitas anime terbesar!"
+  />
+  <meta
+    name="keywords"
+    content="daftar finime, register finime, buat akun finime, sign up finime, registrasi finime, pendaftaran finime, akun anime, akun manga, member finime, user finime, komunitas anime, streaming anime gratis, baca manga gratis, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime tanpa iklan, manga tanpa iklan, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia"
+  />
+  <meta name="author" content="Finime Team" />
+  <link rel="canonical" href="https://www.finime.my.id/auth/register" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  
+  <!-- Additional SEO Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Finime Register" />
 
-  <form
-    class="relative w-full max-w-md bg-[hsl(var(--card))] p-6 rounded-lg shadow-lg border border-[hsl(var(--border))] backdrop-blur-md"
-    on:submit={handleSubmit}
-    aria-labelledby="register-heading"
-  >
-    <h1 id="register-heading" class="text-2xl font-bold text-[hsl(var(--primary))] mb-4">
-      Create Account
-    </h1>
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.finime.my.id/auth/register" />
+  <meta
+    property="og:title"
+    content="Daftar Finime - Buat Akun Anime & Manga Gratis Tanpa Iklan"
+  />
+  <meta
+    property="og:description"
+    content="Daftar gratis di Finime untuk akses penuh ke koleksi anime dan manga terbaru. Streaming anime sub Indo gratis, baca manga tanpa iklan judi, update episode & chapter harian, kualitas HD. Bergabung dengan komunitas anime terbesar!"
+  />
+  <meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Finime Register - Daftar Akun Anime & Manga Gratis" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Finime" />
 
-    {#if successMessage}
-      <div role="status" class="text-green-500 text-sm mb-4">
-        <p>{successMessage}</p>
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@finime_id" />
+  <meta name="twitter:creator" content="@finime_id" />
+  <meta name="twitter:url" content="https://www.finime.my.id/auth/register" />
+  <meta
+    name="twitter:title"
+    content="Daftar Finime - Buat Akun Anime & Manga Gratis Tanpa Iklan"
+  />
+  <meta
+    name="twitter:description"
+    content="Daftar gratis di Finime untuk akses penuh ke koleksi anime dan manga terbaru. Streaming anime sub Indo gratis, baca manga tanpa iklan judi, update episode & chapter harian, kualitas HD. Bergabung dengan komunitas anime terbesar!"
+  />
+  <meta
+    name="twitter:image"
+    content="https://www.finime.my.id/web-app-manifest-512x512.png"
+  />
+  <meta name="twitter:image:alt" content="Finime Register - Daftar Akun Anime & Manga Gratis" />
+
+  <!-- Structured Data for Register Page -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Daftar Finime",
+      "description": "Halaman pendaftaran untuk membuat akun Finime. Akses penuh ke koleksi anime dan manga terbaru, streaming anime sub Indo gratis, baca manga tanpa iklan judi.",
+      "url": "https://www.finime.my.id/auth/register",
+      "mainEntity": {
+        "@type": "WebApplication",
+        "name": "Finime",
+        "applicationCategory": "EntertainmentApplication",
+        "operatingSystem": "Web Browser",
+        "description": "Platform streaming anime dan baca manga gratis tanpa iklan judi online",
+        "url": "https://www.finime.my.id/",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "IDR",
+          "description": "Gratis tanpa biaya"
+        }
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.finime.my.id/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Register",
+            "item": "https://www.finime.my.id/auth/register"
+          }
+        ]
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Finime",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.finime.my.id/web-app-manifest-512x512.png"
+        }
+      }
+    }
+  </script>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/apple-touch-icon.png"
+  />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+  
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://www.finime.my.id" />
+  <link rel="dns-prefetch" href="https://www.finime.my.id" />
+</svelte:head>
+
+<div class="min-h-screen mt-15 flex items-center justify-center bg-black relative overflow-hidden p-8">
+  <div class="w-full max-w-md z-10">
+    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-white/20 shadow-2xl">
+      <div class="text-center mb-10">
+        <div class="mb-6">
+          <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white">
+            <Bot size={40} />
+          </div>
+          <h1 class="text-3xl font-bold text-white mb-2">Register</h1>
+          <p class="text-white/80">Sign up to watch anime and manga</p>
+        </div>
       </div>
-    {/if}
-
-    {#if errorMessages.length > 0}
-      <div role="alert" class="text-red-500 text-sm mb-4">
-        {#each errorMessages as error}
-          <p>{error}</p>
-        {/each}
-      </div>
-    {/if}
-
-    <div class="space-y-4">
-      <div>
-        <label
-          for="register-username"
-          class="block text-sm font-medium text-[hsl(var(--muted-foreground))]"
-        >
-          Username
-          <span class="text-red-500" aria-hidden="true">*</span>
-          <span class="sr-only">(required)</span>
-        </label>
-        <input
-          id="register-username"
-          type="text"
-          bind:value={formData.username}
-          class="w-full mt-1 px-3 py-2 bg-[hsl(var(--input))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-md focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))]"
-          required
-          aria-required="true"
-          autocomplete="username"
-        />
-      </div>
-
-      <div>
-        <label
-          for="register-email"
-          class="block text-sm font-medium text-[hsl(var(--muted-foreground))]"
-        >
-          Email
-          <span class="text-red-500" aria-hidden="true">*</span>
-          <span class="sr-only">(required)</span>
-        </label>
-        <input
-          id="register-email"
-          type="email"
-          bind:value={formData.email}
-          class="w-full mt-1 px-3 py-2 bg-[hsl(var(--input))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-md focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))]"
-          required
-          aria-required="true"
-          autocomplete="email"
-        />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label
-            for="register-firstname"
-            class="block text-sm font-medium text-[hsl(var(--muted-foreground))]"
-          >
-            First Name
-            <span class="text-red-500" aria-hidden="true">*</span>
-            <span class="sr-only">(required)</span>
+      
+      <form class="mb-8" on:submit|preventDefault={handleRegister}>
+        <div class="mb-6">
+          <label for="username" class="block text-white font-medium mb-2 text-sm">Full Name</label>
+          <div class="relative flex items-center">
+            <svg class="absolute left-4 text-white/60 z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              id="name"
+              type="text"
+              bind:value={name}
+              placeholder="Enter your full name"
+              required
+              disabled={isLoading}
+              class="w-full px-4 py-3.5 pl-12 border border-white/20 rounded-xl bg-white/10 text-white text-base backdrop-blur-lg transition-all duration-300 placeholder:text-white/50 focus:outline-none focus:border-white/50 focus:bg-white/15 focus:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+            />
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <label for="username" class="block text-white font-medium mb-2 text-sm">Username</label>
+          <div class="relative flex items-center">
+            <svg class="absolute left-4 text-white/60 z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              id="username"
+              type="text"
+              bind:value={username}
+              placeholder="Enter your username or email"
+              required
+              disabled={isLoading}
+              class="w-full px-4 py-3.5 pl-12 border border-white/20 rounded-xl bg-white/10 text-white text-base backdrop-blur-lg transition-all duration-300 placeholder:text-white/50 focus:outline-none focus:border-white/50 focus:bg-white/15 focus:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+            />
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <label for="email" class="block text-white font-medium mb-2 text-sm">Email</label>
+          <div class="relative flex items-center">
+            <svg class="absolute left-4 text-white/60 z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              id="email"
+              type="email"
+              bind:value={email}
+              placeholder="Enter your email"
+              required
+              disabled={isLoading}
+              class="w-full px-4 py-3.5 pl-12 border border-white/20 rounded-xl bg-white/10 text-white text-base backdrop-blur-lg transition-all duration-300 placeholder:text-white/50 focus:outline-none focus:border-white/50 focus:bg-white/15 focus:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+            />
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <label for="password" class="block text-white font-medium mb-2 text-sm">Password</label>
+          <div class="relative flex items-center">
+            <svg class="absolute left-4 text-white/60 z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <circle cx="12" cy="16" r="1"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              bind:value={password}
+              placeholder="Enter your password"
+              required
+              disabled={isLoading}
+              class="w-full px-4 py-3.5 pl-12 pr-12 border border-white/20 rounded-xl bg-white/10 text-white text-base backdrop-blur-lg transition-all duration-300 placeholder:text-white/50 focus:outline-none focus:border-white/50 focus:bg-white/15 focus:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+            />
+            <button 
+              type="button" 
+              class="absolute right-4 bg-transparent border-none text-white/60 cursor-pointer p-1 rounded transition-colors duration-300 hover:text-white/80 disabled:opacity-60 disabled:cursor-not-allowed"
+              on:click={togglePasswordVisibility}
+              disabled={isLoading}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                {#if showPassword}
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                {:else}
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                {/if}
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- <div class="flex justify-between items-center mb-8">
+          <label class="flex items-center gap-2 text-white/80 text-sm cursor-pointer">
+            <input 
+              type="checkbox" 
+              bind:checked={rememberMe}
+              disabled={isLoading}
+              class="hidden"
+            />
+            <span class="w-4.5 h-4.5 border-2 border-white/30 rounded relative transition-all duration-300 {rememberMe ? 'bg-gradient-to-br from-red-400 to-cyan-400 border-transparent' : ''}">
+              {#if rememberMe}
+                <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs font-bold">✓</span>
+              {/if}
+            </span>
+            Remember me
           </label>
-          <input
-            id="register-firstname"
-            type="text"
-            bind:value={formData.first_name}
-            class="w-full mt-1 px-3 py-2 bg-[hsl(var(--input))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-md focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))]"
-            required
-            aria-required="true"
-            autocomplete="given-name"
-          />
-        </div>
-
-        <div>
-          <label
-            for="register-lastname"
-            class="block text-sm font-medium text-[hsl(var(--muted-foreground))]"
-          >
-            Last Name
-            <span class="text-red-500" aria-hidden="true">*</span>
-            <span class="sr-only">(required)</span>
-          </label>
-          <input
-            id="register-lastname"
-            type="text"
-            bind:value={formData.last_name}
-            class="w-full mt-1 px-3 py-2 bg-[hsl(var(--input))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-md focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))]"
-            required
-            aria-required="true"
-            autocomplete="family-name"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label
-          for="register-password"
-          class="block text-sm font-medium text-[hsl(var(--muted-foreground))]"
+          
+          <a href="/auth/forgot-password" class="text-white/80 text-sm no-underline transition-colors duration-300 hover:text-white">
+            Forgot password?
+          </a>
+        </div> -->
+        
+        <button 
+          type="submit" 
+          class="w-full py-4 bg-gradient-to-r from-red-400 to-cyan-400 border-none rounded-xl text-white text-base font-semibold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+          disabled={isLoading}
         >
-          Password
-          <span class="text-red-500" aria-hidden="true">*</span>
-          <span class="sr-only">(required)</span>
-        </label>
-        <div class="relative mt-1">
-          <input
-            id="register-password"
-            type={hiddenPassword ? "password" : "text"} 
-            bind:value={formData.password}
-            class="w-full px-3 py-2 bg-[hsl(var(--input))] text-[hsl(var(--foreground))] border border-[hsl(var(--border))] rounded-md focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))]"
-            required
-            aria-required="true"
-            autocomplete="new-password"
-            aria-describedby="password-requirements"
-          />
-          <button type="button" on:click={handlePassword} class="absolute top-0 right-3 bottom-0 my-auto opacity-70 cursor-pointer hover:opacity-50">
-            {#if hiddenPassword}
-              <Eye />
-            {:else}
-              <EyeClosed />
-            {/if}
-          </button>
-        </div>
-        <p id="password-requirements" class="text-xs text-[hsl(var(--muted-foreground))] mt-1">
-          Use at least 8 characters with a mix of letters, numbers & symbols
+          {#if isLoading}
+            <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            Registering...
+          {:else}
+            Register
+          {/if}
+        </button>
+      </form>
+      
+      <div class="text-center text-white/80 text-sm">
+        <p>
+          Have an account? 
+          <a href="/auth/login{page.url.searchParams.size ? "?" + page.url.searchParams.toString() : ""}" class="text-cyan-400 no-underline font-semibold transition-colors duration-300 hover:text-red-400">Sign in</a>
         </p>
       </div>
     </div>
-
-    <button
-      type="submit"
-      class="w-full mt-4 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] px-4 py-2 rounded-md hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
-      disabled={isSubmitting}
-      aria-busy={isSubmitting}
-    >
-      {#if isSubmitting}
-        <span aria-hidden="true">Processing...</span>
-        <span class="sr-only">Creating your account</span>
-      {:else}
-        Create Account
-      {/if}
-    </button>
-
-    <p class="mt-4 text-center text-sm">
-      Already have an account?{' '}
-      <a
-        href="/auth/login"
-        class="text-[hsl(var(--primary))] hover:underline"
-        aria-label="Go to login page"
-      >
-        Login here
-      </a>
-    </p>
-  </form>
+  </div>
 </div>

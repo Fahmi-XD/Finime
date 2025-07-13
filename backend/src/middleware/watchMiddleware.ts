@@ -7,11 +7,11 @@ import { customCache } from "@lib/cache.js"
 import UserService from "@services/userService.js";
 
 // Update Total Menonton
-async function updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
-  const response = await UserService.updateWatch(userId, isAnime, isManga);
+// async function updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
+//   const response = await UserService.updateWatch(userId, isAnime, isManga);
 
-  return response;
-}
+//   return response;
+// }
 
 export const watchMiddleware = async ({ headers, path }: any) => {
   const token = headers['x-token']
@@ -28,6 +28,6 @@ export const watchMiddleware = async ({ headers, path }: any) => {
   }
 
   if (user) {
-    updateWatch(user.id, (path as string).includes("/api/v1/anime"), (path as string).includes("/api/v1/manga"));
+    // updateWatch(user.id, (path as string).includes("/api/v1/anime"), (path as string).includes("/api/v1/manga"));
   }
 }

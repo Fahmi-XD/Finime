@@ -3,8 +3,9 @@
  */
 
 import prismaClient from '@databases/prismaClient.js'
+import { Context } from 'elysia'
 
-export const authMiddleware = async ({ headers, store, set }: any) => {
+export const authMiddleware = async ({ headers, store }: Context) => {
   const token = headers['x-token']
 
   if (!token) {

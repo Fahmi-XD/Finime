@@ -22,7 +22,8 @@
       "@validations/*": ["validations/*"],
       "@middleware/*": ["middleware/*"],
       "@models/*": ["models/*"],
-      "@databases/*": ["databases/*"]
+      "@databases/*": ["databases/*"],
+      "@external/*": ["external/*"]
     },
   },
   "include": ["src/**/*"],

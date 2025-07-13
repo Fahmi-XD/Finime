@@ -1,6 +1,6 @@
 import stringComparison from 'string-comparison';
 
-export default class StringSimilarity {
+export class StringSimilarity {
   private static cosine = stringComparison.cosine;
 
   static similarity(str1: string, str2: string) {

@@ -1,40 +1,41 @@
 <script lang="ts">
-  import { ModeWatcher } from "mode-watcher";
-  import Navbar from "$components/Navbar.svelte";
-  import Footer from "$components/Footer.svelte";
-  import "../app.css";
-  import { onMount } from "svelte";
-  import { fetchUser } from "$stores/user";
-  import { page } from "$app/state";
-  import SettingsProvider from "$components/fragments/ProviderSettings.svelte"
+	import '../app.css';
+	import { ModeWatcher } from 'mode-watcher';
+	import { badges } from '$lib/stores/user';
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
-  let loading: boolean = true;
-  let isHidden: boolean = $state<boolean>(false);
+	import Navbar from '$lib/components/complex/Navbar.svelte';
+	import Footer from '$lib/components/complex/Footer.svelte';
+	import { UserClient } from '$lib/api/clients/userClient';
+	import { Toaster } from "svelte-french-toast";
 
-  const hiddenPaths = ['/dashboard'];
-  const { children } = $props();
+	const protectedRoute = ["/settings", "/profile"];
+	const authRoute = ["/auth/login", "/auth/register"];
 
-  const currentPath = $derived(page.url.pathname);
-  $effect(() => {
-    isHidden = hiddenPaths.some(path => currentPath.startsWith(path));
-  })
+	let path = $derived(page.url.pathname)
 
-  onMount(async () => {
-    await fetchUser();
-    loading = false;
-  });
+	$effect(() => {
+		if (!page.data.user && protectedRoute.includes(path)) {
+			const urlEncoded = btoa(path)
+			goto(`/auth/login?from=${urlEncoded}`)
+		}
+
+		if (page.data.user && authRoute.includes(path)) {
+			goto(`/`)
+		}
+	});
+
+	let { children } = $props();
+
+	onMount(async () => {
+		badges.set(await UserClient.getAllBadges());
+	});
 </script>
 
-<main class="bg-transparent relative">
-  <ModeWatcher />
-  <SettingsProvider />
-  {#if !isHidden}
-    <Navbar />
-  {/if}
-
-  {@render children()}
-
-  {#if !isHidden}
-    <Footer />
-  {/if}
-</main>
+<ModeWatcher defaultMode="dark" />
+<Navbar />
+{@render children()}
+<Footer />
+<Toaster />

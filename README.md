@@ -15,7 +15,10 @@
 ![Manga Page](.github/readme-images/manga.png)
 #### Profile
 ![Profile Page](.github/readme-images/profile.png)
-#### Isteri gweh
+#### Search
+![Profile Page](.github/readme-images/search-mobile.png)
+![Profile Page](.github/readme-images/search.png)
+#### Istri gweh
 ![Profile Page](.github/readme-images/istri.png)
 
 > [!NOTE]

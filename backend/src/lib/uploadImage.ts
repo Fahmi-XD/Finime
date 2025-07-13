@@ -2,7 +2,7 @@
  * Upload Gambar / Gif Menjadi Publik
  */
 
-import { Pomf } from "@zanixongroup/uploader";
+import { Pomf, Catbox } from "@zanixongroup/uploader";
 
 export default class ImageUpload {
 
@@ -38,6 +38,21 @@ export default class ImageUpload {
     try {
       const bufferImage = await file.arrayBuffer();
       const data = await Pomf(Buffer.from(bufferImage));
+
+      return { link: data };
+    } catch (error) {
+      throw new Error("Failed to upload image.");
+    }
+  }
+
+  /**
+   * ZanixonGroup Uploader ( Catbox )
+   * Thank to zanixonGroup
+   */
+  static async zanixonGroupMirror(file: File): Promise<{ link: string }> {
+    try {
+      const bufferImage = await file.arrayBuffer();
+      const data = await Catbox(Buffer.from(bufferImage));
 
       return { link: data };
     } catch (error) {

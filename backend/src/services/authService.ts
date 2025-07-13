@@ -10,55 +10,45 @@ import bcrypt from "bcrypt";
 import type { LoginUserRequest, RegisterUserRequest } from "@models/userModel.js";
 import { ZodError, ZodIssue } from "zod";
 import HttpException from "@lib/httpException.js";
+import { ResponseModel } from "@models/responseModel.js";
+import Response from "@lib/response.js";
 
 export default class AuthService {
 
   // Register
-  static async register(request: RegisterUserRequest): Promise<{ message: string; user: object | null } | ZodIssue[] | undefined | Response> {
+  static async register(request: RegisterUserRequest): Promise<ResponseModel<{ message: string; user: object | null } | ZodIssue[]>> {
     try {
-      request = AuthValidation.REGISTER.parse(request);
+      const result = AuthValidation.REGISTER.safeParse(request);
+      if (!result.success) {
+        return HttpException.standarException(400, result.error.issues)
+      }
 
       const usernameExists = await prismaClient.user.count({
         where: { username: request.username },
       });
 
       if (usernameExists > 0) {
-        return HttpException.standarException(400, { message: "Username already exists" })
+        return HttpException.standarException(400, { message: "Username already exists", user: null })
       }
 
-      const existingContact = await prismaClient.contact.findUnique({
+      const existingContact = await prismaClient.user.findUnique({
         where: { email: request.email },
       });
 
       if (existingContact) {
-        return HttpException.standarException(400, { message: "Email already exists" })
+        return HttpException.standarException(400, { message: "Email already exists", user: null })
       }
 
       request.password = await bcrypt.hash(request.password, 10);
-      const first_name = request.first_name as string;
-      const last_name = request.last_name as string;
-      const name = first_name + " " + last_name;
       const user = await prismaClient.user.create({
         data: {
           username: request.username,
+          name: request.name,
           password: request.password,
-          name: name,
           role: "MEMBER",
           isVerify: false,
-          badge: [],
-          contact: {
-            create: {
-              email: request.email,
-              first_name: first_name,
-              last_name: last_name,
-            },
-          },
-          metadata: {
-            create: {
-              mangaRead: 0,
-              AnimeRead: 0
-            }
-          },
+          badges: [],
+          email: request.email,
           created_at: new Date(),
         },
         select: {
@@ -66,42 +56,39 @@ export default class AuthService {
           username: true,
           name: true,
           isVerify: true,
-          badge: true,
+          badges: true,
           bio: true,
-          contact: {
-            select: {
-              email: true,
-              first_name: true,
-              last_name: true,
-            },
-          },
+          email: true,
         },
       });
 
-      return {
+      return Response.standarResponse(200, {
         message: "Register success",
         user,
-      };
+      });
     } catch (error) {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(500, { message: "Error" })
+        return HttpException.standarException(500, { message: "Error", user: null })
       }
     }
   }
 
   // Login
-  static async login(request: LoginUserRequest): Promise<{ token: string, message?: string } | ZodIssue[] | undefined | Response> {
+  static async login(request: LoginUserRequest): Promise<ResponseModel<{ token: string, message?: string } | ZodIssue[]>> {
     try {
-      request = AuthValidation.LOGIN.parse(request);
+      const result = AuthValidation.LOGIN.safeParse(request);
+      if (!result.success) {
+        return HttpException.standarException(400, result.error.issues)
+      }
 
       const user = await prismaClient.user.findUnique({
         where: { username: request.username },
       });
 
       if (!user) {
-        return HttpException.standarException(400, { message: "Username or password is wrong" })
+        return HttpException.standarException(400, { message: "Username or password is wrong", token: "" })
       }
 
       const isPasswordValid = await bcrypt.compare(
@@ -110,7 +97,7 @@ export default class AuthService {
       );
 
       if (!isPasswordValid) {
-        return HttpException.standarException(400, { message: "Username or password is wrong" })
+        return HttpException.standarException(400, { message: "Username or password is wrong", token: "" })
       }
 
       const token = crypto.randomUUID();
@@ -119,13 +106,13 @@ export default class AuthService {
         data: { token },
       });
 
-      return { token };
+      return Response.standarResponse(200, { token });
     } catch (error) {
       console.error(error)
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {
-        return HttpException.standarException(500, { message: "Error" })
+        return HttpException.standarException(500, { message: "Error", token: "" })
       }
     }
   }

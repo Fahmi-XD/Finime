@@ -1,9 +1,8 @@
 export type RegisterUserRequest = {
   username: string;
   password: string;
+  name: string;
   email: string;
-  first_name: string;
-  last_name: string;
 };
 
 export type LoginUserRequest = {
@@ -22,10 +21,9 @@ export type UpdateUserRequest = {
   name?: string;
   avatar?: string;
   email?: string;
-  first_name?: string;
-  last_name?: string;
+  pronoun?: string;
   bio?: string;
-  badge?: string[];
+  badges?: string[];
   banner?: string;
 }
 

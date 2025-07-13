@@ -10,18 +10,19 @@ import { UserValidation } from "@validations/userValidation.js";
 import { Context } from "elysia";
 import { ZodError } from "zod";
 import { CreateCommentRequest, ReplyCommentRequest } from "@models/commentModel.js";
+import type { ResponseModel } from "@models/responseModel.js";
 
 export default class UserController {
 
   // User Controller
-  static async getUser(context: Context): Promise<any> {
+  static async getUser(context: Context): Promise<ResponseModel<any>> {
     const response = await UserService.getUser((context.store as { userId: string }).userId);
 
     return response;
   }
 
   // Update User Controller
-  static async updateUser(context: Context): Promise<any> {
+  static async updateUser(context: Context): Promise<ResponseModel<any>> {
     try {
       const contentType = context.headers["content-type"];
 
@@ -29,12 +30,12 @@ export default class UserController {
       request = UserValidation.UPDATE_USER.parse(request);
 
       if (contentType?.includes("multipart/form-data")) {
-        const formData = await context.request.formData();
+        const formData = await context.request.formData() as FormData;
         const avatar = formData.get("avatar") as File | string | null;
 
         if (avatar instanceof File) {
           try {
-            const { link } = await ImageUpload.zanixonGroup(avatar);
+            const { link } = await ImageUpload.zanixonGroupMirror(avatar);
             // const { link } = await ImageUpload.freeHosting(avatar);
             request.avatar = link;
           } catch (error) {
@@ -44,12 +45,10 @@ export default class UserController {
           request.avatar = avatar;
         }
 
-        ["username", "name", "email", "first_name", "last_name", "bio", "banner"].forEach(
-          (field) => {
-            const value = formData.get(field);
-            request[field as keyof UpdateUserRequest] = value as any
-          },
-        );
+        formData.forEach((value, key) => {
+          if (key === "avatar") return;
+          request[key as keyof UpdateUserRequest] = value as any;
+        });
       } else if (contentType?.includes("application/json")) {
         request = (await context.request.json() as UpdateUserRequest);
       } else {
@@ -67,73 +66,73 @@ export default class UserController {
     }
   }
 
-  // Mendapatkan Profile User Berdasarkan Username ( Controller )
-  static async getUserProfile(context: Context) {
-    const username = context.params.username;
-    const response = await UserService.getUserProfile(username);
+  // // Mendapatkan Profile User Berdasarkan Username ( Controller )
+  // static async getUserProfile(context: Context): Promise<ResponseModel<any>> {
+  //   const username = context.params.username;
+  //   const response = await UserService.getUserProfile(username);
 
-    return response;
-  }
+  //   return response;
+  // }
 
-  // Mendapatkan Semua User ( Controller )
-  static async getAllUser() {
-    const response = await UserService.getAllUser();
+  // // Mendapatkan Semua User ( Controller )
+  // static async getAllUser(): Promise<ResponseModel<any>> {
+  //   const response = await UserService.getAllUser();
 
-    return response;
-  }
+  //   return response;
+  // }
 
-  // Reply
-  static async reply(context: Context) {
-    const userId = (context.store as { userId: string }).userId as string
-    const request = (await context.request.json()) as ReplyCommentRequest;
-    const response = await UserService.replyComment(userId, request);
-    return {
-      data: response,
-    };
-  }
+  // // Reply
+  // static async reply(context: Context): Promise<ResponseModel<any>> {
+  //   const userId = (context.store as { userId: string }).userId as string
+  //   const request = (await context.request.json()) as ReplyCommentRequest;
+  //   const response = await UserService.replyComment(userId, request);
+  //   return {
+  //     data: response,
+  //   };
+  // }
 
-  // Delete Reply
-  static async deleteReply(context: Context) {
-    const userId = (context.store as { userId: string }).userId as string
-    const replyId = context.params.replyId as string;
-    if (!replyId) return HttpException.standarException(400, { message: "Error" });
-    const response = await UserService.deleteReplyComment(userId, replyId);
-    return {
-      data: response,
-    };
-  }
+  // // Delete Reply
+  // static async deleteReply(context: Context): Promise<ResponseModel<any>> {
+  //   const userId = (context.store as { userId: string }).userId as string
+  //   const replyId = context.params.replyId as string;
+  //   if (!replyId) return HttpException.standarException(400, { message: "Error" });
+  //   const response = await UserService.deleteReplyComment(userId, replyId);
+  //   return {
+  //     data: response,
+  //   };
+  // }
 
-  // Comment Anime ID
-  static async commentAnimeId(context: Context) {
-    const animeId = context.params.animeId as string;
-    if (!animeId) return HttpException.standarException(400, { message: "Error" });
-    const response = await UserService.getComment(animeId);
-    return {
-      data: response,
-    };
-  }
+  // // Comment Anime ID
+  // static async commentAnimeId(context: Context): Promise<ResponseModel<any>> {
+  //   const animeId = context.params.animeId as string;
+  //   if (!animeId) return HttpException.standarException(400, { message: "Error" });
+  //   const response = await UserService.getComment(animeId);
+  //   return {
+  //     data: response,
+  //   };
+  // }
 
-  // POST Comment Anime ID
-  static async commentPostAnimeId(context: Context) {
-    const userId = (context.store as { userId: string }).userId as string
-    const animeId = context.params.animeId as string;
-    if (!animeId) return HttpException.standarException(400, { message: "Error" });
-    const request = (await context.request.json()) as CreateCommentRequest;
-    const response = await UserService.postComment(animeId, userId, request);
-    return {
-      data: response,
-    };
-  }
+  // // POST Comment Anime ID
+  // static async commentPostAnimeId(context: Context): Promise<ResponseModel<any>> {
+  //   const userId = (context.store as { userId: string }).userId as string
+  //   const animeId = context.params.animeId as string;
+  //   if (!animeId) return HttpException.standarException(400, { message: "Error" });
+  //   const request = (await context.request.json()) as CreateCommentRequest;
+  //   const response = await UserService.postComment(animeId, userId, request);
+  //   return {
+  //     data: response,
+  //   };
+  // }
 
-  // Delete Comment ID
-  static async deleteCommentId(context: Context) {
-    const userId = (context.store as { userId: string }).userId as string
-    const commentId = context.params.commentId as string;
-    if (!commentId) return HttpException.standarException(400, { message: "Error" });
-    const response = await UserService.deleteComment(userId, commentId);
-    return {
-      data: response,
-    };
-  }
+  // // Delete Comment ID
+  // static async deleteCommentId(context: Context): Promise<ResponseModel<any>> {
+  //   const userId = (context.store as { userId: string }).userId as string
+  //   const commentId = context.params.commentId as string;
+  //   if (!commentId) return HttpException.standarException(400, { message: "Error" });
+  //   const response = await UserService.deleteComment(userId, commentId);
+  //   return {
+  //     data: response,
+  //   };
+  // }
 
 }

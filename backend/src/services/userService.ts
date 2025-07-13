@@ -10,49 +10,39 @@ import { UserValidation } from "@validations/userValidation.js";
 import { ZodError } from "zod";
 import { CommentValidation } from "@validations/commentValidation.js";
 import { CreateCommentRequest, ReplyCommentRequest } from "@models/commentModel.js";
+import { ResponseModel } from "@models/responseModel";
+import Response from "@lib/response";
 
 export default class UserService {
 
   // Mendapatkan User berdasarkan id
-  static async getUser(userId: string) {
+  static async getUser(userId: string): Promise<ResponseModel<any>> {
     const user = await prismaClient.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
         username: true,
         name: true,
+        anime: true,
+        manga: true,
         avatar: true,
         banner: true,
+        email: true,
+        pronoun: true,
         role: true,
         isVerify: true,
         bio: true,
-        badge: true,
-        contact: {
-          select: {
-            email: true,
-            first_name: true,
-            last_name: true,
-          },
-        },
-        metadata: {
-          select: {
-            AnimeRead: true,
-            mangaRead: true
-          }
-        },
+        badges: true,
         created_at: true,
         updated_at: true,
       },
     });
 
     if (!user) {
-      return new Response(
-        JSON.stringify({ message: 'User not found!' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      )
+      return HttpException.standarException(404, { message: "User not found" });
     }
 
-    return user;
+    return Response.standarResponse(200, user);
   }
 
   // Mengupdate User Profile
@@ -66,29 +56,8 @@ export default class UserService {
       });
 
       if (!userExists) {
-        return new Response(
-          JSON.stringify({ message: 'User not found!' }),
-          { status: 404, headers: { 'Content-Type': 'application/json' } }
-        )
+        return HttpException.standarException(404, { message: "User not found" });
       }
-
-      const contactData =
-        data.email || data.first_name || data.last_name
-          ? {
-            upsert: {
-              create: {
-                email: data.email ?? "",
-                first_name: data.first_name ?? "",
-                last_name: data.last_name ?? "",
-              },
-              update: {
-                email: data.email ?? undefined,
-                first_name: data.first_name ?? undefined,
-                last_name: data.last_name ?? undefined,
-              },
-            },
-          }
-          : undefined;
 
       const updatedUser = await prismaClient.user.update({
         where: { id: userId },
@@ -96,9 +65,9 @@ export default class UserService {
           username: data.username ?? undefined,
           name: data.name ?? undefined,
           avatar: data.avatar ?? undefined,
-          contact: contactData,
           bio: data.bio ?? undefined,
-          badge: data.badge ?? undefined,
+          pronoun: data.pronoun ?? undefined,
+          badges: data.badges ?? undefined,
           banner: data.banner ?? undefined
         },
         select: {
@@ -106,18 +75,12 @@ export default class UserService {
           username: true,
           name: true,
           avatar: true,
+          email: true,
           banner: true,
           bio: true,
+          pronoun: true,
           isVerify: true,
-          badge: true,
-          contact: {
-            select: {
-              email: true,
-              first_name: true,
-              last_name: true,
-            },
-          },
-          metadata: true
+          badges: true,
         },
       }).catch(error => {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -127,7 +90,7 @@ export default class UserService {
         }
       });
 
-      return updatedUser;
+      return Response.standarResponse(200, updatedUser);
     } catch (error) {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
@@ -153,15 +116,7 @@ export default class UserService {
           role: true,
           bio: true,
           isVerify: true,
-          badge: true,
-          contact: {
-            select: {
-              email: true,
-              first_name: true,
-              last_name: true,
-            },
-          },
-          metadata: true,
+          badges: true,
           created_at: true,
           updated_at: true,
         },
@@ -181,227 +136,207 @@ export default class UserService {
     }
   }
 
-  // Total Menonton
-  static async updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
-    const user = prismaClient.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        metadataId: true,
-        metadata: {
-          select: {
-            AnimeRead: true,
-            mangaRead: true
-          }
-        }
-      }
-    });
+  // // Total Menonton
+  // static async updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
+  //   const user = prismaClient.user.findUnique({
+  //     where: { id: userId },
+  //     select: {
+  //       id: true,
+  //     }
+  //   });
 
-    if (!user) {
-      return new Response(
-        JSON.stringify({ message: 'User not found!' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
+  //   if (!user) {
+  //     return new Response(
+  //       JSON.stringify({ message: 'User not found!' }),
+  //       { status: 404, headers: { 'Content-Type': 'application/json' } }
+  //     )
+  //   }
 
-    const userUpdated = prismaClient.user.update({
-      where: {
-        id: userId
-      },
-      data: {
-        metadata: {
-          update: {
-            ...(isAnime ? { AnimeRead: { increment: 1 } } : {}),
-            ...(isManga ? { mangaRead: { increment: 1 } } : {}),
-          }
-        }
-      },
-      include: {
-        metadata: true
-      }
-    });
+  //   const userUpdated = prismaClient.user.update({
+  //     where: {
+  //       id: userId
+  //     },
+  //     data: {
+  //       ...(isAnime ? { anime_read: { increment: 1 } } : {}),
+  //       ...(isManga ? { manga_read: { increment: 1 } } : {}),
+  //     },
+  //   });
 
-    return userUpdated;
-  }
+  //   return userUpdated;
+  // }
 
-  // Mendapatkan Data Semua User
-  static async getAllUser() {
-    const users = await prismaClient.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        name: true,
-        avatar: true,
-        banner: true,
-        role: true,
-        contact: {
-          select: {
-            email: true,
-            first_name: true,
-            last_name: true,
-          },
-        },
-        metadata: true,
-        created_at: true,
-        updated_at: true,
-      },
-    });
+  // // Mendapatkan Data Semua User
+  // static async getAllUser() {
+  //   const users = await prismaClient.user.findMany({
+  //     select: {
+  //       id: true,
+  //       username: true,
+  //       name: true,
+  //       avatar: true,
+  //       banner: true,
+  //       role: true,
+  //       anime_read: true,
+  //       manga_read: true,
+  //       created_at: true,
+  //       updated_at: true,
+  //     },
+  //   });
 
-    if (users.length === 0) {
-      return new Response(
-        JSON.stringify({ message: 'User not found!' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
+  //   if (users.length === 0) {
+  //     return new Response(
+  //       JSON.stringify({ message: 'User not found!' }),
+  //       { status: 404, headers: { 'Content-Type': 'application/json' } }
+  //     )
+  //   }
 
-    return users;
-  }
+  //   return users;
+  // }
 
-  static async replyComment(userId: string, request: ReplyCommentRequest) {
-    request = CommentValidation.REPLY_COMMENT.parse(request);
-    const comment = await prismaClient.comment.findUnique({
-      where: { id: request.comment_id },
-    });
+  // static async replyComment(userId: string, request: ReplyCommentRequest) {
+  //   request = CommentValidation.REPLY_COMMENT.parse(request);
+  //   const comment = await prismaClient.comment.findUnique({
+  //     where: { id: request.comment_id },
+  //   });
 
-    if (!comment) {
-      return HttpException.standarException(404, { message: "Comment not found" });
-    }
+  //   if (!comment) {
+  //     return HttpException.standarException(404, { message: "Comment not found" });
+  //   }
 
-    const reply = await prismaClient.replyComment.create({
-      data: {
-        userId,
-        content: request.content,
-        commentId: request.comment_id,
-        created_at: new Date(),
-      },
-      select: {
-        id: true,
-        content: true,
-        created_at: true,
-      },
-    });
+  //   const reply = await prismaClient.replyComment.create({
+  //     data: {
+  //       userId,
+  //       content: request.content,
+  //       commentId: request.comment_id,
+  //       created_at: new Date(),
+  //     },
+  //     select: {
+  //       id: true,
+  //       content: true,
+  //       created_at: true,
+  //     },
+  //   });
 
-    return reply;
-  }
+  //   return reply;
+  // }
 
-  static async deleteReplyComment(userId: string, replyId: string) {
-    const reply = await prismaClient.replyComment.findUnique({
-      where: { id: replyId, userId },
-    });
+  // static async deleteReplyComment(userId: string, replyId: string) {
+  //   const reply = await prismaClient.replyComment.findUnique({
+  //     where: { id: replyId, userId },
+  //   });
 
-    if (!reply) {
-      return HttpException.standarException(404, { message: "Reply not found" });
-    }
+  //   if (!reply) {
+  //     return HttpException.standarException(404, { message: "Reply not found" });
+  //   }
 
-    await prismaClient.replyComment.delete({
-      where: {
-        id: replyId,
-      },
-    });
+  //   await prismaClient.replyComment.delete({
+  //     where: {
+  //       id: replyId,
+  //     },
+  //   });
 
-    return { message: "Reply deleted" };
-  }
+  //   return { message: "Reply deleted" };
+  // }
 
-  static async getComment(animeId: string) {
-    const commentCount = await prismaClient.comment.count({
-      where: { animeId },
-    });
+  // static async getComment(animeId: string) {
+  //   const commentCount = await prismaClient.comment.count({
+  //     where: { animeId },
+  //   });
 
-    if (commentCount === 0) {
-      return { message: "There are no comments on this anime yet." };
-    }
+  //   if (commentCount === 0) {
+  //     return { message: "There are no comments on this anime yet." };
+  //   }
 
-    const comments = await prismaClient.comment.findMany({
-      where: {
-        animeId,
-      },
-      select: {
-        id: true,
-        content: true,
-        created_at: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            avatar: true,
-            badge: true,
-            isVerify: true,
-            name: true,
-            banner: true,
-            bio: true,
-            role: true,
-            created_at: true,
-            updated_at: true,
-          },
-        },
-        replies: {
-          select: {
-            id: true,
-            content: true,
-            created_at: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                avatar: true,
-                badge: true,
-                isVerify: true,
-                name: true,
-                banner: true,
-                bio: true,
-                role: true,
-                created_at: true,
-                updated_at: true,
-              },
-            },
-          },
-        },
-      },
-    });
+  //   const comments = await prismaClient.comment.findMany({
+  //     where: {
+  //       animeId,
+  //     },
+  //     select: {
+  //       id: true,
+  //       content: true,
+  //       created_at: true,
+  //       user: {
+  //         select: {
+  //           id: true,
+  //           username: true,
+  //           avatar: true,
+  //           badges: true,
+  //           isVerify: true,
+  //           name: true,
+  //           banner: true,
+  //           bio: true,
+  //           role: true,
+  //           created_at: true,
+  //           updated_at: true,
+  //         },
+  //       },
+  //       replies: {
+  //         select: {
+  //           id: true,
+  //           content: true,
+  //           created_at: true,
+  //           user: {
+  //             select: {
+  //               id: true,
+  //               username: true,
+  //               avatar: true,
+  //               badges: true,
+  //               isVerify: true,
+  //               name: true,
+  //               banner: true,
+  //               bio: true,
+  //               role: true,
+  //               created_at: true,
+  //               updated_at: true,
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
 
-    return comments;
-  }
+  //   return comments;
+  // }
 
-  static async postComment(
-    animeId: string,
-    userId: string,
-    request: CreateCommentRequest,
-  ) {
-    request = CommentValidation.CREATE_COMMENT.parse(request);
+  // static async postComment(
+  //   animeId: string,
+  //   userId: string,
+  //   request: CreateCommentRequest,
+  // ) {
+  //   request = CommentValidation.CREATE_COMMENT.parse(request);
 
-    const comment = await prismaClient.comment.create({
-      data: {
-        animeId,
-        userId,
-        content: request.content,
-        created_at: new Date(),
-      },
-      select: {
-        id: true,
-        content: true,
-        created_at: true,
-      },
-    });
+  //   const comment = await prismaClient.comment.create({
+  //     data: {
+  //       animeId,
+  //       userId,
+  //       content: request.content,
+  //       created_at: new Date(),
+  //     },
+  //     select: {
+  //       id: true,
+  //       content: true,
+  //       created_at: true,
+  //     },
+  //   });
 
-    return { message: "Success", comment };
-  }
+  //   return { message: "Success", comment };
+  // }
 
-  static async deleteComment(userId: string, commentId: string) {
-    const comment = await prismaClient.comment.findUnique({
-      where: { id: commentId, userId },
-    });
+  // static async deleteComment(userId: string, commentId: string) {
+  //   const comment = await prismaClient.comment.findUnique({
+  //     where: { id: commentId, userId },
+  //   });
 
-    if (!comment) {
-      return HttpException.standarException(404, { message: "Comment not found" });
-    }
+  //   if (!comment) {
+  //     return HttpException.standarException(404, { message: "Comment not found" });
+  //   }
 
-    await prismaClient.comment.delete({
-      where: {
-        id: commentId,
-      },
-    });
+  //   await prismaClient.comment.delete({
+  //     where: {
+  //       id: commentId,
+  //     },
+  //   });
 
-    return { message: "Comment deleted" };
-  }
+  //   return { message: "Comment deleted" };
+  // }
 
 }

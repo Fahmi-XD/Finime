@@ -3,10 +3,10 @@
  */
 
 import HttpException from "@lib/httpException.js";
-import StringSimilarity from "@lib/similarity.js";
-import { MyanimeListParser } from "@scrapers/anime/myanimelist/api/myanimelistApi.js";
+import { StringSimilarity } from "@lib/similarity.js";
 import { Context } from "elysia";
 import axios from "axios";
+import Response from "@lib/response";
 
 export default class PublicController {
 
@@ -17,55 +17,40 @@ export default class PublicController {
         id: "karbit",
         name: "Karbit",
         icon: "Zap",
-        iconColor: "text-pink-500",
-        textColor: "text-pink-200"
       },
       {
         id: "crypto",
         name: "Crypto",
         icon: "Bitcoin",
-        iconColor: "text-yellow-500",
-        textColor: "text-yellow-200"
       },
       {
         id: "nolep",
         name: "Nolep",
         icon: "Gamepad2",
-        iconColor: "text-red-500",
-        textColor: "text-red-200"
       },
       {
         id: "contributor",
         name: "Contibutor",
         icon: "Handshake",
-        iconColor: "text-green-500",
-        textColor: "text-green-200"
+      },
+      {
+        id: "early-user",
+        name: "Early User",
+        icon: "Star",
+      },
+      {
+        id: "anime-lover",
+        name: "Anime Lover",
+        icon: "Heart",
+      },
+      {
+        id: "manga-lover",
+        name: "Manga Lover",
+        icon: "BookOpen",
       },
     ]
 
-    return badges;
-  }
-
-  static async toAnimeList(context: Context) {
-    const q = context.params.query || "";
-    const search = await MyanimeListParser.searchAnime(q);
-    if (search.animeList.length === 0) {
-      return HttpException.standarException(404, { message: "Anime Not Found." });
-    }
-
-    const anime = StringSimilarity.sortMatch(q, search.animeList.map(item => item.title));
-
-    for (let i = 0; i < anime.length; i++) {
-      (anime[i] as any)["myanimelist"] = search.animeList[anime[i].index];
-    }
-
-    const charInfo = await MyanimeListParser.getVoiceandChars((anime[0] as any)["myanimelist"].animeId);
-    (anime[0] as any)["characters"] = charInfo;
-
-    const charFullInfo = await MyanimeListParser.getFullAnime((anime[0] as any)["myanimelist"].animeId);
-    (anime[0] as any)["fullInfo"] = charFullInfo;
-
-    return anime;
+    return Response.standarResponse(200, badges);
   }
 
   static async proxyMedia(context: Context) {

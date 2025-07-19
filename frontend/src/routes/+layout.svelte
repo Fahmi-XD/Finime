@@ -2,9 +2,10 @@
 	import '../app.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { badges } from '$lib/stores/user';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { mode as modeStore } from '$lib/stores/mode';
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import Footer from '$lib/components/complex/Footer.svelte';
@@ -29,13 +30,34 @@
 
 	let { children } = $props();
 
+	const handleResize = () => {
+		if (window.innerWidth < 768) {
+			modeStore.set("flat")
+		} else {
+			modeStore.set("colorful")
+		}
+	};
+
 	onMount(async () => {
 		badges.set(await UserClient.getAllBadges());
+		
+		if (typeof window == "undefined") return;
+
+		handleResize();
+		window.addEventListener("resize", handleResize)
 	});
+	
+	onDestroy(() => {
+		if (typeof window == "undefined") return;
+	
+		window.removeEventListener("resize", handleResize)
+	})
 </script>
 
 <ModeWatcher defaultMode="dark" />
 <Navbar />
 {@render children()}
-<Footer />
+{#if $modeStore == "colorful"}
+	<Footer />
+{/if}
 <Toaster />

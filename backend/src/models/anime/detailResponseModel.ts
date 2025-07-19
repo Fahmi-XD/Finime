@@ -1,7 +1,7 @@
-import { ICharacterStandarResponse } from "./characterResponseModel";
-import { IStatisticsStandarResponse } from "./statisticsResponseModel";
-import { IStaffStandarResponse } from "./staffResponseModel";
-import { IEpisodesStandarResponse } from "./episodesResponseModel";
+import { ICharacterStandarResponse } from "./characterResponseModel.js";
+import { IStatisticsStandarResponse } from "./statisticsResponseModel.js";
+import { IStaffStandarResponse } from "./staffResponseModel.js";
+import { IEpisodesStandarResponse } from "./episodesResponseModel.js";
 
 export interface IDetailStandarResponse {
   characters?: ICharacterStandarResponse[];

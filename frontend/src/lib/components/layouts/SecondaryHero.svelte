@@ -4,7 +4,6 @@
 
 <section class="relative overflow-hidden {$modeStore === 'colorful' ? 'bg-gradient-to-br from-black via-gray-900 to-black' : 'bg-black'}">
   {#if $modeStore === 'colorful'}
-    <!-- Background Elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div class="absolute top-20 left-10 w-32 h-32 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
       <div class="absolute top-40 right-20 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
@@ -107,7 +106,7 @@
             </svg>
             Mulai Jelajahi Anime & Manga Sekarang
           </a>
-          <a href="/informasi/manga" class="group px-8 py-4 border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all duration-300 flex items-center justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105">
+          <a href="https://github.com/SyntxFlow/Finime" target="_blank" class="group px-8 py-4 border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all duration-300 flex items-center justify-center backdrop-blur-sm hover:shadow-xl transform hover:scale-105">
             <svg class="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
             </svg>

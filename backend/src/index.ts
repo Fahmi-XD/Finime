@@ -29,12 +29,12 @@ const app = new Elysia()
   }))
 
   // Handle 404
-  .onError(({ code }: Context) => {
+  .onError(({ code }: any) => {
     if (code === "NOT_FOUND") {
       return HttpException.standarException(404, { message: "halaman tidak ditemukan" });
     }
   })
-  .onAfterHandle(({ set, response }: Context) => {
+  .onAfterHandle(({ set, response }: any) => {
     set.status = response.status;
   })
 
@@ -67,9 +67,8 @@ const app = new Elysia()
    * Kalo mau jalanin api backend ini di mode development
    * Uncomment sementara kode .listen ini
    * Lalu kalau udah dan ingin di deploy, comment lagi kodenya
-   * Atau dihapus juga gak papa sih, karena bun bakalan otomatis ngehandle server dan portnya
    */
-  // .listen(PORT)
+  .listen(PORT)
 
 /**
  * Inimah gak usah di apa-apain, biarin aja
@@ -80,11 +79,6 @@ export const PATCH = app.handle
 export const PUT = app.handle
 export const OPTIONS = app.handle
 export const DELETE = app.handle
-
-export default {
-  fetch: app.fetch,
-  port: PORT,
-};
 
 console.log(
   `[ 🦊 Elysia ] Finime api is running at ${app.server?.hostname}:${app.server?.port}`

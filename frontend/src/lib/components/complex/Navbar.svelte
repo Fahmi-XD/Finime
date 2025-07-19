@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Bot, Home, Search, Tv, BookOpen, InfoIcon, PaintBucketIcon } from '@lucide/svelte';
+	import { Bot, Home, Search, Tv, BookOpen, InfoIcon, PaintBucketIcon, Smartphone } from '@lucide/svelte';
 	import ProfileMenu from '$lib/components/complex/ProfileMenu.svelte';
 	import { fade } from 'svelte/transition';
-	import { title } from '$lib/config/app';
+	import { title, noNavbarPages, noBottomNavPages } from '$lib/config/app';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_API } from '$env/static/public';
@@ -18,8 +18,6 @@
 	let isMenuOpen = false;
 	let isProfileMenuOpen = false;
 	let isLoadUser: boolean = true;
-	let text: 'manga' | 'anime' = 'manga';
-	let isFilterSearchOpen = false;
 
 	$: path = $page.url.pathname;
 
@@ -39,11 +37,6 @@
 	onMount(async () => {
 		isLoadUser = false;
 		window.addEventListener('click', closeProfileMenu);
-
-		setInterval(() => {
-			if (text == 'manga') text = 'anime';
-			else text = 'manga';
-		}, 5_000);
 	});
 
 	$: profile = $page.data.user;
@@ -57,136 +50,138 @@
 	$: {
 		links = [
 			{ name: 'Home', link: '/', icon: Home },
-			{ name: 'Search', link: '/search', icon: Search },
-			{ name: 'Anime', link: `/anime`, icon: Tv },
-			{ name: 'Manga', link: `/manga`, icon: BookOpen },
-			// { name: 'Community', link: '/community' },
-			{ name: 'About', link: '/about', icon: InfoIcon }
+			{ name: 'Search', link: `${$mode == "colorful" ? "" : "/mobile"}/search`, icon: Search },
+			{ name: 'Anime', link: `${$mode == "colorful" ? "" : "/mobile"}/anime`, icon: Tv },
+			{ name: 'Manga', link: `${$mode == "colorful" ? "" : "/mobile"}/manga`, icon: BookOpen },
+			{ name: 'About', link: `/about`, icon: InfoIcon }
 		];
 	}
 
-	function handleNavbarClick() {
-		isMenuOpen = false;
-	}
+	$: isShowNavbar = !noNavbarPages.some((value) => path.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
+	$: isShowBottomNav = !noBottomNavPages.some((value) => path.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
 </script>
 
-<nav class="fixed inset-x-0 top-0 z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg">
-	<div class="mx-auto w-full max-w-7xl px-4">
-		<div class="flex h-16 items-center justify-between">
-			<div class="flex items-center gap-2">
-				<!-- <button
-					class="rounded-md p-2 text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))/70] md:hidden"
-					on:click={toggleMenu}
-				>
-					{#if isMenuOpen}
-						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					{:else}
-						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 6h16M4 12h16M4 18h16"
-							/>
-						</svg>
-					{/if}
-				</button> -->
-
-				<a href="/" class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
-					<Bot />
-					{title}
-				</a>
-			</div>
-
-			<nav data-sveltekit-preload-data="false" class="hidden items-center gap-6 md:flex">
-				{#each links as { name, link }}
-					<a
-						href={link}
-						class="font-medium {path == link
-							? 'text-red-500'
-							: ''} text-lg text-[hsl(var(--foreground))] transition-colors hover:text-[hsl(var(--primary))]"
-						>{name}</a
+{#if isShowNavbar}	
+	<nav class="fixed inset-x-0 top-0 z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg">
+		<div class="mx-auto w-full max-w-7xl px-4">
+			<div class="flex h-16 items-center justify-between">
+				<div class="flex items-center gap-2">
+					<!-- <button
+						class="rounded-md p-2 text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))/70] md:hidden"
+						on:click={toggleMenu}
 					>
-				{/each}
-			</nav>
-
-			<div class="relative flex items-center gap-7">
-				<button on:click={() => mode.set($mode === 'colorful' ? 'flat' : 'colorful')}>
-					<PaintBucketIcon size="25" />
-				</button>
-
-				{#if profile}
-					<div class="relative">
-						<button
-							class="flex cursor-pointer items-center gap-2"
-							on:click|stopPropagation={toggleProfileMenu}
-						>
-							{#if profile?.avatar}
-								<img
-									src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={profile?.avatar}"
-									alt="Profile"
-									class="h-8 w-8 rounded-full"
+						{#if isMenuOpen}
+							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
 								/>
-							{:else}
-								<div
-									class="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-lg font-bold text-white"
-								>
-									{getInitials(profile?.name)}
+							</svg>
+						{:else}
+							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								/>
+							</svg>
+						{/if}
+					</button> -->
+
+					<a href="/" class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
+						<Bot />
+						{title}
+					</a>
+				</div>
+
+				<nav data-sveltekit-preload-data="false" class="hidden items-center gap-6 md:flex">
+					{#each links as { name, link }}
+						<a
+							href={link}
+							class="font-medium {path == link
+								? 'text-red-500'
+								: ''} text-lg text-[hsl(var(--foreground))] transition-colors hover:text-[hsl(var(--primary))]"
+							>{name}</a
+						>
+					{/each}
+				</nav>
+
+				<div class="relative flex items-center gap-7">
+					<!-- <button on:click={() => mode.set($mode === 'colorful' ? 'flat' : 'colorful')}>
+						<Smartphone size="25" />
+					</button> -->
+
+					{#if profile}
+						<div class="relative">
+							<button
+								class="flex cursor-pointer items-center gap-2"
+								on:click|stopPropagation={toggleProfileMenu}
+							>
+								{#if profile?.avatar}
+									<img
+										src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={profile?.avatar}"
+										alt="Profile"
+										class="h-8 w-8 rounded-full"
+									/>
+								{:else}
+									<div
+										class="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-lg font-bold text-white"
+									>
+										{getInitials(profile?.name)}
+									</div>
+								{/if}
+							</button>
+
+							{#if isProfileMenuOpen}
+								<div transition:fade>
+									<ProfileMenu {profile} />
 								</div>
 							{/if}
-						</button>
-
-						{#if isProfileMenuOpen}
-							<div transition:fade>
-								<ProfileMenu {profile} />
-							</div>
-						{/if}
-					</div>
-				{:else}
-					<a
-						data-sveltekit-preload-data="tap"
-						href="/auth/login"
-						class="rounded-md border border-[hsl(var(--primary))] px-4 py-1 md:py-2 text-lg font-medium text-[hsl(var(--primary))] transition-colors hover:bg-[hsl(var(--primary)/0.1)]"
-					>
-						Sign In
-					</a>
-				{/if}
+						</div>
+					{:else}
+						<a
+							data-sveltekit-preload-data="tap"
+							href="/auth/login"
+							class="rounded-md border border-[hsl(var(--primary))] px-4 py-1 md:py-2 text-lg font-medium text-[hsl(var(--primary))] transition-colors hover:bg-[hsl(var(--primary)/0.1)]"
+						>
+							Sign In
+						</a>
+					{/if}
+				</div>
 			</div>
+
+			<!-- {#if isMenuOpen}
+				<div
+					transition:fade
+					class="mt-4 space-y-2 rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4 shadow-md transition-all md:hidden"
+				>
+					{#each links as { name, link }}
+						<a
+							href={link}
+							on:click={handleNavbarClick}
+							class="block rounded-md px-4 py-2 text-lg font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))]/60 hover:text-[hsl(var(--primary))]"
+							>{name}</a
+						>
+					{/each}
+				</div>
+			{/if} -->
 		</div>
+	</nav>
+{/if}
 
-		<!-- {#if isMenuOpen}
-			<div
-				transition:fade
-				class="mt-4 space-y-2 rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4 shadow-md transition-all md:hidden"
-			>
-				{#each links as { name, link }}
-					<a
-						href={link}
-						on:click={handleNavbarClick}
-						class="block rounded-md px-4 py-2 text-lg font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))]/60 hover:text-[hsl(var(--primary))]"
-						>{name}</a
-					>
-				{/each}
-			</div>
-		{/if} -->
-	</div>
-</nav>
-
-<nav class="flex md:hidden py-2 pb-4 justify-around z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg fixed bottom-0 left-0 h-auto w-full">
-	{#each links as { icon, link }}
-		<button
-			on:click={() => goto(link)}
-			class="block rounded-md px-4 py-2 text-lg font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))]/60 hover:text-[hsl(var(--primary))]"
-			class:text-red-500={path === link}
-			>
-			<svelte:component this={icon} size="25" />
-		</button>
-	{/each}
-</nav>
+{#if isShowBottomNav}
+	<nav class="flex md:hidden py-2 pb-4 justify-around z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg fixed bottom-0 left-0 h-auto w-full">
+		{#each links as { icon, link }}
+			<button
+				on:click={() => goto(link)}
+				class="block rounded-md px-4 py-2 text-lg font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))]/60 hover:text-[hsl(var(--primary))]"
+				class:text-red-500={path === link}
+				>
+				<svelte:component this={icon} size="25" />
+			</button>
+		{/each}
+	</nav>
+{/if}

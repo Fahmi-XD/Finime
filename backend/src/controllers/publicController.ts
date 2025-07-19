@@ -6,7 +6,7 @@ import HttpException from "@lib/httpException.js";
 import { StringSimilarity } from "@lib/similarity.js";
 import { Context } from "elysia";
 import axios from "axios";
-import Response from "@lib/response";
+import Response from "@lib/response.js";
 
 export default class PublicController {
 

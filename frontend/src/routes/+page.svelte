@@ -1,17 +1,11 @@
 <script>
-	import { setMode, mode } from 'mode-watcher';
+  import { mode } from '$lib/stores/mode';
 
   import Donation from '$lib/components/ui/Donation.svelte';
   import Hero from '$lib/components/layouts/Hero.svelte';
   import SecondaryHero from '$lib/components/layouts/SecondaryHero.svelte';
 
-	function handleModeChange() {
-		if (mode.current === 'light') {
-			setMode('dark');
-		} else {
-			setMode('light');
-		}
-	}
+  import Home from '$lib/components/mobile/Home.svelte';
 </script>
 
 <svelte:head>
@@ -100,6 +94,10 @@
 
 <main class="block w-full h-full bg-[hsl(var(--background))]">
   <Donation />
-  <Hero />
-  <SecondaryHero />
+  {#if $mode === "colorful"}
+    <Hero />
+    <SecondaryHero />
+  {:else}
+    <Home />
+  {/if}
 </main>

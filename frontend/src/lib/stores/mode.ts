@@ -6,12 +6,12 @@ export const mode = writable<'colorful' | 'flat'>('colorful');
 
 mode.subscribe((value) => {
   if (value === 'colorful') {
-    toast.success('Colorful mode', {
+    toast.success('Desktop mode', {
       ...toastOption,
       duration: 1_000
     });
   } else {
-    toast.success('Flat mode', {
+    toast.success('Mobile mode', {
       ...toastOption,
       duration: 1_000
     });

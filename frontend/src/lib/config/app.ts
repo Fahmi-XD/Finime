@@ -7,5 +7,6 @@ export const toastOption: Partial<Pick<Toast, "style" | "icon" | "id" | "duratio
   style: "background: hsl(var(--background)); color: hsl(var(--foreground)); border: 1px solid rgba(255, 255, 255, 0.3);",
   duration: 2_000
 }
-export const noNavbarPages = ["/mobile/all/", "/mobile/search"]
-export const noBottomNavPages = ["/mobile/all/", "/mobile/search", "/mobile/anime/\\w+"]
+export const noNavbarPages = ["/mobile/all/", "/mobile/search", "SeeAll", "Search", "About"]
+export const noBottomNavPages = ["/mobile/all/", "/mobile/search", "/mobile/anime/\\w+", "SeeAll", "Search", "About", "/profile", "settings"]
+export const publicRoute = ["/profile", "/settings", "/auth/login", "/auth/register"];

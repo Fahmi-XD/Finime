@@ -5,9 +5,10 @@
 	import { fade } from 'svelte/transition';
 	import { title, noNavbarPages, noBottomNavPages } from '$lib/config/app';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import { PUBLIC_API } from '$env/static/public';
 	import { mode } from '$lib/stores/mode';
+	import { history } from '$lib/stores/history';
+	import { publicRoute } from '$lib/config/app';
 
 	type ILinks = {
 		name: string;
@@ -20,6 +21,7 @@
 	let isLoadUser: boolean = true;
 
 	$: path = $page.url.pathname;
+	$: queryFragment = $page.url.searchParams.get("fragment");
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -57,8 +59,8 @@
 		];
 	}
 
-	$: isShowNavbar = !noNavbarPages.some((value) => path.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
-	$: isShowBottomNav = !noBottomNavPages.some((value) => path.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
+	$: isShowNavbar = !noNavbarPages.some((value) => path.match(new RegExp(value, "i")) || queryFragment?.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
+	$: isShowBottomNav = !noBottomNavPages.some((value) => path.match(new RegExp(value, "i")) || queryFragment?.match(new RegExp(value, "i")) || path == value) || $mode === "colorful"
 </script>
 
 {#if isShowNavbar}	
@@ -91,9 +93,9 @@
 						{/if}
 					</button> -->
 
-					<a href="/" class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
+					<a href="{$mode === "flat" ? "/mobile?fragment=Home" : "/"}" class="flex items-center gap-2 text-lg font-bold {publicRoute.includes(path) ? "text-white" : "text-[hsl(var(--primary))]"}">
 						<Bot />
-						{title}
+						{publicRoute.includes(path) ? "Kembali" : title}
 					</a>
 				</div>
 
@@ -174,11 +176,11 @@
 
 {#if isShowBottomNav}
 	<nav class="flex md:hidden py-2 pb-4 justify-around z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg fixed bottom-0 left-0 h-auto w-full">
-		{#each links as { icon, link }}
+		{#each links as { icon, link, name }}
 			<button
-				on:click={() => goto(link)}
+				on:click={() => history.update((prev) => [...prev, name])}
 				class="block rounded-md px-4 py-2 text-lg font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))]/60 hover:text-[hsl(var(--primary))]"
-				class:text-red-500={path === link}
+				class:text-red-500={path === link || queryFragment == name}
 				>
 				<svelte:component this={icon} size="25" />
 			</button>

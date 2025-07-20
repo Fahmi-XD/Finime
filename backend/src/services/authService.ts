@@ -48,6 +48,8 @@ export default class AuthService {
           role: "MEMBER",
           isVerify: false,
           badges: [],
+          github_id: "",
+          google_id: "",
           email: request.email,
           created_at: new Date(),
         },
@@ -67,6 +69,7 @@ export default class AuthService {
         user,
       });
     } catch (error) {
+      console.log(error)
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
       } else {

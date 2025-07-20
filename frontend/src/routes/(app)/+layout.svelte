@@ -1,11 +1,12 @@
 <script lang="ts">
-	import '../app.css';
+	import '../../app.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { badges } from '$lib/stores/user';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { mode as modeStore } from '$lib/stores/mode';
+	import { publicRoute } from '$lib/config/app';
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import Footer from '$lib/components/complex/Footer.svelte';
@@ -33,6 +34,7 @@
 	const handleResize = () => {
 		if (window.innerWidth < 768) {
 			modeStore.set("flat")
+			if (!publicRoute.includes(path)) goto("/mobile", { replaceState: true });
 		} else {
 			modeStore.set("colorful")
 		}

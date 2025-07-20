@@ -1,9 +1,9 @@
 <script lang="ts">
   import { mode as modeStore } from '$lib/stores/mode';
+  import { history } from '$lib/stores/history';
 </script>
 
 <section class="relative min-h-screen flex items-center justify-center {$modeStore === 'colorful' ? 'bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden' : 'bg-black overflow-hidden'}">
-  <!-- Floating Gradient Orbs -->
   {#if $modeStore === 'colorful'}
     <div class="absolute top-10 left-10 w-32 h-32 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
     <div class="absolute top-40 right-20 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
@@ -22,8 +22,8 @@
         Kami sedang menyiapkan fitur manga terbaik untuk kamu. Nantikan update terbaru dari kami!
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/" class="px-8 py-4 {$modeStore === 'colorful' ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl font-bold shadow-lg hover:from-red-600 hover:to-pink-700 transition-all' : 'bg-red-500/50 text-red-500 rounded-xl font-bold hover:bg-red-500/20 transition-all'}">Kembali ke Beranda</a>
-        <a href="/mobile/anime" class="px-8 py-4 {$modeStore === 'colorful' ? 'border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all' : 'border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-blue-500/20 hover:text-white transition-all'}">Lihat Anime</a>
+        <button on:click={() => history.update((prev) => [...prev, "Home"])} class="px-8 py-4 {$modeStore === 'colorful' ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl font-bold shadow-lg hover:from-red-600 hover:to-pink-700 transition-all' : 'bg-red-500/50 text-red-500 rounded-xl font-bold hover:bg-red-500/20 transition-all'}">Kembali ke Beranda</button>
+        <button on:click={() => history.update((prev) => [...prev, "Anime"])} class="px-8 py-4 {$modeStore === 'colorful' ? 'border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all' : 'border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-blue-500/20 hover:text-white transition-all'}">Lihat Anime</button>
       </div>
     </div>
   </div>

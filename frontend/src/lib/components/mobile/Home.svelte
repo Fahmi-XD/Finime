@@ -1,626 +1,139 @@
 <script lang="ts">
-	import { Play, Heart } from "@lucide/svelte";
+	import { Flame, Star, ArrowRight } from "@lucide/svelte";
+
+	import { history } from "$lib/stores/history";
 </script>
 
-<div class="flex-1 overflow-auto mb-[70px] px-2">
-	<div class="relative">
-		<img
-			alt="Demon Slayer Kimetsu no Yaiba anime cover with character with red eyes and dark hair with red lighting"
-			class="h-[400px] w-full object-cover"
-			src="https://storage.googleapis.com/a1aa/image/f303d43f-f811-4656-aa31-7a18ca9a3110.jpg"
-		/>
-	<div class="bg-gradient-to-b-hero"></div>
-		<div class="absolute bottom-0 left-0 right-0 text-white drop-shadow-lg p-5">
-			<h1 class="text-xl font-semibold leading-tight">Demon Slayer: Kimetsu ...</h1>
-			<p class="mt-1 text-xs font-normal text-gray-300/70">Action, Shounen, Martial Arts</p>
-			<div class="mt-3 flex space-x-3">
-				<button
-					class="rounded-3xl flex items-center gap-2 bg-red-500 px-6 py-1 text-xs font-semibold text-white shadow-md"
-				>
-					<Play />
-					Tonton
-				</button>
-				<button
-					class="rounded-3xl flex items-center gap-2 border border-white border-opacity-40 px-6 py-1 text-xs font-semibold text-white"
-				>
-					<Heart />
-					Add to list	
-				</button>
-			</div>
-		</div>
-	</div>
-	<section class="mt-5 px-4">
-		<div class="mb-3 flex items-center justify-between">
-			<h2 class="text-lg font-semibold">Top Hits Anime</h2>
-			<a class="text-xs font-semibold text-red-500" href="/mobile/all/top"> See all </a>
-		</div>
-		<div class="flex w-full space-x-3 overflow-x-auto pb-2">
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="mt-5 px-4">
-		<div class="mb-3 flex items-center justify-between">
-			<h2 class="text-lg font-semibold">New Episode Releases</h2>
-			<a class="text-xs font-semibold text-red-500" href="/mobile/all/news"> See all </a>
-		</div>
-		<div class="flex space-x-3 overflow-x-auto pb-2">
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="mt-5 px-4">
-		<div class="mb-3 flex items-center justify-between">
-			<h2 class="text-lg font-semibold">Summer Anime</h2>
-			<a class="text-xs font-semibold text-red-500" href="/mobile/all/summer"> See all </a>
-		</div>
-		<div class="flex space-x-3 overflow-x-auto pb-2">
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="mt-5 px-4">
-		<div class="mb-3 flex items-center justify-between">
-			<h2 class="text-lg font-semibold">Romance Anime</h2>
-			<a class="text-xs font-semibold text-red-500" href="/mobile/all/romance"> See all </a>
-		</div>
-		<div class="flex space-x-3 overflow-x-auto pb-2">
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-			<div class="relative w-auto shrink-0">
-				<img
-					alt="Anime cover with character in blue outfit and blue background"
-					class="h-[200px] w-[150px] rounded-lg object-cover"
-					src="https://storage.googleapis.com/a1aa/image/7502ff75-07b6-4b09-56f1-213644a7d304.jpg"	
-				/>
-				<div class="absolute left-1 top-1 rounded bg-red-500 px-1 text-[10px] font-semibold">
-					12 EPS
-				</div>
-			</div>
-		</div>
-	</section>
-</div>
+<div class="flex-1 bg-transparent text-white overflow-auto mb-[70px] px-5">
+	<h1 class="opacity-70 mt-4 text-title-small">Watch today</h1>
+  <div class="relative w-full h-auto">
+    <div class="relative z-10 bg-transparent flex w-full h-auto py-3 overflow-hidden justify-center mt-10">
+      <img
+        class="w-[210px] h-[320px] translate-y-3 object-cover border border-white/60 rounded-2xl -rotate-5 absolute -translate-x-15"
+        src="/images/arona.jpg"
+        alt="Watch today"
+      />
+      <img
+        class="w-[210px] h-[320px] translate-y-3 object-cover border border-white/60 rounded-2xl rotate-8 absolute translate-x-15"
+        src="/images/konosuba.jpg"
+        alt="Watch today"
+      />
+      <img
+        class="w-[255px] h-[370px] object-cover border border-white/60 rounded-2xl rotate-1"
+        src="/images/aot.jpg"
+        alt="Watch today"
+      />
+    </div>
 
-<style scope>
-	.bg-gradient-to-b-hero {
-		display: block;
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.11) 20%, rgba(0, 0, 0, 0.822) 80%);
-	}
-</style>
+    <div class="block relative z-10 h-auto w-full mt-5">
+      <h1 class="px-10 font-normal opacity-70 text-body-medium">
+        Up on your watchlist
+      </h1>
+      <h1 class="px-10 font-bold text-title-large">Attack On Titan: Ngantuks</h1>
+      <div class="flex gap-5 text-body-medium px-10 mt-1 items-center">
+        <h1 class="opacity-80">2020</h1>
+        <div class="flex gap-2 items-center">
+          <Star />
+          <h1 class="opacity-80 text-green-500">4.4</h1>
+        </div>
+      </div>
+    </div>
+
+    <img
+      class="w-screen py-3 overflow-x-hidden -z-[1] h-[650px] blur-[100px] object-cover rotate-1 opacity-90 absolute left-0 -top-[60px]"
+      src="/images/aot.jpg"
+      alt="Watch today"
+    />
+  </div>
+
+  <div class="overflow-x-hidden">
+    <div class="flex justify-between items-center mt-10">
+			<h1 class="text-title-large flex items-center gap-1 font-bold">
+				Recently added <Flame color="#FF4500" />
+			</h1>
+			<button class="text-red-500 flex items-center gap-1" on:click={() => history.update((prev) => [...prev, "SeeAll"])}>Lainnya <ArrowRight /></button>
+		</div>
+    <div class="mt-7 grid grid-cols-2 overflow-x-hidden gap-5">
+      <div class="w-full">
+        <img
+          class="rounded-2xl h-[270px] w-full object-cover"
+          src="/images/konosuba.jpg"
+          alt="Konosuba"
+        />
+        <div class="mt-3 flex flex-col justify-between">
+          <h1 class="text-title-medium font-semibold">
+            KonoSuba: God's Blessing on This Wonderful World! 3
+          </h1>
+          <div>
+            <div class="flex gap-2 items-center my-2">
+              <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"
+              ></span>
+              <h1 class="opacity-80 text-label-medium">On Going</h1>
+            </div>
+            <div class="flex text-label-medium gap-5 mt-2 items-center">
+              <h1 class="opacity-80">2020</h1>
+              <div class="flex gap-2 items-center">
+                <Star />
+                <h1 class="opacity-80 text-green-500">4.4</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col overflow-hidden">
+        <img
+          class="rounded-2xl h-[270px] w-full object-cover"
+          src="/images/arona.jpg"
+          alt="Konosuba"
+        />
+        <div class="mt-3 flex flex-col justify-between flex-1">
+          <h1 class="text-title-medium font-semibold">
+            Blue Archive: Anime Terkeren Sedunia
+          </h1>
+          <div>
+            <div class="flex gap-2 items-center my-2">
+              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
+              ></span>
+              <h1 class="opacity-80 text-label-medium">Finish</h1>
+            </div>
+            <div class="flex text-label-medium gap-5 mt-2 items-center">
+              <h1 class="opacity-80">2020</h1>
+              <div class="flex gap-2 items-center">
+                <Star />
+                <h1 class="opacity-80 text-green-500">4.4</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col overflow-hidden">
+        <img
+          class="rounded-2xl h-[270px] w-full object-cover"
+          src="/images/aot.jpg"
+          alt="Konosuba"
+        />
+        <div class="mt-3 flex flex-col justify-between flex-1">
+          <h1 class="text-title-medium font-semibold">
+            Attack On Titan: Ngantuks
+          </h1>
+          <div>
+            <div class="flex gap-2 items-center my-2">
+              <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"
+              ></span>
+              <h1 class="opacity-80 text-label-medium">On Going</h1>
+            </div>
+            <div class="flex text-label-medium gap-5 mt-2 items-center">
+              <h1 class="opacity-80">2020</h1>
+              <div class="flex gap-2 items-center">
+                <Star />
+                <h1 class="opacity-80 text-green-500">4.4</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

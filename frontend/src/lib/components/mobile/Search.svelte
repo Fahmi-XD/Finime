@@ -3,11 +3,10 @@
 
   import { history } from "$lib/stores/history";
   import { page } from "$app/state";
-  import { scale } from "svelte/transition";
 </script>
 
 {#if page.url.searchParams.get("fragment") == "Search"}
-  <div class="pt-15 text-white px-5 pb-[70px]" transition:scale={{ duration: 200, start: 0.9 }}>
+  <div class="pt-15 text-white px-5 pb-[70px]">
     <div class="!fixed z-10 w-full block h-auto bg-black left-0 top-0 p-4">
       <div class="flex justify-between w-full items-center h-auto">
         <button on:click={() => history.update((prev) => [...prev, prev[prev.length - 2]])}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavigationIndependentTree, NavigationContainer } from '@react-navigation/native';
 import {
   createStackNavigator,
   TransitionPresets
@@ -13,26 +12,22 @@ import TabsLayout from './tabs/_layout';
 const Stack = createStackNavigator();
 export default function App() {
   return (
-    <NavigationIndependentTree>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="RootTabs"
-          screenOptions={{
-            ...TransitionPresets.ScaleFromCenterAndroid,
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="RootTabs"
-            component={TabsLayout}
-            options={{ headerShown: false }}
-          />
+    <Stack.Navigator
+      initialRouteName="RootTabs"
+      screenOptions={{
+        ...TransitionPresets.ScaleFromCenterAndroid,
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="RootTabs"
+        component={TabsLayout}
+        options={{ headerShown: false }}
+      />
 
-          <Stack.Screen name="Search" component={SearchScreen} />
-          <Stack.Screen name="About"  component={AboutScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </NavigationIndependentTree>
+      <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="About"  component={AboutScreen} />
+    </Stack.Navigator>
   );
 }
 

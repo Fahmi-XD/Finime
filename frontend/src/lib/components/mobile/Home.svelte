@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Flame, Star, ArrowRight } from "@lucide/svelte";
-
-	import { history } from "$lib/stores/history";
+  import { goto } from "$app/navigation";
 </script>
 
 <div class="flex-1 bg-transparent text-white overflow-auto mb-[70px] px-5">
@@ -33,7 +32,7 @@
       <div class="flex gap-5 text-body-medium px-10 mt-1 items-center">
         <h1 class="opacity-80">2020</h1>
         <div class="flex gap-2 items-center">
-          <Star />
+          <Star size="15" fill="green" color="green" />
           <h1 class="opacity-80 text-green-500">4.4</h1>
         </div>
       </div>
@@ -46,12 +45,12 @@
     />
   </div>
 
-  <div class="overflow-x-hidden">
+  <div class="overflow-x-hidden px-3">
     <div class="flex justify-between items-center mt-10">
 			<h1 class="text-title-large flex items-center gap-1 font-bold">
 				Recently added <Flame color="#FF4500" />
 			</h1>
-			<button class="text-red-500 flex items-center gap-1" on:click={() => history.update((prev) => [...prev, "SeeAll"])}>Lainnya <ArrowRight /></button>
+			<button class="text-red-500 flex items-center gap-1" on:click={() => goto("/mobile/see-all")}>Lainnya <ArrowRight /></button>
 		</div>
     <div class="mt-7 grid grid-cols-2 overflow-x-hidden gap-5">
       <div class="w-full">
@@ -73,7 +72,7 @@
             <div class="flex text-label-medium gap-5 mt-2 items-center">
               <h1 class="opacity-80">2020</h1>
               <div class="flex gap-2 items-center">
-                <Star />
+                <Star size="15" fill="green" color="green" />
                 <h1 class="opacity-80 text-green-500">4.4</h1>
               </div>
             </div>
@@ -100,7 +99,7 @@
             <div class="flex text-label-medium gap-5 mt-2 items-center">
               <h1 class="opacity-80">2020</h1>
               <div class="flex gap-2 items-center">
-                <Star />
+                <Star size="15" fill="green" color="green" />
                 <h1 class="opacity-80 text-green-500">4.4</h1>
               </div>
             </div>
@@ -127,7 +126,7 @@
             <div class="flex text-label-medium gap-5 mt-2 items-center">
               <h1 class="opacity-80">2020</h1>
               <div class="flex gap-2 items-center">
-                <Star />
+                <Star size="15" fill="green" color="green" />
                 <h1 class="opacity-80 text-green-500">4.4</h1>
               </div>
             </div>

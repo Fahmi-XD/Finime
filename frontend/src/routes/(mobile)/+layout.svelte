@@ -2,12 +2,15 @@
 	import '../../app.css';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { mode } from '$lib/stores/mode';
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import { Toaster } from "svelte-french-toast";
 
 	const protectedRoute = ["/settings", "/profile"];
 	const authRoute = ["/auth/login", "/auth/register"];
+
+	mode.set("flat")
 
 	let path = $derived(page.url.pathname)
 

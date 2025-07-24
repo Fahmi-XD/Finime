@@ -6,12 +6,12 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { mode as modeStore } from '$lib/stores/mode';
-	import { publicRoute } from '$lib/config/app';
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import Footer from '$lib/components/complex/Footer.svelte';
 	import { UserClient } from '$lib/api/clients/userClient';
 	import { Toaster } from "svelte-french-toast";
+	import { handleResize } from '$lib';
 
 	const protectedRoute = ["/settings", "/profile"];
 	const authRoute = ["/auth/login", "/auth/register"];
@@ -31,28 +31,19 @@
 
 	let { children } = $props();
 
-	const handleResize = () => {
-		if (window.innerWidth < 768) {
-			modeStore.set("flat")
-			if (!publicRoute.includes(path)) goto("/mobile", { replaceState: true });
-		} else {
-			modeStore.set("colorful")
-		}
-	};
-
 	onMount(async () => {
 		badges.set(await UserClient.getAllBadges());
 		
 		if (typeof window == "undefined") return;
 
-		handleResize();
-		window.addEventListener("resize", handleResize)
+		handleResize(path);
+		window.addEventListener("resize", () => handleResize(path))
 	});
 	
 	onDestroy(() => {
 		if (typeof window == "undefined") return;
 	
-		window.removeEventListener("resize", handleResize)
+		window.removeEventListener("resize", () => handleResize(path))
 	})
 </script>
 

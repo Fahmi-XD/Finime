@@ -6,6 +6,14 @@
   import SecondaryHero from '$lib/components/layouts/SecondaryHero.svelte';
 
   import Home from '$lib/components/mobile/Home.svelte';
+
+  import { handleResize } from '$lib';
+  import { onMount } from 'svelte';
+  import { page } from '$app/state';
+
+  onMount(() => {
+    handleResize(page.url.pathname)
+  })
 </script>
 
 <svelte:head>

@@ -104,13 +104,13 @@ html {
 body {
   display: block;
   overscroll-behavior: contain;
-  /* font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-style: normal; */
-  font-family: "Comic Neue", cursive;
+  font-style: normal;
+  /* font-family: "Comic Neue", cursive;
   font-weight: 700;
-  font-style: bold;
-  background: var(--background);
+  font-style: bold; */
+  background: black;
   overflow-x: hidden;
   position: relative;
   width: 100vw;

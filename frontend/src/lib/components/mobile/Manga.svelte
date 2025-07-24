@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { history } from '$lib/stores/history';
+  import { navigate } from '$lib/stores/history';
 </script>
 
 <section class="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
@@ -15,8 +15,8 @@
         Kami sedang menyiapkan fitur manga terbaik untuk kamu. Nantikan update terbaru dari kami!
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button class="px-8 py-4 bg-red-500/50 text-red-500 rounded-xl font-bold hover:bg-red-500/20 transition-all">Kembali ke Beranda</button>
-        <button class="px-8 py-4 border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-blue-500/20 hover:text-white transition-all">Lihat Anime</button>
+        <button on:click={() => navigate.set(["", "Home"])} class="px-8 py-4 bg-red-500/50 text-red-500 rounded-xl font-bold hover:bg-red-500/20 transition-all">Kembali ke Beranda</button>
+        <button on:click={() => navigate.set(["", "Anime"])} class="px-8 py-4 border-2 border-blue-500 text-blue-400 rounded-xl font-bold hover:bg-blue-500/20 hover:text-white transition-all">Lihat Anime</button>
       </div>
     </div>
   </div>

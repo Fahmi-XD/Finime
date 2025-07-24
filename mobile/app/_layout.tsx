@@ -17,6 +17,9 @@ export default function App() {
       screenOptions={{
         ...TransitionPresets.ScaleFromCenterAndroid,
         headerShown: false,
+        cardStyle: {
+          backgroundColor: "black"
+        }
       }}
     >
       <Stack.Screen
@@ -30,35 +33,3 @@ export default function App() {
     </Stack.Navigator>
   );
 }
-
-
-
-
-
-
-// import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
-
-// import SearchScreen from "./search";
-// import AboutScreen from "./about";
-// import TabsLayout from "./tabs/home";
-
-// const NativeStack = createStackNavigator();
-
-// export default function RootLayout() {
-//   return (
-//     <>
-//       <NativeStack.Navigator screenOptions={{
-//         ...TransitionPresets.ScaleFromCenterAndroid,
-//         headerShown: false,
-//       }}>
-//         <NativeStack.Screen
-//           name="Home"
-//           component={TabsLayout}
-//           options={{ headerShown: false }}
-//         />
-//         <NativeStack.Screen name="search" component={SearchScreen} options={{ headerShown: false }} />
-//         <NativeStack.Screen name="about" component={AboutScreen} options={{ headerShown: false }} />
-//       </NativeStack.Navigator>
-//     </>
-//   );
-// }

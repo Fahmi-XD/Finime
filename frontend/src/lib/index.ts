@@ -2,6 +2,9 @@
 import { mode as modeStore } from '$lib/stores/mode';
 import { publicRoute } from './config/app';
 import { goto } from '$app/navigation';
+import { crossfade as svelteCrossfade } from 'svelte/transition';
+
+export const crossfade = svelteCrossfade({ duration: 2000 });
 
 function truncate(text: string, maxLength: number) {
   return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;

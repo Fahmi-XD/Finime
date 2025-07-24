@@ -20,7 +20,7 @@
   $: tabsCache[currentTab as keyof typeof tabs] = tabs[currentTab as keyof typeof tabs];
 </script>
 
-<main class="relative block w-full h-screen overflow-hidden" transition:scale={{ duration: 200, start: 0.9 }}>
+<main class="relative block w-full h-screen overflow-hidden" in:scale={{ duration: 200, start: 0.9 }}>
   {#each Object.entries(tabsCache) as [key, component], i (i)}
     <section
       class="block w-full h-full absolute bg-black transition-opacity duration-200 inset-0 {key == currentTab ? "overflow-y-auto z-10 pointer-events-auto opacity-100" : "overflow-y-hidden z-0 pointer-events-none opacity-0"}"

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import {
   FontAwesome5,
   MaterialCommunityIcons,
@@ -10,7 +10,7 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 
-import { router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 const badges = [
   {
@@ -65,79 +65,88 @@ const badges = [
 ];
 
 export default function AboutScreen() {
+  const navigation = useNavigation();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Info</Text>
-        <View style={{ width: 24 }} />
-      </View>
-
-      <Text style={styles.sectionTitle}>Tentang NexoPlay Anime Web</Text>
-      <Text style={styles.description}>
-        NexoPlay Anime adalah platform mobile web yang dirancang untuk pecinta anime,
-        menyediakan streaming cepat, interaksi komunitas, dan fitur kustom.
-        Salah satu fitur unggulan adalah sistem badge pengguna yang memberikan pengakuan
-        peran dan tingkatan akses.
-      </Text>
-
-      <Text style={[styles.sectionTitle, { marginTop: 30 }]}>List Badge</Text>
-      {badges.map((badge) => (
-        <View key={badge.id} style={styles.badgeContainer}>
-          <View style={[styles.iconContainer, { backgroundColor: badge.bgColor }]}>
-            {badge.icon}
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.badgeTitle}>{badge.label}</Text>
-            <Text style={styles.badgeDescription}>{badge.description}</Text>
-          </View>
+    <SafeAreaView style={styles.safe}>
+      <ScrollView style={styles.container}>
+        <View style={styles.headerRow}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Info</Text>
+          <View style={{ width: 24 }} />
         </View>
-      ))}
 
-      <View style={styles.alertBoxWarning}>
-        <MaterialIcons name="warning" size={28} color="#facc15" />
-        <Text style={styles.alertText}>
-          Harap diperhatikan bahwa konten anime di aplikasi ini bersumber dari proses
-          pengambilan (scraping) situs pihak ketiga. Kami tidak memiliki lisensi resmi.
+        <Text style={styles.sectionTitle}>Tentang Aplikasi Finime</Text>
+        <Text style={styles.description}>
+          Finime adalah platform mobile yang dirancang untuk pecinta anime,
+          menyediakan streaming cepat, interaksi komunitas, dan fitur kustom.
+          Salah satu fitur unggulan adalah sistem badge pengguna yang memberikan pengakuan
+          peran dan tingkatan akses.
         </Text>
-      </View>
 
-      <View style={styles.alertBoxInfo}>
-        <Feather name="info" size={28} color="#22d3ee" />
-        <Text style={styles.alertText}>
-          Untuk pengalaman menonton yang sepenuhnya legal, kami menyarankan Anda
-          berkunjung ke layanan resmi seperti Crunchyroll, Netflix, atau platform lokal.
-        </Text>
-      </View>
+        <Text style={[styles.sectionTitle, { marginTop: 30 }]}>List Badge</Text>
+        {badges.map((badge) => (
+          <View key={badge.id} style={styles.badgeContainer}>
+            <View style={[styles.iconContainer, { backgroundColor: badge.bgColor }]}>
+              {badge.icon}
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.badgeTitle}>{badge.label}</Text>
+              <Text style={styles.badgeDescription}>{badge.description}</Text>
+            </View>
+          </View>
+        ))}
 
-      <View style={styles.alertBoxWarning}>
-        <MaterialIcons name="warning" size={28} color="#facc15" />
-        <Text style={styles.alertText}>
-          1. Aplikasi ini hanya bersifat edukasi/demontrasi dan bukan distributor resmi.{"\n"}
-          2. Nikmati anime secara aman dan legal melalui situs atau aplikasi berizin.{"\n"}
-          3. Terima kasih atas pengertian dan dukungan Anda terhadap ekosistem anime!
-        </Text>
-      </View>
+        <View style={styles.alertBoxWarning}>
+          <MaterialIcons name="warning" size={28} color="#facc15" />
+          <Text style={styles.alertText}>
+            Harap diperhatikan bahwa konten anime di aplikasi ini bersumber dari proses
+            pengambilan (scraping) situs pihak ketiga. Kami tidak memiliki lisensi resmi.
+          </Text>
+        </View>
 
-      <View style={styles.iconRow}>
-        <AntDesign name="github" size={28} color="white" />
-        <MaterialIcons name="hexagon" size={28} color="white" />
-        <FontAwesome name="area-chart" size={28} color="white" />
-        <MaterialIcons name="rocket" size={28} color="white" />
-      </View>
-    </ScrollView>
+        <View style={styles.alertBoxInfo}>
+          <Feather name="info" size={28} color="#22d3ee" />
+          <Text style={styles.alertText}>
+            Untuk pengalaman menonton yang sepenuhnya legal, kami menyarankan Anda
+            berkunjung ke layanan resmi seperti Crunchyroll, Netflix, atau platform lokal.
+          </Text>
+        </View>
+
+        <View style={styles.alertBoxWarning}>
+          <MaterialIcons name="warning" size={28} color="#facc15" />
+          <Text style={styles.alertText}>
+            1. Aplikasi ini hanya bersifat edukasi/demontrasi dan bukan distributor resmi.{"\n"}
+            2. Nikmati anime secara aman dan legal melalui situs atau aplikasi berizin.{"\n"}
+            3. Terima kasih atas pengertian dan dukungan Anda terhadap ekosistem anime!
+          </Text>
+        </View>
+
+        <View style={styles.iconRow}>
+          <AntDesign name="github" size={28} color="white" />
+          <MaterialIcons name="hexagon" size={28} color="white" />
+          <FontAwesome name="area-chart" size={28} color="white" />
+          <MaterialIcons name="rocket" size={28} color="white" />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: "black"
+  },
   container: {
     flex: 1,
     backgroundColor: "black",
     paddingHorizontal: 20,
-    paddingVertical: 30,
-    paddingTop: 60
+    height: "100%",
+    paddingTop: 60,
+    paddingBottom: 60
   },
   headerRow: {
     flexDirection: "row",

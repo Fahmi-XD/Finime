@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Flame, Star, ArrowRight } from 'lucide-react-native';
+import { router } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -31,7 +32,7 @@ const WatchTodayScreen = () => {
 
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Recently added <Flame size={20} /></Text>
-        <TouchableOpacity> 
+        <TouchableOpacity onPress={() => router.navigate("/search")}> 
           <View style={styles.row}>
             <Text style={styles.seeAll}>Lainnya</Text>
             <ArrowRight size={16} />
@@ -105,10 +106,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   leftImage: {
-    transform: [{ rotate: '-5deg' }, { translateX: -90 }],
+    transform: [{ rotate: '-5deg' }, { translateX: -50 }],
   },
   rightImage: {
-    transform: [{ rotate: '8deg' }, { translateX: 90 }],
+    transform: [{ rotate: '8deg' }, { translateX: 50 }],
   },
   centerImage: {
     width: 255,

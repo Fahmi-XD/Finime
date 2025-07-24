@@ -18,7 +18,7 @@
 		RocketIcon
 	} from '@lucide/svelte';
 
-	import { scale } from 'svelte/transition';
+	import { scale, crossfade } from 'svelte/transition';
 
 	type Badge = {
 		id: string;
@@ -99,7 +99,7 @@
 
 <div
 	class="bg-vanta mx-auto h-screen max-w-3xl overflow-x-hidden p-[20px] pb-[80px] text-white"
-	transition:scale={{ duration: 200, start: 0.9 }}
+	in:scale={{ duration: 200, start: 0.9 }}
 >
 	<div class="mb-6 flex items-center justify-between">
 		<button on:click={() => window.history.back()} class="rounded-full p-2">

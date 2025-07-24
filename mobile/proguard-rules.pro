@@ -1,0 +1,5 @@
+-keep class com.facebook.react.cxxbridge.CatalystInstanceImpl { *; }
+-keep class com.facebook.react.cxxbridge.JavaScriptExecutor { *; }
+-keep class com.facebook.react.bridge.queue.NativeRunnable { *; }
+-keep class com.facebook.react.bridge.ExecutorToken { *; }
+-keep class com.facebook.react.bridge.ReadableType { *; }

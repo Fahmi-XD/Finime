@@ -3,7 +3,7 @@
 	import { scale } from "svelte/transition";
 </script>
 
-<div class="max-w-md pt-10 px-6" in:scale={{ duration: 200, start: 0.9 }}>
+<div class="max-w-md pt-10 px-6" in:scale={{ duration: 200, start: 0.95 }}>
 	<header class="mb-10 flex items-center space-x-4">
 		<button aria-label="Back" on:click={() => window.history.back()} class="text-lg flex items-center gap-1 text-white">
 			<ArrowLeft />

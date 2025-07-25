@@ -99,7 +99,7 @@
 
 <div
 	class="bg-vanta mx-auto h-screen max-w-3xl overflow-x-hidden p-[20px] pb-[80px] text-white"
-	in:scale={{ duration: 200, start: 0.9 }}
+	in:scale={{ duration: 200, start: 0.95 }}
 >
 	<div class="mb-6 flex items-center justify-between">
 		<button on:click={() => window.history.back()} class="rounded-full p-2">

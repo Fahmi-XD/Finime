@@ -3,7 +3,7 @@
 	import { scale } from "svelte/transition";
 </script>
 
-<div class="max-w-md pt-10 px-6" in:scale={{ duration: 200, start: 0.9 }}>
+<div class="max-w-md pt-10 px-6" in:scale={{ duration: 200, start: 0.95 }}>
 	<header class="mb-10 flex items-center space-x-4">
 		<button aria-label="Back" on:click={() => window.history.back()} class="text-lg flex items-center gap-1 text-white">
 			<ArrowLeft />
@@ -64,7 +64,7 @@
 			<div class="flex flex-col justify-between">
 				<div>
 					<h2 class="text-lg font-semibold leading-tight text-white">
-						Demon Slayer: Entertainment Distri...
+						Demon Slayer: Entertainment Distrik...
 					</h2>
 					<p class="mt-4 text-xs text-gray-400">2022 | Japan</p>
 					<p class="mt-1 max-w-xs text-xs text-gray-400">

@@ -3,7 +3,7 @@
   import { scale } from "svelte/transition";
 </script>
 
-<div class="pt-15 text-white px-5 pb-[70px]" in:scale={{ duration: 200, start: 0.9 }}>
+<div class="pt-15 text-white px-5 pb-[70px]" in:scale={{ duration: 200, start: 0.95 }}>
   <div class="!fixed z-10 w-full block h-auto bg-black left-0 top-0 p-4">
     <div class="flex justify-between w-full items-center h-auto">
       <button on:click={() => window.history.back()}>

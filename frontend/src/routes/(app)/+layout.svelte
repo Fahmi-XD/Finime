@@ -37,14 +37,7 @@
 		if (typeof window == "undefined") return;
 
 		handleResize(path);
-		window.addEventListener("resize", () => handleResize(path))
 	});
-	
-	onDestroy(() => {
-		if (typeof window == "undefined") return;
-	
-		window.removeEventListener("resize", () => handleResize(path))
-	})
 </script>
 
 <ModeWatcher defaultMode="dark" />

@@ -25,24 +25,12 @@
       }
   });
 
-
 	const protectedRoute = ["/settings", "/profile"];
 	const authRoute = ["/auth/login", "/auth/register"];
 
 	mode.set("flat")
 
 	let path = $derived(page.url.pathname)
-
-	$effect(() => {
-		if (!page.data.user && protectedRoute.includes(path)) {
-			const urlEncoded = btoa(path)
-			goto(`/auth/login?from=${urlEncoded}`)
-		}
-
-		if (page.data.user && authRoute.includes(path)) {
-			goto(`/`)
-		}
-	});
 
 	let { children } = $props();
 </script>

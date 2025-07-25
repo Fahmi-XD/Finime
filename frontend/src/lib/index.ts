@@ -13,7 +13,7 @@ function truncate(text: string, maxLength: number) {
 const handleResize = (path: string) => {
 		if (window.innerWidth < 768) {
 			modeStore.set("flat")
-			if (!publicRoute.some((route) => path == route)) goto("/mobile", { replaceState: true });
+			// if (!publicRoute.some((route) => path == route)) goto("/mobile", { replaceState: true });
 		} else {
 			modeStore.set("colorful")
 		}

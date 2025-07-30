@@ -19,4 +19,4 @@ const handleResize = (path: string) => {
 		}
 	};
 
-export { truncate, handleResize
+export { truncate, handleResize }

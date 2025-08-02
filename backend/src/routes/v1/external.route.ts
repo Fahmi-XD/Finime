@@ -3,8 +3,8 @@
  */
 
 import Elysia from "elysia";
-import cacheMiddleware from "@middleware/cacheMiddleware.js";
-import { myAnimeListRoute, otakudesuRoute } from "@external/scrapers/index.js";
+import cacheMiddleware from "@middleware/cache.middleware.js";
+import { myAnimeListRoute, otakudesuRoute, kuramanimeRoute } from "@external/scrapers/index.js";
 
 export const externalRoute = new Elysia()
 
@@ -14,4 +14,5 @@ export const externalRoute = new Elysia()
   .group("/anime", (app) => app
     .use(myAnimeListRoute)
     .use(otakudesuRoute)
+    .use(kuramanimeRoute)
   )

@@ -1,10 +1,10 @@
 import { Context, Elysia } from "elysia";
-import { MyAnimeListApiParser } from "./apiParser.js";
+import { MyAnimeListApiParser } from "./api.parser.js";
 import Response from "@lib/response.js";
-import { IStatisticsStandarResponse } from "@models/anime/statisticsResponseModel.js";
-import { ICharacterStandarResponse } from "@models/anime/characterResponseModel.js";
-import { IStaffStandarResponse } from "@models/anime/staffResponseModel.js";
-import { IEpisodesStandarResponse } from "@models/anime/episodesResponseModel.js";
+import { IStatisticsStandarResponse } from "@models/anime/statisticsResponse.model.js";
+import { ICharacterStandarResponse } from "@models/anime/characterResponse.model.js";
+import { IStaffStandarResponse } from "@models/anime/staffResponse.model.js";
+import { IEpisodesStandarResponse } from "@models/anime/episodesResponse.model.js";
 import HttpException from "@lib/httpException.js";
 
 export const myAnimeListRoute = new Elysia()

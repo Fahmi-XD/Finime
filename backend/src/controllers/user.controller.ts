@@ -4,13 +4,13 @@
 
 import HttpException from "@lib/httpException.js";
 import ImageUpload from "@lib/uploadImage.js";
-import UserService from "@services/userService.js";
-import { UpdateUserRequest } from "@models/userModel.js";
-import { UserValidation } from "@validations/userValidation.js";
+import UserService from "@services/user.service.js";
+import { UpdateUserRequest } from "@models/user.model.js";
+import { UserValidation } from "@validations/user.validation.js";
 import { Context } from "elysia";
 import { ZodError } from "zod";
-import { CreateCommentRequest, ReplyCommentRequest } from "@models/commentModel.js";
-import type { ResponseModel } from "@models/responseModel.js";
+import { CreateCommentRequest, ReplyCommentRequest } from "@models/comment.model.js";
+import type { ResponseModel } from "@models/response.model.js";
 
 export default class UserController {
 

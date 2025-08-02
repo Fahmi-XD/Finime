@@ -2,7 +2,7 @@
  * Middleware Untuk Route Yang Membutuhkan Token Ketika Request
  */
 
-import prismaClient from '@databases/prismaClient.js'
+import prismaClient from '@databases/prisma.client.js'
 import { Context } from 'elysia'
 
 export const authMiddleware = async ({ headers, store }: Context) => {

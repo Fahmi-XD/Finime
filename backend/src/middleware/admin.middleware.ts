@@ -2,7 +2,7 @@
  * Middleware Route Khusus Admin
  */
 
-import prismaClient from '@databases/prismaClient.js'
+import prismaClient from '@databases/prisma.client.js'
 import { Context } from 'elysia'
 
 export const adminMiddleware = async ({ headers, store }: Context) => {

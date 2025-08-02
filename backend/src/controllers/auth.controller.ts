@@ -2,10 +2,10 @@
  * Controller Untuk Autentikasi
  */
 
-import AuthService from "@services/authService.js";
-import { RegisterUserRequest, LoginUserRequest } from "models/userModel";
+import AuthService from "@services/auth.service.js";
+import { RegisterUserRequest, LoginUserRequest } from "models/user.model.js";
 import { Context } from "elysia";
-import { ResponseModel } from "@models/responseModel.js";
+import { ResponseModel } from "@models/response.model.js";
 import Response from "@lib/response.js";
 import { ZodIssue } from "zod";
 import HttpException from "@lib/httpException.js";

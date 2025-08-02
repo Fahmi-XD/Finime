@@ -62,34 +62,36 @@
             src="/images/arona.jpg"
             alt="Konosuba"
           />
-          <div class="flex w-full min-w-0 flex-col justify-center">
+          <div class="flex w-full min-w-0 flex-col justify-between py-2">
             <h1 class="text-title-medium font-semibold">
               Blue Archive: Anime Terkeren Sedunia
             </h1>
-            <div class="flex gap-2 items-center my-2">
-              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
-              ></span>
-              <h1 class="opacity-80 text-label-small">Finish</h1>
-            </div>
-            <div class="flex gap-5 items-center text-label-small">
-              <h1 class="opacity-80">2023</h1>
-              <div class="flex gap-2 items-center">
-                <Star size="15" fill="green" color="green" />
-                <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+            <div>
+              <div class="flex gap-2 items-center my-2">
+                <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
+                ></span>
+                <h1 class="opacity-80 text-label-small">Finish</h1>
               </div>
-            </div>
-            <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
-              <span class="text-red-500">Comedy</span>
-              <span class="text-red-500">Isekai</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
+              <div class="flex gap-5 items-center text-label-small">
+                <h1 class="opacity-80">2023</h1>
+                <div class="flex gap-2 items-center">
+                  <Star size="15" fill="green" color="green" />
+                  <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+                </div>
+              </div>
+              <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
+                <span class="text-red-500">Comedy</span>
+                <span class="text-red-500">Isekai</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+              </div>
             </div>
           </div>
         </div>
@@ -102,74 +104,36 @@
             src="/images/arona.jpg"
             alt="Konosuba"
           />
-          <div class="flex w-full min-w-0 flex-col justify-center">
+          <div class="flex w-full min-w-0 flex-col justify-between py-2">
             <h1 class="text-title-medium font-semibold">
               Blue Archive: Anime Terkeren Sedunia
             </h1>
-            <div class="flex gap-2 items-center my-2">
-              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
-              ></span>
-              <h1 class="opacity-80 text-label-small">Finish</h1>
-            </div>
-            <div class="flex gap-5 items-center text-label-small">
-              <h1 class="opacity-80">2023</h1>
-              <div class="flex gap-2 items-center">
-                <Star size="15" fill="green" color="green" />
-                <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+            <div>
+              <div class="flex gap-2 items-center my-2">
+                <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
+                ></span>
+                <h1 class="opacity-80 text-label-small">Finish</h1>
               </div>
-            </div>
-            <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
-              <span class="text-red-500">Comedy</span>
-              <span class="text-red-500">Isekai</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li class="mt-5">
-        <div class="w-full grid grid-cols-[90px_1fr] gap-3 justify-start">
-          <img
-            class="rounded-2xl shrink-0 h-[140px] w-[90px] object-cover"
-            src="/images/arona.jpg"
-            alt="Konosuba"
-          />
-          <div class="flex w-full min-w-0 flex-col justify-center">
-            <h1 class="text-title-medium font-semibold">
-              Blue Archive: Anime Terkeren Sedunia
-            </h1>
-            <div class="flex gap-2 items-center my-2">
-              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
-              ></span>
-              <h1 class="opacity-80 text-label-small">Finish</h1>
-            </div>
-            <div class="flex gap-5 items-center text-label-small">
-              <h1 class="opacity-80">2023</h1>
-              <div class="flex gap-2 items-center">
-                <Star size="15" fill="green" color="green" />
-                <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+              <div class="flex gap-5 items-center text-label-small">
+                <h1 class="opacity-80">2023</h1>
+                <div class="flex gap-2 items-center">
+                  <Star size="15" fill="green" color="green" />
+                  <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+                </div>
               </div>
-            </div>
-            <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
-              <span class="text-red-500">Comedy</span>
-              <span class="text-red-500">Isekai</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
+              <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
+                <span class="text-red-500">Comedy</span>
+                <span class="text-red-500">Isekai</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+              </div>
             </div>
           </div>
         </div>
@@ -182,74 +146,36 @@
             src="/images/arona.jpg"
             alt="Konosuba"
           />
-          <div class="flex w-full min-w-0 flex-col justify-center">
+          <div class="flex w-full min-w-0 flex-col justify-between py-2">
             <h1 class="text-title-medium font-semibold">
               Blue Archive: Anime Terkeren Sedunia
             </h1>
-            <div class="flex gap-2 items-center my-2">
-              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
-              ></span>
-              <h1 class="opacity-80 text-label-small">Finish</h1>
-            </div>
-            <div class="flex gap-5 items-center text-label-small">
-              <h1 class="opacity-80">2023</h1>
-              <div class="flex gap-2 items-center">
-                <Star size="15" fill="green" color="green" />
-                <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+            <div>
+              <div class="flex gap-2 items-center my-2">
+                <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
+                ></span>
+                <h1 class="opacity-80 text-label-small">Finish</h1>
               </div>
-            </div>
-            <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
-              <span class="text-red-500">Comedy</span>
-              <span class="text-red-500">Isekai</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-            </div>
-          </div>
-        </div>
-      </li>
-
-      <li class="mt-5">
-        <div class="w-full grid grid-cols-[90px_1fr] gap-3 justify-start">
-          <img
-            class="rounded-2xl shrink-0 h-[140px] w-[90px] object-cover"
-            src="/images/arona.jpg"
-            alt="Konosuba"
-          />
-          <div class="flex w-full min-w-0 flex-col justify-center">
-            <h1 class="text-title-medium font-semibold">
-              Blue Archive: Anime Terkeren Sedunia
-            </h1>
-            <div class="flex gap-2 items-center my-2">
-              <span class="block w-[10px] h-[10px] bg-green-500 rounded-full"
-              ></span>
-              <h1 class="opacity-80 text-label-small">Finish</h1>
-            </div>
-            <div class="flex gap-5 items-center text-label-small">
-              <h1 class="opacity-80">2023</h1>
-              <div class="flex gap-2 items-center">
-                <Star size="15" fill="green" color="green" />
-                <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+              <div class="flex gap-5 items-center text-label-small">
+                <h1 class="opacity-80">2023</h1>
+                <div class="flex gap-2 items-center">
+                  <Star size="15" fill="green" color="green" />
+                  <h1 class="opacity-80 text-green-500 text-label-small">4.7</h1>
+                </div>
               </div>
-            </div>
-            <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
-              <span class="text-red-500">Comedy</span>
-              <span class="text-red-500">Isekai</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
-              <span class="text-red-500">Romance</span>
+              <div class="flex flex-nowrap text-label-small no-scroll items-center w-full mt-3 overflow-x-auto gap-3">
+                <span class="text-red-500">Comedy</span>
+                <span class="text-red-500">Isekai</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+                <span class="text-red-500">Romance</span>
+              </div>
             </div>
           </div>
         </div>

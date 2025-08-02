@@ -98,12 +98,12 @@
 }
 
 html {
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
 }
 
 body {
   display: block;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-style: normal;

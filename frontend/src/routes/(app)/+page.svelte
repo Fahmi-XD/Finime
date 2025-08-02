@@ -5,11 +5,18 @@
   import Hero from '$lib/components/layouts/Hero.svelte';
   import SecondaryHero from '$lib/components/layouts/SecondaryHero.svelte';
 
-  import Home from '$lib/components/mobile/Home.svelte';
-
   import { handleResize } from '$lib';
   import { onMount } from 'svelte';
   import { page } from '$app/state';
+  import { goto } from '$app/navigation';
+
+  $: {
+    if (typeof window != "undefined") {
+      if ($mode == "flat") {
+        goto("/mobile");
+      }
+    }
+  }
 
   onMount(() => {
     handleResize(page.url.pathname)
@@ -102,10 +109,6 @@
 
 <main class="block w-full h-full bg-[hsl(var(--background))]">
   <Donation />
-  {#if $mode === "colorful"}
-    <Hero />
-    <SecondaryHero />
-  {:else}
-    <Home />
-  {/if}
+  <Hero />
+  <SecondaryHero />
 </main>

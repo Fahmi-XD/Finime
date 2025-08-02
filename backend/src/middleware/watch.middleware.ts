@@ -2,9 +2,9 @@
  * Middleware Penambah Total Nonton Manga & Anime
  */
 
-import prismaClient from "@databases/prismaClient.js"
+import prismaClient from "@databases/prisma.client.js"
 import { customCache } from "@lib/cache.js"
-import UserService from "@services/userService.js";
+import UserService from "@services/user.service.js";
 
 // Update Total Menonton
 // async function updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {

@@ -8,7 +8,7 @@ import { Elysia, Context } from "elysia";
 import { cors } from '@elysiajs/cors'
 import * as cache from "elysia-cache";
 import HttpException from "@lib/httpException.js";
-import { authMiddleware } from "@middleware/authMiddleware.js";
+import { authMiddleware } from "@middleware/auth.middleware.js";
 
 import { authRoute, externalRoute, publicRoute, userRoute } from "@routes/index.js";
 

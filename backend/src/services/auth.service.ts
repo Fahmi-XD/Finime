@@ -2,15 +2,15 @@
  * Service Untuk Memanipulasi Data Autentikasi
  */
 
-import AuthValidation from "@validations/authValidation.js";
-import prismaClient from "@databases/prismaClient.js";
+import AuthValidation from "@validations/auth.validation.js";
+import prismaClient from "@databases/prisma.client.js";
 import crypto from "node:crypto";
 import bcrypt from "bcrypt";
 
-import type { LoginUserRequest, RegisterUserRequest } from "@models/userModel.js";
+import type { LoginUserRequest, RegisterUserRequest } from "@models/user.model.js";
 import { ZodError, ZodIssue } from "zod";
 import HttpException from "@lib/httpException.js";
-import { ResponseModel } from "@models/responseModel.js";
+import { ResponseModel } from "@models/response.model.js";
 import Response from "@lib/response.js";
 
 export default class AuthService {

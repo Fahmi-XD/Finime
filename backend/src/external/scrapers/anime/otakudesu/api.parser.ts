@@ -1,7 +1,7 @@
 import { Scrape } from "@external/scrapers/scrape.js";
-import { IotakudesuSearchModel } from "./otakudesuSearchModel.js";
-import { IotakudesuDetailModel } from "./otakudesuDetailModel.js";
-import { IotakudesuStreamModel } from "./otakudesuStreamModel.js";
+import { IotakudesuSearchModel } from "./search.model.js";
+import { IotakudesuDetailModel } from "./detail.model.js";
+import { IotakudesuStreamModel } from "./stream.model.js";
 
 import { StringSimilarity } from "@lib/similarity.js";
 

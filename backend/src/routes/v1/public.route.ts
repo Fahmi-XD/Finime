@@ -2,10 +2,10 @@
  * SubRoute Publik ( Tidak Memerlukan Token Ketika Request )
  */
 
-import PublicController from "@controllers/publicController.js";
-import UserController from "@controllers/userController.js";
+import PublicController from "@controllers/public.controller.js";
+import UserController from "@controllers/user.controller.js";
 import Elysia from "elysia";
-import cacheMiddleware from "@middleware/cacheMiddleware.js";
+import cacheMiddleware from "@middleware/cache.middleware.js";
 
 // Middleware untuk Cache
 const cacheMiddlewareRoute = new Elysia()

@@ -1,5 +1,5 @@
 import { Context, Elysia } from "elysia";
-import { OtakudesuApiParser } from "./apiParser.js";
+import { OtakudesuApiParser } from "./api.parser.js";
 import Response from "@lib/response.js";
 
 export const otakudesuRoute = new Elysia()

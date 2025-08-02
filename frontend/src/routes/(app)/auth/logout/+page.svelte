@@ -10,7 +10,7 @@
 
   onMount(() => {
     Cookie.remove('token');
-    toast.success("Berhasil logout", toastOption);
+    toast.loading("Logout ...", toastOption);
 
     setTimeout(() => {
       isLoading = false;

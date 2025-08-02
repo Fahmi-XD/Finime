@@ -100,7 +100,7 @@
 							{/if}
 						</button> -->
 
-					<a href="/" class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
+					<a href={$mode == "flat" ? "/mobile?fragment=Home" : "/"} on:click={() => { if ($mode == "flat") navigate.set(["/", "Home"]) }} class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
 						<Bot />
 						{title}
 					</a>
@@ -133,7 +133,7 @@
 									<img
 										src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={profile?.avatar}"
 										alt="Profile"
-										class="h-8 w-8 rounded-full"
+										class="h-8 w-8 rounded-full object-cover"
 									/>
 								{:else}
 									<div

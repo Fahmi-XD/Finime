@@ -2,7 +2,7 @@
  * SubRoute Autentikasi
  */
 
-import { AuthController } from "@controllers/authController.js";
+import { AuthController } from "@controllers/auth.controller.js";
 import { Elysia } from "elysia";
 
 export const authRoute = (app: Elysia) => app

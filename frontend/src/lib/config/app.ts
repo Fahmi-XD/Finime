@@ -9,5 +9,5 @@ export const toastOption: Partial<Pick<Toast, "style" | "icon" | "id" | "duratio
 }
 
 export const clearDisplay = ["/mobile/search", "/mobile/about", "/mobile/see-all", "/auth/login", "/auth/register", "/profile", "/settings"];
-export const exClearDisplayHeader = ["/auth/login", "/auth/register", "/profile", "/settings"];
-export const publicRoute = ["/auth/login", "/auth/register", "/profile", "/settings"];
+export const exClearDisplayHeader = ["/auth/login", "/auth/register", "/auth/logout", "/profile", "/settings"];
+export const publicRoute = ["/auth/login", "/auth/register", "/auth/logout", "/profile", "/settings"];

@@ -1,5 +1,7 @@
 <script lang="ts">
   import { scale } from "svelte/transition";
+  import { goto } from "$app/navigation";
+  import { onMount, onDestroy } from "svelte";
 
   import Home from "$lib/components/mobile/Home.svelte";
   import Anime from "$lib/components/mobile/Anime.svelte";
@@ -15,9 +17,43 @@
 
   let tabsCache: Partial<Record<keyof typeof tabs, any>> = {};
   tabsCache["Home"] = tabs.Home;
-    
-  $: currentTab = $navigate[1];
+
+  $: currentTab = $navigate[1]
   $: tabsCache[currentTab as keyof typeof tabs] = tabs[currentTab as keyof typeof tabs];
+  $: {
+    if (currentTab) {
+      if (typeof window != "undefined") goto(`/mobile?fragment=${currentTab}`)
+    }
+  }
+  let time: number;
+
+  async function onPop(e: PopStateEvent) {
+    e.preventDefault();
+
+    if (time) clearTimeout(time);
+
+    time = setTimeout(() => {
+      console.log("Tombol kembali ditekan")
+      navigate.set(["/", "Home"])
+    }, 200)
+  }
+
+  onMount(() => {
+    function initBackButtonInterceptor() {
+      history.pushState({ isApp: true }, '', "/");
+      console.log(history.length)
+
+      window.addEventListener('popstate', onPop);
+    }
+
+    initBackButtonInterceptor();
+  })
+
+  onDestroy(() => {
+    if (typeof window != "undefined") {
+      window.removeEventListener("popstate", onPop);
+    }
+  })
 </script>
 
 <main class="relative block w-full h-screen overflow-hidden" in:scale={{ duration: 200, start: 0.95 }}>

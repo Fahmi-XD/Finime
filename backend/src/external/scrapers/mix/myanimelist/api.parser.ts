@@ -1,12 +1,12 @@
 import { Scrape } from "@external/scrapers/scrape.js";
-import { ICharacterStandarResponse } from "@models/anime/characterResponseModel.js";
-import { IDetailStandarResponse } from "@models/anime/detailResponseModel.js";
-import { IStatisticsStandarResponse } from "@models/anime/statisticsResponseModel.js";
-import type { IRecentStandarResponse } from "@models/anime/recentResponseModel.js";
-import type { ISearchStandarResponse } from "@models/anime/searchResponseModel.js";
-import type { ITopStandarResponse } from "@models/anime/topResponseModel.js";
-import { IStaffStandarResponse } from "@models/anime/staffResponseModel.js";
-import { IEpisodesStandarResponse } from "@models/anime/episodesResponseModel.js";
+import { ICharacterStandarResponse } from "@models/anime/characterResponse.model.js";
+import { IDetailStandarResponse } from "@models/anime/detailResponse.model.js";
+import { IStatisticsStandarResponse } from "@models/anime/statisticsResponse.model.js";
+import type { IRecentStandarResponse } from "@models/anime/recentResponse.model.js";
+import type { ISearchStandarResponse } from "@models/anime/searchResponse.model.js";
+import type { ITopStandarResponse } from "@models/anime/topResponse.model.js";
+import { IStaffStandarResponse } from "@models/anime/staffResponse.model.js";
+import { IEpisodesStandarResponse } from "@models/anime/episodesResponse.model.js";
 
 export class MyAnimeListApiParser extends Scrape {
 

@@ -12,7 +12,9 @@
   import { page } from '$app/state';
 
   onMount(() => {
-    handleResize(page.url.pathname)
+    if (typeof window != "undefined") {
+      // handleResize(page.url.pathname)
+    }
   })
 </script>
 

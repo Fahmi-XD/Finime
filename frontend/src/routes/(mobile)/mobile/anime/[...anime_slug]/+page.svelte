@@ -124,7 +124,7 @@
 			</div>
 
 			<!-- Episodes list -->
-			<div class="space-y-4">
+			<div class="space-y-4 flex flex-col gap-2">
 				{#each animeDetail?.episodeList as episode}
           <a href="/mobile/anime/watch/{data.animeSlug}/{episode.ep}">
             <div class="flex items-center justify-between rounded-xl bg-[#2e2a3d] p-4 text-gray-300">

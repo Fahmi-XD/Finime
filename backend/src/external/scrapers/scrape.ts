@@ -57,8 +57,9 @@ export class Scrape {
         responseType: "json",
         responseEncoding: "utf-8",
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-          'Authorization': 'Bearer jina_f8719ed869a545309dc2a774b9efc5c0rLBO0XhWdlXvXZ3VBIGMF7OKoi-e',
+          // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+          'User-Agent': 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0',
+          // 'Authorization': 'Bearer jina_f8719ed869a545309dc2a774b9efc5c0rLBO0XhWdlXvXZ3VBIGMF7OKoi-e',
           'Accept': 'application/json',
           'X-Engine': 'direct',
           'DNT': '1',

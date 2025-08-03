@@ -8,6 +8,7 @@ export const fetchApi = async (url: string, method: string, data: any, headers: 
   const response = await axios({
     url: `${PUBLIC_API}/api/v1${url}`,
     method,
+    timeout: 10_000,
     data,
     headers: {
       "x-token": token,

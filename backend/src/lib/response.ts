@@ -2,7 +2,7 @@
  * Mengembalikan Response
  */
 
-import { ResponseModel } from "@models/responseModel.js";
+import { ResponseModel } from "@models/response.model.js";
 
 export default class Response {
 

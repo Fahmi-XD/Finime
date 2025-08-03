@@ -1,3 +1,3 @@
 import { writable } from "svelte/store";
 
-export const linearData = writable<Record<string, any>>({});
+export const runtimeData = writable<Record<string, any>>({});

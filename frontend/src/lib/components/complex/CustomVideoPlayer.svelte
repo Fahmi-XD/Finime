@@ -338,9 +338,9 @@
 		</video>
     <div class="absolute top-1/2 left-1/2 rounded-full play-pause-btn -translate-x-1/2 {isPlaying ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''} -translate-y-1/2">
       {#if isPlaying}
-        <Pause size="130" class="text-white p-5 bg-red-500 rounded-full" fill="white" />
+        <Pause size="70" class="text-white p-5 bg-red-500 rounded-full" fill="white" />
       {:else}
-        <Play size="130" class="text-white p-5 bg-red-500 rounded-full" fill="white" />
+        <Play size="70" class="text-white p-5 bg-red-500 rounded-full" fill="white" />
       {/if}
     </div>
 	</div>

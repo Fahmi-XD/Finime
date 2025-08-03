@@ -1,4 +1,4 @@
-export interface ISearchModel {
+export interface ISummerModel {
     animes?:    Animes;
     topAnimes?: Animes;
 }
@@ -27,10 +27,10 @@ export interface Datum {
     synopsis_short?:          string;
     total_episodes?:          number | null;
     aired_from?:              string;
-    aired_to?:                null | string;
-    scheduled_day?:           null | string;
-    scheduled_time?:          Date | null;
-    score?:                   number | null;
+    aired_to?:                null;
+    scheduled_day?:           string;
+    scheduled_time?:          Date;
+    score?:                   number;
     votes?:                   number;
     rating?:                  string;
     duration?:                string;
@@ -48,7 +48,7 @@ export interface Datum {
     folder_name?:             string;
     source?:                  string;
     season_id?:               number;
-    anilist_url?:             null | string;
+    anilist_url?:             string;
     data_source?:             string;
     popularity?:              number;
     members?:                 number;
@@ -56,31 +56,14 @@ export interface Datum {
     latest_comment_at?:       Date | null;
     base_rank?:               number;
     is_movie?:                null;
-    country_code?:            null | string;
+    country_code?:            string;
     latest_comment_id?:       number | null;
     latest_comment_reply_id?: number | null;
     duplicate_id?:            null;
-    scheduled_date?:          Date | null;
+    scheduled_date?:          Date;
     on_hold?:                 number;
     is_adult?:                number;
-    genres?:                  Genre[];
     posts?:                   Post[];
-}
-
-export interface Genre {
-    id?:         number;
-    label?:      string;
-    slug?:       string;
-    type?:       string;
-    created_at?: Date;
-    updated_at?: Date;
-    deleted_at?: null;
-    pivot?:      Pivot;
-}
-
-export interface Pivot {
-    anime_id?: number;
-    genre_id?: number;
 }
 
 export interface Post {
@@ -95,9 +78,9 @@ export interface Post {
     updated_at?:              Date;
     deleted_at?:              null;
     type?:                    string;
-    episode_batch?:           null | string;
+    episode_batch?:           null;
     version_name?:            null;
-    episode_decimal?:         null | string;
+    episode_decimal?:         null;
     is_published?:            number;
     release_type?:            null;
     latest_comment_id?:       number | null;

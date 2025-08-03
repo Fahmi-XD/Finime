@@ -66,7 +66,7 @@
 		];
 	}
 
-	$: isClearDisplay = clearDisplay.some((route) => route == path)
+	$: isClearDisplay = clearDisplay.some((route) => route == path || (new RegExp(route, "i")).test(path))
 	$: isExClearDisplayHeader = exClearDisplayHeader.some((route) => route == path)
 </script>
 

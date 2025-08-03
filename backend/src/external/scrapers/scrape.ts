@@ -8,7 +8,9 @@ import * as cheerio from "cheerio";
 
 export class Scrape {
 
-  protected static async fetch(url: string): Promise<AxiosResponse<any, any>> {
+  public static cheerio = cheerio;
+
+  public static async fetch(url: string, json: boolean = false): Promise<AxiosResponse<any, any>> {
     try {
       const response = await axios({
         url,
@@ -42,7 +44,7 @@ export class Scrape {
     }
   }
 
-  protected static async fetchJinaAI(url: string): Promise<AxiosResponse<any, any>> {
+  public static async fetchJinaAI(url: string, json: boolean = false): Promise<AxiosResponse<any, any>> {
     try {
       const response = await axios({
         url: `https://r.jina.ai/${url}`,
@@ -58,7 +60,12 @@ export class Scrape {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
           'Authorization': 'Bearer jina_f8719ed869a545309dc2a774b9efc5c0rLBO0XhWdlXvXZ3VBIGMF7OKoi-e',
           'Accept': 'application/json',
-          'X-Return-Format': 'html'
+          'X-Engine': 'direct',
+          'DNT': '1',
+          'X-No-Cache': 'true',
+          'X-Return-Format': 'html',
+          // ...( !json ? {'X-Return-Format': 'html'} : {}),
+          // ...( json ? {'X-Respond-With': 'no-content'} : {})
         },
       });
 
@@ -79,7 +86,7 @@ export class Scrape {
     }
   }
 
-  protected static async htmlParser<T>(
+  public static async htmlParser<T>(
     {
       url,
       initial,
@@ -102,21 +109,25 @@ export class Scrape {
     }
   }
 
-  protected static async apiParser<R, T>(
+  public static async apiParser<R, T>(
     {
       url,
-      initial
+      initial,
+      cf = false
     }: {
       url: string;
-      initial: T
+      initial: T;
+      cf?: boolean;
     },
     parser: (response: R, data: T) => Promise<T>
   ): Promise<T> {
     try {
-      const response = await this.fetch(url);
-      const parserResult = await parser(response.data as R, initial);
+      const response = await (cf ? this.fetchJinaAI : this.fetch)(url, true);
+      // console.log(response.data.data.html.match(/<pre.*">(.*)<\/pre>/im)[1])
+      const parserResult = await parser((cf ? JSON.parse(response.data.data.html.match(/<pre.*">(.*)<\/pre>/im)[1] || "{}") || {} : response.data) as R, initial);
       return parserResult as T;
-    } catch {
+    } catch (error) {
+      console.log(error)
       return initial
     }
   }

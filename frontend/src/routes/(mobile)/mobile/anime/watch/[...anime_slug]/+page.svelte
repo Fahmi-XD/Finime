@@ -3,25 +3,77 @@
 	import { onMount } from 'svelte';
 	import { Star, Shield, VerifiedIcon, SendHorizonal } from '@lucide/svelte';
 	import { scale } from 'svelte/transition';
+	import Plyr from "plyr";
+	import 'plyr/dist/plyr.css';
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
 	import type { IAnimeEpisodeDetail } from '$lib/api/types/mobile/episodeType';
 
 	import LoadingElements from '$lib/components/ui/LoadingElements.svelte';
-	import CustomVideoPlayer from '$lib/components/complex/CustomVideoPlayer.svelte';
+	// import CustomVideoPlayer from '$lib/components/complex/CustomVideoPlayer.svelte';
 
 	export let data: IAnimeSlug;
 
+	const QUALITY = {
+		"360": 0,
+		"480": 1,
+		"720": 2,
+		"1080": 3,
+	}
+
 	let animeDetail: IAnimeEpisodeDetail;
 	let isLoading = true;
+
+	let playerElement: HTMLElement;
 
 	onMount(async () => {
 		console.log(data.animeSlug);
 		isLoading = true;
 		const response = await AnimeMobileClient.getEpisode(data.animeSlug);
 		animeDetail = response;
-		// console.log(response);
+		console.log(response);
 		isLoading = false;
+
+		setTimeout(() => {
+			console.log(animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]);
+
+			const player = new Plyr(playerElement, { controls: [
+					'play-large', // The large play button in the center
+					'rewind', // Rewind by the seek time (default 10 seconds)
+					'play', // Play/pause playback
+					'fast-forward', // Fast forward by the seek time (default 10 seconds)
+					'progress', // The progress bar and scrubber for playback and buffering
+					'current-time', // The current time of playback
+					'duration', // The full duration of the media
+					'mute', // Toggle mute
+					'settings', // Settings menu
+					'pip', // Picture-in-picture (currently Safari only)
+					'airplay', // Airplay (currently Safari only)
+					'fullscreen', // Toggle fullscreen
+				],
+				quality: {
+					default: 360,
+					options: [360, 480, 720, 1080],
+					forced: true,
+					// onChange(quality) {
+					// 	console.log('Quality changed to:', quality);
+					// 	console.log(animeDetail?.videoUrls.length - ((QUALITY as any)[quality]))
+					// 	const currentTime = (playerElement as HTMLVideoElement).currentTime;
+					// 	const isPaused = (playerElement as HTMLVideoElement).paused;
+
+					// 	(playerElement as HTMLVideoElement).src = animeDetail?.videoUrls[animeDetail?.videoUrls.length - ((QUALITY as any)[quality])];
+
+					// 	(playerElement as HTMLVideoElement).load();
+					// 	(playerElement as HTMLVideoElement).currentTime = currentTime;
+					// 	if (!isPaused) {
+					// 		(playerElement as HTMLVideoElement).play();
+					// 	}
+					// },
+				},
+			});
+			player.on('play', () => console.log('Video playing!'));
+		}, 10)
+
 	});
 </script>
 
@@ -29,11 +81,38 @@
 	<LoadingElements />
 {:else}
 	<div class="mx-auto max-w-md pb-20 text-white" in:scale={{ duration: 200, start: 0.95 }}>
-		<CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} />
+		{#if Array.isArray(animeDetail?.videoUrls) && animeDetail?.videoUrls.length > 0}
+			<!-- <CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} /> -->
+
+			<div class="container">
+				<video bind:this={playerElement} src={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} controls crossorigin="anonymous" playsinline poster="/web-app-manifest-512x512.png">
+					{#each animeDetail?.videoUrls as videoUrl}
+						<source src={videoUrl} type="video/mp4" />
+					{/each}
+						
+						<!-- Caption files -->
+						<track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+								default>
+
+						<!-- Fallback for browsers that don't support the <video> element -->
+						<a href={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} download>Download</a>
+				</video>
+			</div>
+		{:else}
+			<iframe
+				class="w-full aspect-video"
+				src={animeDetail?.videoUrls as string}
+				frameborder="0"
+				allowfullscreen
+				allow="autoplay; encrypted-media; picture-in-picture"
+				loading="lazy"
+				title="Anime Video Player"
+			></iframe>
+		{/if}
 		<div class="bg-gradient-to-t from-black/90 to-transparent px-5 pb-8 pt-5">
 			<h1 class="text-2xl font-extrabold leading-tight">Tsuihousha Shokudou e Youkoso!</h1>
 			<p class="mb-4 mt-1 text-base font-normal">Episode 4</p>
-			<div class="mb-3 flex flex-wrap gap-2">
+			<!-- <div class="mb-3 flex flex-wrap gap-2">
 				<button
 					class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-3 py-2 text-sm font-semibold"
 				>
@@ -56,14 +135,14 @@
 				<button class="rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold">
 					Ganti Server
 				</button>
-			</div>
+			</div> -->
 			<div class="mb-6 flex flex-wrap gap-3">
-				<button
+				<!-- <button
 					class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold"
 				>
 					<i class="fas fa-arrow-down"> </i>
 					Download
-				</button>
+				</button> -->
 				<button
 					aria-label="Locked 1"
 					class="flex h-10 w-10 items-center justify-center rounded-full bg-[#3a3a4a] text-sm font-semibold"

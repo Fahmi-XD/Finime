@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { IAnimeSlug } from './+page';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
 	import { ArrowLeft, Star, Eye, SlidersHorizontal } from '@lucide/svelte';
 
@@ -17,6 +17,10 @@
 	let animeDetail: IAnimeDetail;
 	let isLoading = true;
 
+	const handleResize = () => {
+		bgHeight = imgEl.clientHeight;
+	}
+
 	onMount(async () => {
 		isLoading = true;
 		const response = await AnimeMobileClient.getDetail(data.animeSlug);
@@ -32,11 +36,13 @@
 				});
 			}
 
-			window.addEventListener('resize', () => {
-				bgHeight = imgEl.clientHeight;
-			});
+			window.addEventListener('resize', handleResize);
 		}, 10);
 	});
+
+	onDestroy(() => {
+		window.removeEventListener("resize", handleResize);
+	})
 </script>
 
 {#if isLoading}
@@ -105,15 +111,16 @@
 			<div class="mb-4 flex flex-wrap justify-center gap-2">
         {#each animeDetail?.relatedTags as tag}
           <span class="rounded-full bg-red-500 px-3 py-1 text-xs font-medium text-white">
-            {tag}
+            {tag.replace(",", "")}
           </span>
         {/each}
 			</div>
 
 			<!-- Description -->
-			<p class="mb-3 text-center min-h-0 max-h-50 overflow-y-auto text-sm leading-relaxed text-gray-300">
-				{animeDetail?.description}
-			</p>
+			<div class="mb-3 text-center min-h-0 overflow-y-hidden no-scroll max-h-50 text-sm leading-relaxed text-gray-300 relative">
+				<span class="block absolute pointer-events-none inset-0 h-full w-full bg-gradient-to-b from-black/20 via-transparent to-black/20"></span>
+				<p class="h-full max-h-50 w-full no-scroll overflow-y-auto">{animeDetail?.description}</p>
+			</div>
 
 			<!-- Episode header -->
 			<div class="mb-4 flex items-center justify-between">
@@ -124,7 +131,7 @@
 			</div>
 
 			<!-- Episodes list -->
-			<div class="space-y-4 flex flex-col gap-2">
+			<div class="flex flex-col gap-1.5">
 				{#each animeDetail?.episodeList as episode}
           <a href="/mobile/anime/watch/{data.animeSlug}/{episode.ep}">
             <div class="flex items-center justify-between rounded-xl bg-[#2e2a3d] p-4 text-gray-300">

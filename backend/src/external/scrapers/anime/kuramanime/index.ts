@@ -3,7 +3,6 @@ import { KuramanimeParser } from "./api.parser.js";
 import Response from "@lib/response.js";
 
 import { getToken } from "./token.helper.js";
-import { Scrape } from "@external/scrapers/scrape.js";
 
 export const kuramanimeRoute = new Elysia()
   .group("/kuramanime", (app) => app

@@ -44,6 +44,41 @@ export class Scrape {
     }
   }
 
+  public static async fetchWithHeaders(url: string, headers: Record<string, string>): Promise<AxiosResponse<any, any>> {
+    try {
+      const response = await axios({
+        url,
+        method: "GET",
+        timeout: 10000,
+        validateStatus: (status) => status >= 200 && status < 300,
+        maxRedirects: 5,
+        maxContentLength: 100000000,
+        maxBodyLength: 100000000,
+        responseType: "json",
+        responseEncoding: "utf-8",
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+          ...headers
+        },
+      });
+
+      if (response.status === 301 || response.status === 302) {
+        const redirectUrl = response.headers.location;
+        if (redirectUrl) {
+          return await this.fetchWithHeaders(redirectUrl, headers);
+        }
+      }
+
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return response
+    } catch (error) {
+      throw error as AxiosResponse<any, any>;
+    }
+  }
+
   public static async fetchJinaAI(url: string, json: boolean = false): Promise<AxiosResponse<any, any>> {
     try {
       const response = await axios({
@@ -74,6 +109,46 @@ export class Scrape {
         const redirectUrl = response.headers.location;
         if (redirectUrl) {
           return await this.fetch(redirectUrl);
+        }
+      }
+
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return response
+    } catch (error) {
+      throw error as AxiosResponse<any, any>;
+    }
+  }
+
+  public static async fetchWithHeadersJinaAI(url: string, headers: Record<string, string>): Promise<AxiosResponse<any, any>> {
+    try {
+      const response = await axios({
+        url: `https://r.jina.ai/${url}`,
+        method: "GET",
+        timeout: 10000,
+        validateStatus: (status) => status >= 200 && status < 300,
+        maxRedirects: 5,
+        maxContentLength: 100000000,
+        maxBodyLength: 100000000,
+        responseType: "json",
+        responseEncoding: "utf-8",
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0',
+          'Accept': 'application/json',
+          'X-Engine': 'direct',
+          'DNT': '1',
+          'X-No-Cache': 'true',
+          'X-Return-Format': 'html',
+          ...headers
+        },
+      });
+
+      if (response.status === 301 || response.status === 302) {
+        const redirectUrl = response.headers.location;
+        if (redirectUrl) {
+          return await this.fetchWithHeadersJinaAI(redirectUrl, headers);
         }
       }
 
@@ -124,13 +199,20 @@ export class Scrape {
   ): Promise<T> {
     try {
       const response = await (cf ? this.fetchJinaAI : this.fetch)(url, true);
-      // console.log(response.data.data.html.match(/<pre.*">(.*)<\/pre>/im)[1])
-      const parserResult = await parser((cf ? JSON.parse(response.data.data.html.match(/<pre.*">(.*)<\/pre>/im)[1] || "{}") || {} : response.data) as R, initial);
+      let serial = response.data.data.html.match(/<pre.*">(.*[\w\W]+)<\/pre>/im)[1] || "{}";
+      serial = this.removeHtmlTags(serial);
+      // console.log(serial)
+      const parserResult = await parser((cf ? JSON.parse(serial) || {} : response.data) as R, initial);
       return parserResult as T;
     } catch (error) {
       console.log(error)
       return initial
     }
+  }
+
+  public static removeHtmlTags(html: string): string {
+    const htmlWithoutTags = html.replace(/<[^>]*>/g, '');
+    return htmlWithoutTags.replace(/\s+/g, ' ').trim();
   }
 
 }

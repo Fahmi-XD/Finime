@@ -56,6 +56,7 @@
 				0,
 				Math.min(segmentList.length + MAX_SEGMENT, animeList.length)
 			);
+			$runtimeData['search.segment'] = segmentList;
 			setTimeout(() => {
 				isLoadingInter = false;
 			}, 100);
@@ -80,12 +81,14 @@
 		if ($runtimeData['search.cache'] && $runtimeData['search.cache']?.length) {
 			first = false;
 			animeList = $runtimeData['search.cache'];
-			segmentList = animeList.slice(0, MAX_SEGMENT);
+			if ($runtimeData['search.segment'] && $runtimeData['search.segment']?.length) {
+				segmentList = $runtimeData["search.segment"];
+			}
 		}
 	});
 
 	onDestroy(() => {
-		obs.disconnect();
+		if (obs) obs.disconnect();
 	});
 </script>
 

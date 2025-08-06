@@ -33,8 +33,8 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", event => {
     const url = new URL(event.request.url);
     self.currentUrl = url.toString();
-    console.log("Fetching: ", self.currentUrl);
-    console.log(self.currentUrl)
+    // console.log("Fetching: ", self.currentUrl);
+    // console.log(self.currentUrl)
     if (self.currentUrl.includes('https://www.googleapis.com/drive/v3/files/')) { //only add header to the endpoint i want
         event.respondWith(fetchStreaming(event));
     } else if (self.currentUrl.includes('.my.id/kdrive/')) { //only add header to the endpoint i want

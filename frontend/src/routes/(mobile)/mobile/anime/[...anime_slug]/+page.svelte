@@ -6,6 +6,7 @@
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
 	import type { IAnimeDetail } from '$lib/api/types/mobile/detailType';
+	import { runtimeMobile } from '$lib/stores/runtime';
 
 	import LoadingElements from '$lib/components/ui/LoadingElements.svelte';
 
@@ -23,8 +24,13 @@
 
 	onMount(async () => {
 		isLoading = true;
-		const response = await AnimeMobileClient.getDetail(data.animeSlug);
-		animeDetail = response;
+		if ($runtimeMobile["anime.detail." + data.animeSlug] && typeof $runtimeMobile["anime.detail." + data.animeSlug] == "object") {
+			animeDetail = $runtimeMobile["anime.detail." + data.animeSlug]
+		} else {
+			const response = await AnimeMobileClient.getDetail(data.animeSlug);
+			animeDetail = response;
+			$runtimeMobile["anime.detail." + data.animeSlug] = response;
+		}
 		isLoading = false;
 
 		setTimeout(() => {

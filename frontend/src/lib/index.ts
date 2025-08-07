@@ -7,16 +7,20 @@ import { crossfade as svelteCrossfade } from 'svelte/transition';
 export const crossfade = svelteCrossfade({ duration: 2000 });
 
 function truncate(text: string, maxLength: number) {
-  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+	return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
 }
 
 const handleResize = (path: string) => {
-		if (window.innerWidth < 768) {
-			modeStore.set("flat")
-			if (!publicRoute.some((route) => path == route)) goto("/mobile", { replaceState: true });
-		} else {
-			modeStore.set("colorful")
-		}
-	};
+	if (window.innerWidth < 768) {
+		modeStore.set("flat")
+		if (!publicRoute.some((route) => path == route)) goto("/mobile", { replaceState: true });
+	} else {
+		modeStore.set("colorful")
+	}
+};
 
-export { truncate, handleResize }
+function getInitials(name: string | undefined) {
+	return name ? name.charAt(0).toUpperCase() : '?';
+}
+
+export { truncate, handleResize, getInitials }

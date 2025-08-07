@@ -10,6 +10,8 @@ import { UserValidation } from "@validations/user.validation.js";
 import { ZodError } from "zod";
 import { ResponseModel } from "@models/response.model.js";
 import Response from "@lib/response.js";
+import type { CreateCommentRequest } from "@models/comment.model.js";
+import { CommentValidation } from "@validations/comment.validation.js";
 
 export default class UserService {
 
@@ -124,7 +126,7 @@ export default class UserService {
         return HttpException.standarException(404, { message: "User not found" });
       }
 
-      return user;
+      return Response.standarResponse(200, user);
     } catch (error) {
       if (error instanceof ZodError) {
         return HttpException.standarException(400, error.issues)
@@ -235,106 +237,109 @@ export default class UserService {
   //   return { message: "Reply deleted" };
   // }
 
-  // static async getComment(animeId: string) {
-  //   const commentCount = await prismaClient.comment.count({
-  //     where: { animeId },
-  //   });
+  static async getComment(animeId: string) {
+    const commentCount = await prismaClient.comment.count({
+      where: { anime_id: animeId },
+    });
 
-  //   if (commentCount === 0) {
-  //     return { message: "There are no comments on this anime yet." };
-  //   }
+    if (commentCount === 0) {
+      return Response.standarResponse(200, []);
+    }
 
-  //   const comments = await prismaClient.comment.findMany({
-  //     where: {
-  //       animeId,
-  //     },
-  //     select: {
-  //       id: true,
-  //       content: true,
-  //       created_at: true,
-  //       user: {
-  //         select: {
-  //           id: true,
-  //           username: true,
-  //           avatar: true,
-  //           badges: true,
-  //           isVerify: true,
-  //           name: true,
-  //           banner: true,
-  //           bio: true,
-  //           role: true,
-  //           created_at: true,
-  //           updated_at: true,
-  //         },
-  //       },
-  //       replies: {
-  //         select: {
-  //           id: true,
-  //           content: true,
-  //           created_at: true,
-  //           user: {
-  //             select: {
-  //               id: true,
-  //               username: true,
-  //               avatar: true,
-  //               badges: true,
-  //               isVerify: true,
-  //               name: true,
-  //               banner: true,
-  //               bio: true,
-  //               role: true,
-  //               created_at: true,
-  //               updated_at: true,
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   });
+    const comments = await prismaClient.comment.findMany({
+      where: {
+        anime_id: animeId,
+      },
+      select: {
+        id: true,
+        content: true,
+        created_at: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            avatar: true,
+            banner: true,
+            role: true,
+            bio: true,
+            isVerify: true,
+            badges: true,
+            created_at: true,
+            updated_at: true,
+          },
+        },
+        // replies: {
+        //   select: {
+        //     id: true,
+        //     content: true,
+        //     created_at: true,
+        //     user: {
+        //       select: {
+        //         id: true,
+        //         username: true,
+        //         avatar: true,
+        //         badges: true,
+        //         isVerify: true,
+        //         name: true,
+        //         banner: true,
+        //         bio: true,
+        //         role: true,
+        //         created_at: true,
+        //         updated_at: true,
+        //       },
+        //     },
+        //   },
+        // },
+      },
+      orderBy: {
+        created_at: "desc"
+      }
+    });
 
-  //   return comments;
-  // }
+    return Response.standarResponse(200, comments);
+  }
 
-  // static async postComment(
-  //   animeId: string,
-  //   userId: string,
-  //   request: CreateCommentRequest,
-  // ) {
-  //   request = CommentValidation.CREATE_COMMENT.parse(request);
+  static async postComment(
+    animeId: string,
+    userId: string,
+    request: CreateCommentRequest,
+  ) {
+    request = CommentValidation.CREATE_COMMENT.parse(request);
 
-  //   const comment = await prismaClient.comment.create({
-  //     data: {
-  //       animeId,
-  //       userId,
-  //       content: request.content,
-  //       created_at: new Date(),
-  //     },
-  //     select: {
-  //       id: true,
-  //       content: true,
-  //       created_at: true,
-  //     },
-  //   });
+    const comment = await prismaClient.comment.create({
+      data: {
+        anime_id: animeId,
+        user_id: userId,
+        content: request.content,
+        created_at: new Date(),
+      },
+      select: {
+        id: true,
+        content: true,
+        created_at: true,
+      },
+    });
 
-  //   return { message: "Success", comment };
-  // }
+    return Response.standarResponse(201, comment);
+  }
 
-  // static async deleteComment(userId: string, commentId: string) {
-  //   const comment = await prismaClient.comment.findUnique({
-  //     where: { id: commentId, userId },
-  //   });
+  static async deleteComment(userId: string, commentId: string) {
+    const comment = await prismaClient.comment.findUnique({
+      where: { id: commentId, user_id: userId },
+    });
 
-  //   if (!comment) {
-  //     return HttpException.standarException(404, { message: "Comment not found" });
-  //   }
+    if (!comment) {
+      return HttpException.standarException(404, "Comment not found");
+    }
 
-  //   await prismaClient.comment.delete({
-  //     where: {
-  //       id: commentId,
-  //     },
-  //   });
+    await prismaClient.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
 
-  //   return { message: "Comment deleted" };
-  // }
+    return Response.standarResponse(200, "Comment deleted");
+  }
 
 }

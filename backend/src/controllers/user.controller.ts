@@ -102,37 +102,31 @@ export default class UserController {
   //   };
   // }
 
-  // // Comment Anime ID
-  // static async commentAnimeId(context: Context): Promise<ResponseModel<any>> {
-  //   const animeId = context.params.animeId as string;
-  //   if (!animeId) return HttpException.standarException(400, { message: "Error" });
-  //   const response = await UserService.getComment(animeId);
-  //   return {
-  //     data: response,
-  //   };
-  // }
+  // Comment Anime ID
+  static async commentAnimeId(context: Context): Promise<ResponseModel<any>> {
+    const animeId = context.query.animeId as string;
+    if (!animeId) return HttpException.standarException(400, { message: "Error" });
+    const response = await UserService.getComment(animeId);
+    return response;
+  }
 
-  // // POST Comment Anime ID
-  // static async commentPostAnimeId(context: Context): Promise<ResponseModel<any>> {
-  //   const userId = (context.store as { userId: string }).userId as string
-  //   const animeId = context.params.animeId as string;
-  //   if (!animeId) return HttpException.standarException(400, { message: "Error" });
-  //   const request = (await context.request.json()) as CreateCommentRequest;
-  //   const response = await UserService.postComment(animeId, userId, request);
-  //   return {
-  //     data: response,
-  //   };
-  // }
+  // POST Comment Anime ID
+  static async commentPostAnimeId(context: Context): Promise<ResponseModel<any>> {
+    const userId = (context.store as { userId: string }).userId as string
+    const animeId = (context.body as any).animeId as string;
+    if (!animeId) return HttpException.standarException(400, { message: "Error" });
+    const request = context.body as unknown as CreateCommentRequest;
+    const response = await UserService.postComment(animeId, userId, request);
+    return response;
+  }
 
-  // // Delete Comment ID
-  // static async deleteCommentId(context: Context): Promise<ResponseModel<any>> {
-  //   const userId = (context.store as { userId: string }).userId as string
-  //   const commentId = context.params.commentId as string;
-  //   if (!commentId) return HttpException.standarException(400, { message: "Error" });
-  //   const response = await UserService.deleteComment(userId, commentId);
-  //   return {
-  //     data: response,
-  //   };
-  // }
+  // Delete Comment ID
+  static async deleteCommentId(context: Context): Promise<ResponseModel<any>> {
+    const userId = (context.store as { userId: string }).userId as string
+    const commentId = context.params.commentId as string;
+    if (!commentId) return HttpException.standarException(400, { message: "Error" });
+    const response = await UserService.deleteComment(userId, commentId);
+    return response;
+  }
 
 }

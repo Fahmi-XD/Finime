@@ -19,12 +19,12 @@
 	let path = $derived(page.url.pathname)
 
 	$effect(() => {
-		if (!page.data.user && protectedRoute.includes(path)) {
+		if (Object.keys(page.data.user).length == 0 && protectedRoute.includes(path)) {
 			const urlEncoded = btoa(path)
 			goto(`/auth/login?from=${urlEncoded}`)
 		}
 
-		if (page.data.user && authRoute.includes(path)) {
+		if (Object.keys(page.data.user).length > 0 && authRoute.includes(path)) {
 			goto(`/`)
 		}
 	});

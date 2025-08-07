@@ -1,17 +1,21 @@
 <script lang="ts">
 	import type { IAnimeSlug } from './+page';
 	import { onMount, onDestroy } from 'svelte';
-	import { Star, Shield, VerifiedIcon, SendHorizonal } from '@lucide/svelte';
-	import { scale } from 'svelte/transition';
+	import { Star, Shield, VerifiedIcon, SendHorizonal, EllipsisVertical, Loader } from '@lucide/svelte';
+	import { scale, fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import { page as pages } from '$app/stores';
 	import Plyr from "plyr";
 	import 'plyr/dist/plyr.css';
+	import { PUBLIC_API } from '$env/static/public';
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
+	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
 	import type { IAnimeEpisodeDetail } from '$lib/api/types/mobile/episodeType';
 	import type { IAnimeDetail } from '$lib/api/types/mobile/detailType';
+	import type { ICommentModel } from '$lib/api/types/mobile/commentType';
 	import { runtimeMobile } from '$lib/stores/runtime';
+	import { getInitials } from '$lib';
 
 	import LoadingElements from '$lib/components/ui/LoadingElements.svelte';
 	import { goto } from '$app/navigation';
@@ -24,18 +28,32 @@
 		"720": 2
 	}
 	const animeSlug = page.url.pathname.split('/').slice(-3, -1).join('/');
-	$: animeSlugWithEpisode = $pages.url.pathname.split('/').slice(-3).join('/');
+	const user = page.data.user;
+
+	$: animeSlugWithEpisode = "";
+
+	$: {
+		if ($pages.url.pathname.split('/').slice(-3).length > 2) {
+			animeSlugWithEpisode = $pages.url.pathname.split('/').slice(-3).join('/');
+		} else {
+			animeSlugWithEpisode = data.animeSlug;
+		}
+	}
 
 	let animeDetail: IAnimeEpisodeDetail;
 	let animeDetail2: IAnimeDetail;
+	let commentList: ICommentModel[] = [];
 	let isLoading = true;
 	let player: Plyr;
 	let lastSlug = data.animeSlug;
+	let isOpenDots = false;
+	let isCommentLoading = false;
+	let commentStr = ""
 
-    $: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
-        lastSlug = animeSlugWithEpisode;
-        fetchAllData();
-    }
+	$: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
+			lastSlug = animeSlugWithEpisode;
+			fetchAllData();
+	}
 
 	let playerElement: HTMLElement;
 
@@ -49,6 +67,24 @@
 		if (screen.orientation && screen.orientation.unlock) {
 			screen.orientation.unlock();
 		}
+	}
+
+	async function postComment(comment: string) {
+		if (!user || !user.id) {
+			return;
+		}
+
+		try {
+			const response = await UserMobileClient.postComment(comment, animeSlugWithEpisode);
+		} catch (error) {
+			console.error('Error posting comment:', error);
+		}
+	}
+
+	async function fetchComment() {
+		const response = await UserMobileClient.getComment(animeSlugWithEpisode);
+		commentList = response;
+		$runtimeMobile["comment.detail." + data.animeSlug] = response;
 	}
 
 	async function fetchAllData() {
@@ -68,12 +104,21 @@
 			animeDetail2 = response;
 			$runtimeMobile["anime.detail." + data.animeSlug] = response;
 		}
-
-		// console.log(animeDetail2);
-		// console.log(animeDetail);
-		// console.log(animeSlug)
+		
+		// if ($runtimeMobile["comment.detail." + data.animeSlug] && typeof $runtimeMobile["comment.detail." + data.animeSlug] == "object") {
+		// 	commentList = $runtimeMobile["comment.detail." + data.animeSlug]
+		// } else {
+		// 	await fetchComment();
+		// }
+		await fetchComment();
 
 		isLoading = false;
+	}
+
+	function handleCloseDots(event: MouseEvent) {
+		if (!event.target || !(event.target as HTMLElement).closest('.dots-menu')) {
+			isOpenDots = false;
+		}
 	}
 
 	onMount(async () => {
@@ -121,14 +166,20 @@
 
 			player.on('exitfullscreen', unlockOrientation);
 
+			if (typeof window !== "undefined") {
+				window.addEventListener("click", handleCloseDots);
+			}
+
 		}, 10)
 
 	});
 
 	onDestroy(() => {
-		if (player) {
+		if (player && typeof window !== "undefined") {
 			player.off('enterfullscreen', lockLandscape);
 			player.off('exitfullscreen', unlockOrientation);
+
+			window.removeEventListener("click", handleCloseDots);
 
 			player.destroy();
 		}
@@ -137,111 +188,78 @@
 </script>
 
 <svelte:head>
-  <title>{animeDetail2?.title} - Finime</title>
+  <title>Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online</title>
   <meta
     name="description"
-    content={animeDetail2?.description || 'Jelajahi koleksi anime terlengkap di Finime. Streaming anime sub Indo gratis, update episode terbaru setiap hari, kualitas HD, tanpa iklan judi, dan komunitas anime aktif. Temukan anime favoritmu sekarang!'}
+    content="Finime adalah situs nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime terbaru, koleksi manga terlengkap, update episode & chapter setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman menonton dan membaca tanpa gangguan iklan!"
   />
   <meta
     name="keywords"
-    content={animeDetail2?.genres.join(', ') || 'anime, streaming, sub indo, gratis, terbaru, HD, komunitas'}
+    content="nonton anime gratis, baca manga gratis, streaming anime sub indo, download anime, anime tanpa iklan, manga tanpa iklan, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime no ads, manga no ads, anime anti judi, situs anime terbaik, situs manga terbaik, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia, anime tanpa iklan judi, manga tanpa iklan judi"
   />
   <meta name="author" content="Finime Team" />
-  <link rel="canonical" href="https://www.finime.my.id/anime" />
+  <link rel="canonical" href="https://www.finime.my.id/" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  
-  <!-- Additional SEO Meta Tags -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="theme-color" content="#111827" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Finime Anime" />
 
-  <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.finime.my.id/anime" />
+  <meta property="og:url" content="https://www.finime.my.id/" />
   <meta
     property="og:title"
-    content={animeDetail2?.title || 'Finime - Jelajahi Koleksi Anime Terlengkap'}
+    content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
   />
   <meta
     property="og:description"
-    content={animeDetail2?.description || 'Jelajahi koleksi anime terlengkap di Finime. Streaming anime sub Indo gratis, update episode terbaru setiap hari, kualitas HD, tanpa iklan judi, dan komunitas anime aktif. Temukan anime favoritmu sekarang!'}
+    content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
   />
-  <meta property="og:image" content={animeDetail2?.image} />
+  <meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Finime Discover Anime - Jelajahi Koleksi Anime Gratis" />
   <meta property="og:locale" content="id_ID" />
   <meta property="og:site_name" content="Finime" />
 
-  <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@finime_id" />
   <meta name="twitter:creator" content="@finime_id" />
-  <meta name="twitter:url" content="https://www.finime.my.id/anime" />
+  <meta name="twitter:url" content="https://www.finime.my.id/" />
   <meta
     name="twitter:title"
-    content={animeDetail2?.title || 'Finime - Jelajahi Koleksi Anime Terlengkap'}
+    content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
   />
   <meta
     name="twitter:description"
-    content={animeDetail2?.description || 'Jelajahi koleksi anime terlengkap di Finime. Streaming anime sub Indo gratis, update episode terbaru setiap hari, kualitas HD, tanpa iklan judi, dan komunitas anime aktif. Temukan anime favoritmu sekarang!'}
+    content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
   />
   <meta
     name="twitter:image"
-    content={animeDetail2?.image}
+    content="https://www.finime.my.id/web-app-manifest-512x512.png"
   />
-  <meta name="twitter:image:alt" content="Finime Discover Anime - Jelajahi Koleksi Anime Gratis" />
 
-  <!-- Structured Data for Anime Collection Page -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "Jelajahi Anime di Finime",
-      "description": "Halaman koleksi anime terlengkap di Finime. Streaming anime sub Indo gratis, update episode terbaru, kualitas HD, tanpa iklan judi.",
-      "url": "https://www.finime.my.id/anime",
-      "hasPart": [
-        {
-          "@type": "CreativeWorkSeries",
-          "name": "Anime Series",
-          "url": "https://www.finime.my.id/anime"
-        }
-      ],
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://www.finime.my.id/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Anime",
-            "item": "https://www.finime.my.id/anime"
-          }
-        ]
+      "@type": "WebSite",
+      "name": "Finime",
+      "url": "https://www.finime.my.id/",
+      "description": "Finime adalah website nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime & manga terlengkap, update setiap hari, kualitas HD, dan komunitas aktif.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.finime.my.id/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Finime",
         "logo": {
           "@type": "ImageObject",
-          "url": {animeDetail2?.image}
+          "url": "https://www.finime.my.id/web-app-manifest-512x512.png"
         }
       }
     }
   </script>
 
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
   <link
     rel="apple-touch-icon"
     sizes="180x180"
@@ -249,12 +267,9 @@
   />
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-  
-  <!-- Preconnect for Performance -->
-  <link rel="preconnect" href="https://www.finime.my.id" />
-  <link rel="dns-prefetch" href="https://www.finime.my.id" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="theme-color" content="#111827" />
 </svelte:head>
-
 
 {#if isLoading}
 	<LoadingElements />
@@ -332,66 +347,126 @@
 			{/each}
 		</div>
 		<h2 class="mb-4 text-xl font-extrabold">Komentar</h2>
-		<form class="mb-6 flex gap-3">
-			<input
-				class="flex-grow rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
-				placeholder="Komentar.."
-				type="text"
-			/>
-			<button
-				aria-label="Send comment"
-				class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1f1f2e] text-white"
-				type="submit"
-			>
-				<SendHorizonal />
-			</button>
-		</form>
+		{#if Object.keys(user).length > 0}
+			<form class="mb-6 flex gap-3">
+				<input
+					class="flex-grow rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
+					placeholder="Komentar.."
+					type="text"
+					bind:value={commentStr}
+				/>
+				<button
+					aria-label="Send comment"
+					class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1f1f2e] text-white"
+					type="submit"
+					disabled={isCommentLoading}
+					on:click={async (e) => {
+						e.preventDefault();
+						const comment = commentStr
+						if (!comment) return;
+
+						isCommentLoading = true;
+						try {
+							await postComment(comment);
+							commentStr = '';
+							await fetchComment();
+						} catch (error) {
+							console.error('Error posting comment:', error);
+						} finally {
+							isCommentLoading = false;
+						}
+					}}
+				>
+					{#if isCommentLoading}
+						<Loader color="red" class="animate-spin" />
+					{:else}
+						<SendHorizonal color="red" />
+					{/if}
+				</button>
+			</form>
+		{:else}
+			<a href="/auth/login?from={btoa("/mobile/anime/watch/" + animeSlugWithEpisode)}" class="my-4 text-title-medium text-blue-500">Masuk untuk berkomentar</a>
+		{/if}
 		<div class="space-y-6">
-			<div
-				aria-label="Comment by Vivy Admin"
-				class="flex max-w-full flex-col gap-2 rounded-xl bg-[#1f1f2e] p-5"
-			>
-				<div class="flex items-center gap-4">
-					<div class="relative">
-						<img
-							alt="Avatar of Vivy (Admin) with pink and black colors and glowing effect"
-							class="h-12 w-12 rounded-full object-cover"
-							height="48"
-							src="https://avatars.githubusercontent.com/u/205189488?s=400&u=1a27e3745fbf6fd793acdd113d84b82688913fa3&v=4"
-							width="48"
-						/>
-					</div>
-					<div>
-						<div class="flex items-center gap-2">
-							<p class="font-semibold text-white">Syntx (Admin)</p>
-							<span
-								class="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
-								title="Verified"
-							>
-								<VerifiedIcon color="yellow" />
-							</span>
-							<Star size={20} />
-							<Shield size={20} />
+			{#each commentList as comment}
+				<div
+					aria-label="Comment by {comment.user.name}"
+					class="flex max-w-full flex-col gap-2 rounded-xl bg-[#1f1f2e] p-5"
+				>
+					<div class="flex items-center gap-4">
+						<div class="relative">
+							{#if comment.user.avatar}
+								<img
+									alt="Avatar of {comment.user.name}"
+									class="h-12 w-12 rounded-full object-cover"
+									height="48"
+									src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={comment.user.avatar}"
+									width="48"
+								/>
+							{:else}
+								<div
+									class="flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[hsl(var(--primary))] text-lg font-bold text-white"
+								>
+									{getInitials(comment.user.name)}
+								</div>
+							{/if}
 						</div>
-						<div class="flex items-center gap-2">
-							<span
-								class="rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-2 py-0.5 text-xs font-semibold"
-							>
-								VIP III
-							</span>
-							<p class="text-sm text-gray-400">SSS-Rank</p>
+						<div>
+							<div class="flex items-center gap-2">
+								<p class="font-semibold text-white">{comment.user.name}</p>
+								<!-- {#if comment.user.role == "ADMIN"}
+									<p class="font-semibold text-red-500">( Admin )</p>
+								{/if} -->
+								{#if comment.user.isVerify}
+									<span
+										class="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
+										title="Verified"
+									>
+										<VerifiedIcon color="yellow" />
+									</span>
+									<Star size={20} />
+									<Shield size={20} />
+								{/if}
+							</div>
+							<div class="flex items-center gap-2">
+								<span
+									class="rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-2 py-0.5 text-xs font-semibold"
+								>
+									{comment.user.role}
+								</span>
+								<p class="text-sm text-gray-400">@{comment.user.username}</p>
+							</div>
 						</div>
+						{#if Object.keys(user).length > 0 && user.id == comment.user.id}
+							<div class="ml-auto dots-menu flex items-center relative gap-2">
+								<button on:click={() => {
+									isOpenDots = !isOpenDots;
+								}} class="rounded-full bg-[#1f1f2e] p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
+									<EllipsisVertical class="h-5 w-5 text-gray-400" />
+								</button>
+								{#if isOpenDots}
+									<div class="absolute right-0 top-10 z-10 w-48 rounded-lg bg-black border border-white/20 p-2 shadow-lg" transition:fade={{ duration: 100 }}>
+										<ul class="space-y-1">
+											<li class="px-4 py-2 hover:bg-gray-500 text-red-500 cursor-pointer"><button on:click={async () => {
+												await UserMobileClient.deleteComment(comment.id);
+												await fetchComment();
+											}}>Hapus</button></li>
+										</ul>
+									</div>
+								{/if}
+							</div>
+						{/if}
+						<!-- <p class="ml-auto text-xs font-semibold text-gray-400">Lv. 9999999</p> -->
 					</div>
-					<p class="ml-auto text-xs font-semibold text-gray-400">Lv. 9999999</p>
+					<p class="font-normal text-title-small leading-snug text-white">
+						{comment.content}
+					</p>
+					<div class="flex justify-between text-xs font-normal text-gray-400">
+						<span> {(new Date(comment.created_at)).toLocaleDateString()} </span>
+						<!-- <button class="font-bold text-white"> Balas (0) </button> -->
+					</div>
 				</div>
-				<p class="font-normal text-title-small leading-snug text-white">
-					Bukankah ini ...
-				</p>
-				<div class="flex justify-between text-xs font-normal text-gray-400">
-					<span> 1 Menit yang lalu </span>
-					<button class="font-bold text-white"> Balas (0) </button>
-				</div>
-			</div>
+			{/each}
 		</div>
 	</div>
 </div>

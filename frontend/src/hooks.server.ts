@@ -13,8 +13,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 			});
 
 			if (response.status === 200) {
-				event.locals.user = response.result;
+				event.locals.user = response.result || {};
 			}
+		} else {
+			event.locals.user = {};
 		}
 
 	} catch (error) {

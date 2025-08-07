@@ -25,6 +25,7 @@ model User {
 
   anime Anime[]
   manga Manga[]
+  comments Comment[]
 
   role Role @default(MEMBER)
 
@@ -58,6 +59,22 @@ model Manga {
   updated_at DateTime @map("updated_at")
 
   @@map("manga")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+
+  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id   String   @db.ObjectId
+
+  anime_id  String?
+
+  manga_id  String?
+
+  created_at DateTime @default(now())
+
+  @@map("comments")
 }
 
 enum Role {

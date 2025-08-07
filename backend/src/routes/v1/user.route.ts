@@ -13,13 +13,13 @@ export const userRoute = (app: Elysia) => app
   .patch("/user", UserController.updateUser)
 
   .group("/comment", (app) => app
+    .post("/post", UserController.commentPostAnimeId)
     // .post("/reply", UserController.reply)
-    // .post("/:animeId", UserController.commentPostAnimeId)
 
     // .delete("/reply/:replyId", UserController.deleteReply)
-    // .delete("/:commentId", UserController.deleteCommentId)
+    .delete("/:commentId", UserController.deleteCommentId)
 
-    // .get("/:animeId", UserController.commentAnimeId)
+    .get("/", UserController.commentAnimeId)
   )
 
 /**

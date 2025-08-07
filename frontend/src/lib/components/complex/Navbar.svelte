@@ -123,7 +123,7 @@
 							<Smartphone size="25" />
 						</button> -->
 
-					{#if profile}
+					{#if Object.keys(profile).length > 0 && !isLoadUser}
 						<div class="relative">
 							<button
 								class="flex cursor-pointer items-center gap-2"

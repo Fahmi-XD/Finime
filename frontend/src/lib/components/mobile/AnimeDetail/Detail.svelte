@@ -47,7 +47,7 @@
           {/if}
         </td>
       </tr>
-      <tr><th>Episode List</th><td>{animeDetail.episodeList?.length ? animeDetail.episodeList.map((e: any) => `<a href='${e.url}' target='_blank'>${e.ep}</a>`).join(', ') : '-'}</td></tr>
+      <tr><th>Episode List</th><td>{animeDetail.episodeList?.length ? animeDetail.episodeList.map((e: any) => `${e.ep}`).join(', ') : '-'}</td></tr>
       <tr><th>Themes</th><td>{animeDetail.themes?.join(', ')}</td></tr>
       <tr><th>Social Media</th><td>{animeDetail.socialMedia?.length ? animeDetail.socialMedia.map((s: any) => `${s.name}`).join(', ') : '-'}</td></tr>
       <tr><th>Navigation</th><td>{animeDetail.navigation?.length ? animeDetail.navigation.map((n: any) => `${n.name}`).join(', ') : '-'}</td></tr>

@@ -40,6 +40,7 @@ export default class AuthService {
       }
 
       request.password = await bcrypt.hash(request.password, 10);
+
       const user = await prismaClient.user.create({
         data: {
           username: request.username,

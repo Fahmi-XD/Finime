@@ -6,13 +6,6 @@ import prismaClient from "@databases/prisma.client.js"
 import { customCache } from "@lib/cache.js"
 import UserService from "@services/user.service.js";
 
-// Update Total Menonton
-// async function updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
-//   const response = await UserService.updateWatch(userId, isAnime, isManga);
-
-//   return response;
-// }
-
 export const watchMiddleware = async ({ headers, path }: any) => {
   const token = headers['x-token']
 

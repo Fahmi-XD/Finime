@@ -39,6 +39,7 @@
   "dependencies": {
     "@lucide/svelte": "^0.525.0",
     "axios": "^1.10.0",
+    "embla-carousel-svelte": "^8.6.0",
     "js-cookie": "^3.0.5",
     "mode-watcher": "^1.1.0",
     "plyr": "^3.7.8",
@@ -46,6 +47,7 @@
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
-    "core-js"
+    "core-js",
+    "esbuild"
   ]
 }

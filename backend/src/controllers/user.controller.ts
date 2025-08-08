@@ -9,7 +9,7 @@ import { UpdateUserRequest } from "@models/user.model.js";
 import { UserValidation } from "@validations/user.validation.js";
 import { Context } from "elysia";
 import { ZodError } from "zod";
-import { CreateCommentRequest, ReplyCommentRequest } from "@models/comment.model.js";
+import { CreateCommentRequest } from "@models/comment.model.js";
 import type { ResponseModel } from "@models/response.model.js";
 
 export default class UserController {

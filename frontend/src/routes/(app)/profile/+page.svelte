@@ -51,7 +51,7 @@
             {:else if user.banner}
               <img src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.banner}" alt="Banner" class="h-[160px] w-full object-cover rounded-xl" />
             {:else}
-              <img src="placeholder.png" alt="Banner" class="h-[160px] w-full object-cover rounded-xl" />
+              <img src="/images/finime-poster.png" alt="Banner" class="h-[160px] w-full object-cover rounded-xl" />
             {/if}
             <div
               class="w-auto absolute left-0 -bottom-20 h-auto rounded-full overflow-hidden flex"

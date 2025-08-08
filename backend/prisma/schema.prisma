@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  google_id String?  @unique
-  github_id String?  @unique
+  google_id String?  @default("")
+  github_id String?  @default("")
   username  String   @unique
   email     String?   @unique
   password  String
@@ -43,7 +43,6 @@ model Anime {
   user_id String @db.ObjectId
 
   created_at DateTime @default(now())
-  updated_at DateTime @map("updated_at")
 
   @@map("anime")
 }
@@ -56,7 +55,6 @@ model Manga {
   user_id String @db.ObjectId
 
   created_at DateTime @default(now())
-  updated_at DateTime @map("updated_at")
 
   @@map("manga")
 }

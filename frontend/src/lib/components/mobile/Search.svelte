@@ -34,6 +34,7 @@
 			const response = await AnimeMobileClient.getSearch(query);
 			animeList = response;
 			segmentList = response.slice(0, MAX_SEGMENT);
+			$runtimeData['search.segment'] = segmentList;
 			$runtimeData['search.cache'] = response;
 			isLoading = false;
 		}

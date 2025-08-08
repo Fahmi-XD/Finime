@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { IAnimeSlug } from './+page';
 	import { onMount, onDestroy } from 'svelte';
-	import { Star, Shield, VerifiedIcon, SendHorizonal, EllipsisVertical, Loader } from '@lucide/svelte';
+	import { Star, Shield, BadgeCheckIcon, SendHorizonal, EllipsisVertical, Loader } from '@lucide/svelte';
 	import { scale, fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import { page as pages } from '$app/stores';
@@ -47,7 +47,9 @@
 	let player: Plyr;
 	let lastSlug = data.animeSlug;
 	let isOpenDots = false;
+	let isOpenDotsId = "";
 	let isCommentLoading = false;
+	let isCommentLoadingDelete = false;
 	let commentStr = ""
 
 	$: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
@@ -116,8 +118,12 @@
 	}
 
 	function handleCloseDots(event: MouseEvent) {
-		if (!event.target || !(event.target as HTMLElement).closest('.dots-menu')) {
+		console.log(isOpenDots)
+		if ((!event.target || !(event.target as HTMLElement).closest('.dots-menu')) && isOpenDots) {
 			isOpenDots = false;
+		} else if ((event.target as HTMLElement).closest('.dots-menu') && !isOpenDots) {
+			isOpenDots = true;
+			isOpenDotsId = (event.target as HTMLElement).closest('.dots-menu')?.getAttribute('data-commentId') || "";
 		}
 	}
 
@@ -175,11 +181,14 @@
 	});
 
 	onDestroy(() => {
-		if (player && typeof window !== "undefined") {
+		if (typeof window !== "undefined") {
+			window.removeEventListener("click", handleCloseDots);
+		}
+
+		if (player) {
 			player.off('enterfullscreen', lockLandscape);
 			player.off('exitfullscreen', unlockOrientation);
 
-			window.removeEventListener("click", handleCloseDots);
 
 			player.destroy();
 		}
@@ -340,7 +349,7 @@
 					on:click={() => {
 						goto(`/mobile/anime/watch/${animeSlug}/${i+1}`, { replaceState: true });
 					}}
-					class="flex {parseInt(i+1) == parseInt((animeDetail?.title || "-").match(/\(\w+\s?([0-9]+)\)/i)?.[1] || "1") ? "bg-red-500" : "bg-[#3a3a4a]"} cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
+					class="flex {i+1 == parseInt((animeDetail?.title || "-").match(/\(\w+\s?([0-9]+)\)/i)?.[1] || "1") ? "bg-red-500" : "bg-[#3a3a4a]"} cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
 				>
 					Eps {i+1}
 				</button>
@@ -368,8 +377,8 @@
 						isCommentLoading = true;
 						try {
 							await postComment(comment);
-							commentStr = '';
 							await fetchComment();
+							commentStr = '';
 						} catch (error) {
 							console.error('Error posting comment:', error);
 						} finally {
@@ -422,7 +431,7 @@
 										class="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
 										title="Verified"
 									>
-										<VerifiedIcon color="yellow" />
+										<BadgeCheckIcon color="#1DA1F2" />
 									</span>
 									<Star size={20} />
 									<Shield size={20} />
@@ -438,19 +447,29 @@
 							</div>
 						</div>
 						{#if Object.keys(user).length > 0 && user.id == comment.user.id}
-							<div class="ml-auto dots-menu flex items-center relative gap-2">
+							<div class="ml-auto dots-menu flex items-center relative gap-2" data-commentId={comment.id}>
 								<button on:click={() => {
 									isOpenDots = !isOpenDots;
+									isOpenDotsId = comment.id;
 								}} class="rounded-full bg-[#1f1f2e] p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
 									<EllipsisVertical class="h-5 w-5 text-gray-400" />
 								</button>
-								{#if isOpenDots}
+								{#if isOpenDots && isOpenDotsId === comment.id}
 									<div class="absolute right-0 top-10 z-10 w-48 rounded-lg bg-black border border-white/20 p-2 shadow-lg" transition:fade={{ duration: 100 }}>
 										<ul class="space-y-1">
 											<li class="px-4 py-2 hover:bg-gray-500 text-red-500 cursor-pointer"><button on:click={async () => {
+												isCommentLoadingDelete = true;
+												isOpenDots = false;
 												await UserMobileClient.deleteComment(comment.id);
 												await fetchComment();
-											}}>Hapus</button></li>
+												isCommentLoadingDelete = false;
+											}}>
+											{#if isCommentLoadingDelete}
+												<Loader color="red" class="animate-spin" />
+											{:else}
+												Hapus
+											{/if}
+											</button></li>
 										</ul>
 									</div>
 								{/if}

@@ -342,4 +342,44 @@ export default class UserService {
     return Response.standarResponse(200, "Comment deleted");
   }
 
+  static async increaseWatchStatistics(anime: Record<string, any>, manga: Record<string, any>) {
+    const response: Record<string, any> = {};
+
+    if (Object.keys(anime).length === 0 && Object.keys(manga).length === 0) {
+      return HttpException.standarException(400, { message: "Anime or Manga data is required" });
+    }
+
+    if (Object.keys(anime).length > 0) {
+      const user = await prismaClient.user.findUnique({
+        where: { id: anime.user_id },
+        select: { id: true }
+      });
+
+      response["anime"] = prismaClient.anime.create({
+        data: {
+          anime_id: anime.anime_id as string,
+          user_id: user?.id || "",
+          created_at: new Date(),
+        }
+      })
+    }
+
+    if (Object.keys(manga).length > 0) {
+      const user = await prismaClient.user.findUnique({
+        where: { id: manga.user_id },
+        select: { id: true }
+      });
+
+       response["manga"] = prismaClient.manga.create({
+        data: {
+          manga_id: manga.manga_id as string,
+          user_id: user?.id || "",
+          created_at: new Date(),
+        }
+      })
+    }
+
+    return Response.standarResponse(200, response);
+  }
+
 }

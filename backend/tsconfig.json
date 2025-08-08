@@ -23,7 +23,8 @@
       "@middleware/*": ["middleware/*"],
       "@models/*": ["models/*"],
       "@databases/*": ["databases/*"],
-      "@external/*": ["external/*"]
+      "@external/*": ["external/*"],
+      "@config/*": ["config/*"]
     },
   },
   "include": ["src/**/*"],

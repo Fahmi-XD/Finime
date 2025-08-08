@@ -20,6 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 
 	} catch (error) {
+		event.locals.user = {};
 		// Cookies.remove('token');
 		if (error instanceof AxiosError) {
 			console.log(error.response?.data)

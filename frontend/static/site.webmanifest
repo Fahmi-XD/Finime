@@ -1,21 +1,29 @@
 {
   "name": "Finime",
   "short_name": "Finime",
+  "description": "Finime adalah aplikasi nonton anime gratis dan tanpa iklan.",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     }
   ],
+  "start_url": "/",
+  "scope": "/",
   "theme_color": "#000000",
   "background_color": "#000000",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["finance", "productivity", "business", "anime", "manga"],
+  "lang": "id-ID",
+  "dir": "ltr",
+  "prefer_related_applications": false
 }

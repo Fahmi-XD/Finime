@@ -12,7 +12,7 @@ model User {
   google_id String?  @default("")
   github_id String?  @default("")
   username  String   @unique
-  email     String?   @unique
+  email     String?  @unique
   password  String
   name      String
   token     String?
@@ -23,8 +23,8 @@ model User {
   isVerify  Boolean  @default(false)
   badges    String[]
 
-  anime Anime[]
-  manga Manga[]
+  anime    Anime[]
+  manga    Manga[]
   comments Comment[]
 
   role Role @default(MEMBER)
@@ -60,15 +60,15 @@ model Manga {
 }
 
 model Comment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  content String
 
-  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id   String   @db.ObjectId
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
 
-  anime_id  String?
+  anime_id String?
 
-  manga_id  String?
+  manga_id String?
 
   created_at DateTime @default(now())
 

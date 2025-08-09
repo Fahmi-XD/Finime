@@ -1,3 +1,4 @@
 export const EXCEPT_AUTH_ROUTE = [
-  ["/comment", "GET"]
+  ["/comment", "GET"],
+  ["/user/username", "GET"]
 ]

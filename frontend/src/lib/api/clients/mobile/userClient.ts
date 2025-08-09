@@ -16,4 +16,19 @@ export class UserMobileClient {
     const response = await fetchApi("/comment/" + commentId, "DELETE", {});
     return response.result;
   }
+
+  static async getUserInfo(): Promise<any> {
+    const response = await fetchApi("/user", "GET", {});
+    return response.result;
+  }
+
+  static async getUserInfoStatistics(): Promise<any> {
+    const response = await fetchApi("/user?statistics=true", "GET", {});
+    return response.result;
+  }
+
+  static async getUserInfoByUsername(username: string): Promise<any> {
+    const response = await fetchApi("/user/username/" + username, "GET", {});
+    return response.result;
+  }
 }

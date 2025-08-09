@@ -82,11 +82,12 @@
 							</div>
 						</div>
 						<div class="flex gap-3 items-center">
-							<button
+							<a
+								href="/mobile/anime/{anime.id}/{anime.slug}"
 								class="mt-3 w-max rounded-full bg-red-500 px-5 py-2 text-xs font-bold text-white"
 							>
 								Tonton
-							</button>
+							</a>
 							<button
 								class="mt-3 w-max rounded-full border-2 border-red-500 px-5 py-2 text-xs font-bold text-white"
 							>

@@ -33,7 +33,7 @@
         return;
       }
 
-      Cookie.set('token', response.result.token);
+      Cookie.set('token', response.result.token, { expires: 365 });
       toast.success("Berhasil login", toastOption);
 
       setTimeout(() => {

@@ -2,7 +2,7 @@
   import { navigate } from '$lib/stores/history';
 </script>
 
-<section class="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+<div class="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
   <div class="relative z-10 max-w-xl w-full mx-auto px-4 py-20 flex flex-col items-center text-center">
     <div class="bg-[hsl(var(--background))] rounded-2xl p-10 border border-white/30 shadow-2xl">
       <h1 class="text-4xl sm:text-5xl font-black mb-6 text-red-500">
@@ -20,4 +20,4 @@
       </div>
     </div>
   </div>
-</section>
+</div>

@@ -45,31 +45,33 @@
         {:else}
           {#each animeList?.ongoingAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
-              <div class="h-[160px] w-[120px]">
-                <img
-                  class="rounded-2xl h-[160px] w-[120px] object-cover"
-                  src={anime.image_portrait_url}
-                  alt={anime.title}
-                />
-              </div>
-              <div class="flex flex-col justify-between h-full mt-2">
-                <h1 class="text-body-medium font-semibold mb-1 flex">
-                  {truncate(anime?.title || "", 50)}
-                </h1>
-                <div class="flex flex-col">
-                  <div class="flex gap-2 items-center">
-                    <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                    <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
-                  </div>
-                  <div class="flex gap-1 flex-col text-label-medium">
-                    <h1 class="opacity-80">{anime.aired_from}</h1>
-                    <div class="flex gap-1 items-center">
-                      <Star size="15" fill="green" color="green" />
-                      <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+              <a href="/mobile/anime/{anime.id}/{anime.slug}" class="flex h-full flex-col w-auto">
+                <div class="h-[160px] w-[120px]">
+                  <img
+                    class="rounded-2xl h-[160px] w-[120px] object-cover"
+                    src={anime.image_portrait_url}
+                    alt={anime.title}
+                  />
+                </div>
+                <div class="flex flex-col justify-between h-full mt-2">
+                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                    {truncate(anime?.title || "", 30)}
+                  </h1>
+                  <div class="flex flex-col">
+                    <div class="flex gap-2 items-center">
+                      <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
+                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                    </div>
+                    <div class="flex gap-1 flex-col text-label-medium">
+                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <div class="flex gap-1 items-center">
+                        <Star size="15" fill="green" color="green" />
+                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
           {/each}
         {/if}
@@ -95,31 +97,33 @@
         {:else}
           {#each animeList?.finishedAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
-              <div class="h-[160px] w-[120px]">
-                <img
-                  class="rounded-2xl h-[160px] w-[120px] object-cover"
-                  src={anime.image_portrait_url}
-                  alt={anime.title}
-                />
-              </div>
-              <div class="flex flex-col justify-between h-full mt-2">
-                <h1 class="text-body-medium font-semibold mb-1 flex">
-                  {truncate(anime?.title || "", 50)}
-                </h1>
-                <div class="flex flex-col">
-                  <div class="flex gap-2 items-center">
-                    <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                    <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
-                  </div>
-                  <div class="flex gap-1 flex-col text-label-medium">
-                    <h1 class="opacity-80">{anime.aired_from}</h1>
-                    <div class="flex gap-1 items-center">
-                      <Star size="15" fill="green" color="green" />
-                      <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+              <a href="/mobile/anime/{anime.id}/{anime.slug}" class="flex h-full flex-col w-auto">
+                <div class="h-[160px] w-[120px]">
+                  <img
+                    class="rounded-2xl h-[160px] w-[120px] object-cover"
+                    src={anime.image_portrait_url}
+                    alt={anime.title}
+                  />
+                </div>
+                <div class="flex flex-col justify-between h-full mt-2">
+                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                    {truncate(anime?.title || "", 30)}
+                  </h1>
+                  <div class="flex flex-col">
+                    <div class="flex gap-2 items-center">
+                      <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
+                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                    </div>
+                    <div class="flex gap-1 flex-col text-label-medium">
+                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <div class="flex gap-1 items-center">
+                        <Star size="15" fill="green" color="green" />
+                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
           {/each}
         {/if}
@@ -145,31 +149,33 @@
         {:else}
           {#each animeList?.movieAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
-              <div class="h-[160px] w-[120px]">
-                <img
-                  class="rounded-2xl h-[160px] w-[120px] object-cover"
-                  src={anime.image_portrait_url}
-                  alt={anime.title}
-                />
-              </div>
-              <div class="flex flex-col justify-between h-full mt-2">
-                <h1 class="text-body-medium font-semibold mb-1 flex">
-                  {truncate(anime?.title || "", 50)}
-                </h1>
-                <div class="flex flex-col">
-                  <div class="flex gap-2 items-center">
-                    <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                    <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
-                  </div>
-                  <div class="flex gap-1 flex-col text-label-medium">
-                    <h1 class="opacity-80">{anime.aired_from}</h1>
-                    <div class="flex gap-1 items-center">
-                      <Star size="15" fill="green" color="green" />
-                      <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+              <a href="/mobile/anime/{anime.id}/{anime.slug}" class="flex h-full flex-col w-auto">
+                <div class="h-[160px] w-[120px]">
+                  <img
+                    class="rounded-2xl h-[160px] w-[120px] object-cover"
+                    src={anime.image_portrait_url}
+                    alt={anime.title}
+                  />
+                </div>
+                <div class="flex flex-col justify-between h-full mt-2">
+                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                    {truncate(anime?.title || "", 30)}
+                  </h1>
+                  <div class="flex flex-col">
+                    <div class="flex gap-2 items-center">
+                      <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
+                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                    </div>
+                    <div class="flex gap-1 flex-col text-label-medium">
+                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <div class="flex gap-1 items-center">
+                        <Star size="15" fill="green" color="green" />
+                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
           {/each}
         {/if}
@@ -195,31 +201,33 @@
         {:else}
           {#each animeList?.topAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
-              <div class="h-[160px] w-[120px]">
-                <img
-                  class="rounded-2xl h-[160px] w-[120px] object-cover"
-                  src={anime.image_portrait_url}
-                  alt={anime.title}
-                />
-              </div>
-              <div class="flex flex-col justify-between h-full mt-2">
-                <h1 class="text-body-medium font-semibold mb-1 flex">
-                  {truncate(anime?.title || "", 50)}
-                </h1>
-                <div class="flex flex-col">
-                  <div class="flex gap-2 items-center">
-                    <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                    <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
-                  </div>
-                  <div class="flex gap-1 flex-col text-label-medium">
-                    <h1 class="opacity-80">{anime.aired_from}</h1>
-                    <div class="flex gap-1 items-center">
-                      <Star size="15" fill="green" color="green" />
-                      <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+              <a href="/mobile/anime/{anime.id}/{anime.slug}" class="flex h-full flex-col w-auto">
+                <div class="h-[160px] w-[120px]">
+                  <img
+                    class="rounded-2xl h-[160px] w-[120px] object-cover"
+                    src={anime.image_portrait_url}
+                    alt={anime.title}
+                  />
+                </div>
+                <div class="flex flex-col justify-between h-full mt-2">
+                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                    {truncate(anime?.title || "", 30)}
+                  </h1>
+                  <div class="flex flex-col">
+                    <div class="flex gap-2 items-center">
+                      <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
+                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                    </div>
+                    <div class="flex gap-1 flex-col text-label-medium">
+                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <div class="flex gap-1 items-center">
+                        <Star size="15" fill="green" color="green" />
+                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
           {/each}
         {/if}

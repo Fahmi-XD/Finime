@@ -16,27 +16,60 @@ import { CommentValidation } from "@validations/comment.validation.js";
 export default class UserService {
 
   // Mendapatkan User berdasarkan id
-  static async getUser(userId: string): Promise<ResponseModel<any>> {
-    const user = await prismaClient.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        username: true,
-        name: true,
-        anime: true,
-        manga: true,
-        avatar: true,
-        banner: true,
-        email: true,
-        pronoun: true,
-        role: true,
-        isVerify: true,
-        bio: true,
-        badges: true,
-        created_at: true,
-        updated_at: true,
-      },
-    });
+  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null): Promise<ResponseModel<any>> {
+    let user;
+
+    if (isStatistics) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          anime: true,
+          manga: true,
+        },
+      });
+    } else if (username) {
+      user = await prismaClient.user.findFirst({
+        where: { username: username },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          role: true,
+          isVerify: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+    } else {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          role: true,
+          isVerify: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+    }
 
     if (!user) {
       return HttpException.standarException(404, { message: "User not found" });
@@ -326,7 +359,7 @@ export default class UserService {
 
   static async deleteComment(userId: string, commentId: string) {
     const comment = await prismaClient.comment.findUnique({
-      where: { id: commentId, user_id: userId },
+      where: { id: commentId },
     });
 
     if (!comment) {
@@ -350,33 +383,37 @@ export default class UserService {
     }
 
     if (Object.keys(anime).length > 0) {
-      const user = await prismaClient.user.findUnique({
-        where: { id: anime.user_id },
+      const isExist = await prismaClient.user.findUnique({
+        where: { id: anime.user_id, anime: { some: { anime_id: anime.anime_id } } },
         select: { id: true }
       });
 
-      response["anime"] = prismaClient.anime.create({
-        data: {
-          anime_id: anime.anime_id as string,
-          user_id: user?.id || "",
-          created_at: new Date(),
-        }
-      })
+      if (!isExist) {
+        response["anime"] = await prismaClient.anime.create({
+          data: {
+            anime_id: anime.anime_id as string,
+            user_id: anime.user_id || "",
+            created_at: new Date(),
+          }
+        })
+      }
     }
 
     if (Object.keys(manga).length > 0) {
-      const user = await prismaClient.user.findUnique({
-        where: { id: manga.user_id },
+      const isExist = await prismaClient.user.findUnique({
+        where: { id: manga.user_id, manga: { some: { manga_id: manga.manga_id } } },
         select: { id: true }
       });
 
-       response["manga"] = prismaClient.manga.create({
-        data: {
-          manga_id: manga.manga_id as string,
-          user_id: user?.id || "",
-          created_at: new Date(),
-        }
-      })
+      if (!isExist) {
+        response["manga"] = await prismaClient.manga.create({
+          data: {
+            manga_id: manga.manga_id as string,
+            user_id: manga.user_id || "",
+            created_at: new Date(),
+          }
+        })
+      }
     }
 
     return Response.standarResponse(200, response);

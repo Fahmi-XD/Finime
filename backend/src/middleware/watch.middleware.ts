@@ -20,7 +20,13 @@ export const watchMiddleware = async ({ headers, path }: any) => {
     user = customCache.get(token);
   }
 
-  if (user) {
-    // updateWatch(user.id, (path as string).includes("/api/v1/anime"), (path as string).includes("/api/v1/manga"));
+  const isEpisodeRoute = path.includes("/episode");
+
+  if (user && isEpisodeRoute) {
+    const animeSlug = path.split("/").slice(-4, -2).join("/")
+    UserService.increaseWatchStatistics({
+      user_id: user.id,
+      anime_id: animeSlug
+    }, {});
   }
 }

@@ -14,7 +14,7 @@
 	import { handleResize } from '$lib';
 
 	const protectedRoute = ["/settings", "/profile"];
-	const authRoute = ["/auth/login", "/auth/register"];
+	const publicRoute = ["/auth/login", "/auth/register"];
 
 	let path = $derived(page.url.pathname)
 
@@ -24,7 +24,7 @@
 			goto(`/auth/login?from=${urlEncoded}`)
 		}
 
-		if (Object.keys(page.data.user).length > 0 && authRoute.includes(path)) {
+		if (Object.keys(page.data.user).length > 0 && publicRoute.includes(path)) {
 			goto(`/`)
 		}
 	});

@@ -1,11 +1,20 @@
 <script lang="ts">
 	import type { IAnimeSlug } from './+page';
 	import { onMount, onDestroy } from 'svelte';
-	import { Star, Shield, BadgeCheckIcon, SendHorizonal, EllipsisVertical, Loader } from '@lucide/svelte';
+	import {
+		Star,
+		Shield,
+		BadgeCheckIcon,
+		SendHorizonal,
+		EllipsisVertical,
+		Loader,
+		CheckIcon,
+		LinkIcon
+	} from '@lucide/svelte';
 	import { scale, fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import { page as pages } from '$app/stores';
-	import Plyr from "plyr";
+	import Plyr from 'plyr';
 	import 'plyr/dist/plyr.css';
 	import { PUBLIC_API } from '$env/static/public';
 
@@ -23,14 +32,14 @@
 	export let data: IAnimeSlug;
 
 	const QUALITY = {
-		"360": 0,
-		"480": 1,
-		"720": 2
-	}
+		'360': 0,
+		'480': 1,
+		'720': 2
+	};
 	const animeSlug = page.url.pathname.split('/').slice(-3, -1).join('/');
 	const user = page.data.user;
 
-	$: animeSlugWithEpisode = "";
+	$: animeSlugWithEpisode = '';
 
 	$: {
 		if ($pages.url.pathname.split('/').slice(-3).length > 2) {
@@ -47,14 +56,15 @@
 	let player: Plyr;
 	let lastSlug = data.animeSlug;
 	let isOpenDots = false;
-	let isOpenDotsId = "";
+	let isCopy = false;
+	let isOpenDotsId = '';
 	let isCommentLoading = false;
 	let isCommentLoadingDelete = false;
-	let commentStr = ""
+	let commentStr = '';
 
 	$: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
-			lastSlug = animeSlugWithEpisode;
-			fetchAllData();
+		lastSlug = animeSlugWithEpisode;
+		fetchAllData();
 	}
 
 	let playerElement: HTMLElement;
@@ -86,27 +96,33 @@
 	async function fetchComment() {
 		const response = await UserMobileClient.getComment(animeSlugWithEpisode);
 		commentList = response;
-		$runtimeMobile["comment.detail." + data.animeSlug] = response;
+		$runtimeMobile['comment.detail.' + data.animeSlug] = response;
 	}
 
 	async function fetchAllData() {
 		isLoading = true;
-		if ($runtimeMobile["episode.detail." + data.animeSlug] && typeof $runtimeMobile["episode.detail." + data.animeSlug] == "object") {
-			animeDetail = $runtimeMobile["episode.detail." + data.animeSlug]
+		if (
+			$runtimeMobile['episode.detail.' + data.animeSlug] &&
+			typeof $runtimeMobile['episode.detail.' + data.animeSlug] == 'object'
+		) {
+			animeDetail = $runtimeMobile['episode.detail.' + data.animeSlug];
 		} else {
 			const response = await AnimeMobileClient.getEpisode(data.animeSlug);
 			animeDetail = response;
-			$runtimeMobile["episode.detail." + data.animeSlug] = response;
+			$runtimeMobile['episode.detail.' + data.animeSlug] = response;
 		}
-		
-		if ($runtimeMobile["anime.detail." + data.animeSlug] && typeof $runtimeMobile["anime.detail." + data.animeSlug] == "object") {
-			animeDetail2 = $runtimeMobile["anime.detail." + data.animeSlug]
+
+		if (
+			$runtimeMobile['anime.detail.' + data.animeSlug] &&
+			typeof $runtimeMobile['anime.detail.' + data.animeSlug] == 'object'
+		) {
+			animeDetail2 = $runtimeMobile['anime.detail.' + data.animeSlug];
 		} else {
 			const response = await AnimeMobileClient.getDetail(animeSlug);
 			animeDetail2 = response;
-			$runtimeMobile["anime.detail." + data.animeSlug] = response;
+			$runtimeMobile['anime.detail.' + data.animeSlug] = response;
 		}
-		
+
 		// if ($runtimeMobile["comment.detail." + data.animeSlug] && typeof $runtimeMobile["comment.detail." + data.animeSlug] == "object") {
 		// 	commentList = $runtimeMobile["comment.detail." + data.animeSlug]
 		// } else {
@@ -118,22 +134,26 @@
 	}
 
 	function handleCloseDots(event: MouseEvent) {
-		console.log(isOpenDots)
+		console.log(isOpenDots);
 		if ((!event.target || !(event.target as HTMLElement).closest('.dots-menu')) && isOpenDots) {
 			isOpenDots = false;
 		} else if ((event.target as HTMLElement).closest('.dots-menu') && !isOpenDots) {
 			isOpenDots = true;
-			isOpenDotsId = (event.target as HTMLElement).closest('.dots-menu')?.getAttribute('data-commentId') || "";
+			isOpenDotsId =
+				(event.target as HTMLElement).closest('.dots-menu')?.getAttribute('data-commentId') || '';
 		}
 	}
 
 	onMount(async () => {
+		if (typeof window == 'undefined') return;
+
 		await fetchAllData();
 
 		setTimeout(() => {
 			// console.log(animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]);
 
-			player = new Plyr(playerElement, { controls: [
+			player = new Plyr(playerElement, {
+				controls: [
 					'play-large', // The large play button in the center
 					'rewind', // Rewind by the seek time (default 10 seconds)
 					'play', // Play/pause playback
@@ -144,7 +164,7 @@
 					'mute', // Toggle mute
 					'settings', // Settings menu
 					'airplay', // Airplay (currently Safari only)
-					'fullscreen', // Toggle fullscreen
+					'fullscreen' // Toggle fullscreen
 				],
 				autoplay: true,
 				quality: {
@@ -157,151 +177,152 @@
 						const currentTime = (playerElement as HTMLVideoElement).currentTime;
 						const isPaused = (playerElement as HTMLVideoElement).paused;
 
-						(playerElement as HTMLVideoElement).src = animeDetail?.videoUrls[(animeDetail?.videoUrls.length - 1) - ((QUALITY as any)[quality])];
+						(playerElement as HTMLVideoElement).src =
+							animeDetail?.videoUrls[animeDetail?.videoUrls.length - 1 - (QUALITY as any)[quality]];
 
 						(playerElement as HTMLVideoElement).load();
 						(playerElement as HTMLVideoElement).currentTime = currentTime;
 						if (!isPaused) {
 							(playerElement as HTMLVideoElement).play();
 						}
-					},
-				},
+					}
+				}
 			});
 
 			player.on('enterfullscreen', lockLandscape);
 
 			player.on('exitfullscreen', unlockOrientation);
 
-			if (typeof window !== "undefined") {
-				window.addEventListener("click", handleCloseDots);
+			if (typeof window !== 'undefined') {
+				window.addEventListener('click', handleCloseDots);
 			}
-
-		}, 10)
-
+		}, 10);
 	});
 
 	onDestroy(() => {
-		if (typeof window !== "undefined") {
-			window.removeEventListener("click", handleCloseDots);
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('click', handleCloseDots);
 		}
 
 		if (player) {
 			player.off('enterfullscreen', lockLandscape);
 			player.off('exitfullscreen', unlockOrientation);
 
-
 			player.destroy();
 		}
 		unlockOrientation();
-  });
+	});
 </script>
 
 <svelte:head>
-  <title>Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online</title>
-  <meta
-    name="description"
-    content="Finime adalah situs nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime terbaru, koleksi manga terlengkap, update episode & chapter setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman menonton dan membaca tanpa gangguan iklan!"
-  />
-  <meta
-    name="keywords"
-    content="nonton anime gratis, baca manga gratis, streaming anime sub indo, download anime, anime tanpa iklan, manga tanpa iklan, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime no ads, manga no ads, anime anti judi, situs anime terbaik, situs manga terbaik, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia, anime tanpa iklan judi, manga tanpa iklan judi"
-  />
-  <meta name="author" content="Finime Team" />
-  <link rel="canonical" href="https://www.finime.my.id/" />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<title>Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online</title>
+	<meta
+		name="description"
+		content="Finime adalah situs nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime terbaru, koleksi manga terlengkap, update episode & chapter setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman menonton dan membaca tanpa gangguan iklan!"
+	/>
+	<meta
+		name="keywords"
+		content="nonton anime gratis, baca manga gratis, streaming anime sub indo, download anime, anime tanpa iklan, manga tanpa iklan, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime no ads, manga no ads, anime anti judi, situs anime terbaik, situs manga terbaik, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia, anime tanpa iklan judi, manga tanpa iklan judi"
+	/>
+	<meta name="author" content="Finime Team" />
+	<link rel="canonical" href="https://www.finime.my.id/" />
+	<meta
+		name="robots"
+		content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+	/>
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.finime.my.id/" />
-  <meta
-    property="og:title"
-    content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
-  />
-  <meta
-    property="og:description"
-    content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
-  />
-  <meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="id_ID" />
-  <meta property="og:site_name" content="Finime" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://www.finime.my.id/" />
+	<meta
+		property="og:title"
+		content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
+	/>
+	<meta
+		property="og:description"
+		content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
+	/>
+	<meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:site_name" content="Finime" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@finime_id" />
-  <meta name="twitter:creator" content="@finime_id" />
-  <meta name="twitter:url" content="https://www.finime.my.id/" />
-  <meta
-    name="twitter:title"
-    content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
-  />
-  <meta
-    name="twitter:description"
-    content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
-  />
-  <meta
-    name="twitter:image"
-    content="https://www.finime.my.id/web-app-manifest-512x512.png"
-  />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@finime_id" />
+	<meta name="twitter:creator" content="@finime_id" />
+	<meta name="twitter:url" content="https://www.finime.my.id/" />
+	<meta
+		name="twitter:title"
+		content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
+	/>
+	<meta
+		name="twitter:description"
+		content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
+	/>
+	<meta name="twitter:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
 
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Finime",
-      "url": "https://www.finime.my.id/",
-      "description": "Finime adalah website nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime & manga terlengkap, update setiap hari, kualitas HD, dan komunitas aktif.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://www.finime.my.id/search?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Finime",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.finime.my.id/web-app-manifest-512x512.png"
-        }
-      }
-    }
-  </script>
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": "Finime",
+			"url": "https://www.finime.my.id/",
+			"description": "Finime adalah website nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime & manga terlengkap, update setiap hari, kualitas HD, dan komunitas aktif.",
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": {
+					"@type": "EntryPoint",
+					"urlTemplate": "https://www.finime.my.id/search?q={search_term_string}"
+				},
+				"query-input": "required name=search_term_string"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Finime",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://www.finime.my.id/web-app-manifest-512x512.png"
+				}
+			}
+		}
+	</script>
 
-  <link
-    rel="apple-touch-icon"
-    sizes="180x180"
-    href="/apple-touch-icon.png"
-  />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#111827" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+	<meta name="msapplication-TileColor" content="#da532c" />
+	<meta name="theme-color" content="#111827" />
 </svelte:head>
 
 {#if isLoading}
 	<LoadingElements />
-<!-- {:else} -->
+	<!-- {:else} -->
 {/if}
 <div class="mx-auto max-w-md pb-20 text-white" in:scale={{ duration: 200, start: 0.95 }}>
 	{#if Array.isArray(animeDetail?.videoUrls) && animeDetail?.videoUrls.length > 0}
 		<!-- <CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} /> -->
 
 		<div class="container">
-			<video bind:this={playerElement} src={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} controls crossorigin="anonymous" playsinline poster="/images/finime-poster.png">
+			<video
+				bind:this={playerElement}
+				src={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]}
+				controls
+				crossorigin="anonymous"
+				playsinline
+				poster="/images/finime-poster.png"
+			>
 				{#each animeDetail?.videoUrls as videoUrl}
 					<source src={videoUrl} type="video/mp4" />
 				{/each}
-					
-					<track kind="captions">
 
-					<a href={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} download>Download</a>
+				<track kind="captions" />
+
+				<a href={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} download>Download</a>
 			</video>
 		</div>
 	{:else}
 		<iframe
-			class="w-full aspect-video"
+			class="aspect-video w-full"
 			src={animeDetail?.videoUrls as string}
 			frameborder="0"
 			allowfullscreen
@@ -311,8 +332,35 @@
 		></iframe>
 	{/if}
 	<div class="bg-gradient-to-t from-black/90 to-transparent px-5 pb-8 pt-5">
-		<h1 class="text-title-medium opacity-70 font-extrabold leading-tight">{(animeDetail?.title || "").replace("- Kuramanime", "")}</h1>
-		<p class="mb-4 mt-1 text-base font-normal">Episode {parseInt((animeDetail?.title || "-").match(/\(\w+\s?([0-9]+)\)/i)?.[1] || "1") || "1"}</p>
+		<h1 class="text-title-large font-extrabold leading-tight opacity-70">
+			{(animeDetail?.title || '').replace('- Kuramanime', '')}
+		</h1>
+		<p class="mb-4 mt-1 text-base font-normal">
+			Episode {parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1') ||
+				'1'}
+		</p>
+		<div class="mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-red-500 p-4">
+			<button
+				on:click={() => {
+					if (!isCopy) {
+						const thisLink = window.location.href;
+						navigator.clipboard.writeText(thisLink || '');
+						isCopy = true;
+						setTimeout(() => {
+							isCopy = false;
+						}, 2000);
+					}
+				}}
+				disabled={isCopy}
+				class="flex items-center justify-center disabled:cursor-not-allowed"
+			>
+				{#if isCopy}
+					<CheckIcon class="text-white" size={20} />
+				{:else}
+					<LinkIcon class="text-white" size={20} />
+				{/if}
+			</button>
+		</div>
 		<!-- <div class="mb-3 flex flex-wrap gap-2">
 			<button
 				class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-3 py-2 text-sm font-semibold"
@@ -337,7 +385,7 @@
 				Ganti Server
 			</button>
 		</div> -->
-		<div class="mb-6 flex justify-center flex-wrap gap-3">
+		<div class="mb-6 flex flex-wrap justify-center gap-3">
 			<!-- <button
 				class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold"
 			>
@@ -347,11 +395,14 @@
 			{#each animeDetail2?.episodeList || [] as episode, i (i)}
 				<button
 					on:click={() => {
-						goto(`/mobile/anime/watch/${animeSlug}/${i+1}`, { replaceState: true });
+						goto(`/mobile/anime/watch/${animeSlug}/${i + 1}`, { replaceState: true });
 					}}
-					class="flex {i+1 == parseInt((animeDetail?.title || "-").match(/\(\w+\s?([0-9]+)\)/i)?.[1] || "1") ? "bg-red-500" : "bg-[#3a3a4a]"} cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
+					class="flex {i + 1 ==
+					parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1')
+						? 'bg-red-500'
+						: 'bg-[#3a3a4a]'} cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
 				>
-					Eps {i+1}
+					Eps {i + 1}
 				</button>
 			{/each}
 		</div>
@@ -371,7 +422,7 @@
 					disabled={isCommentLoading}
 					on:click={async (e) => {
 						e.preventDefault();
-						const comment = commentStr
+						const comment = commentStr;
 						if (!comment) return;
 
 						isCommentLoading = true;
@@ -394,9 +445,12 @@
 				</button>
 			</form>
 		{:else}
-			<a href="/auth/login?from={btoa("/mobile/anime/watch/" + animeSlugWithEpisode)}" class="my-4 text-title-medium text-blue-500">Masuk untuk berkomentar</a>
+			<a
+				href="/auth/login?from={btoa('/mobile/anime/watch/' + animeSlugWithEpisode)}"
+				class="text-title-medium my-4 text-blue-500">Masuk untuk berkomentar</a
+			>
 		{/if}
-		<div class="space-y-6">
+		<div class="space-y-3">
 			{#each commentList as comment}
 				<div
 					aria-label="Comment by {comment.user.name}"
@@ -446,42 +500,64 @@
 								<p class="text-sm text-gray-400">@{comment.user.username}</p>
 							</div>
 						</div>
-						{#if Object.keys(user).length > 0 && user.id == comment.user.id}
-							<div class="ml-auto dots-menu flex items-center relative gap-2" data-commentId={comment.id}>
-								<button on:click={() => {
+						<div
+							class="dots-menu relative ml-auto flex items-center gap-2"
+							data-commentId={comment.id}
+						>
+							<button
+								on:click={() => {
 									isOpenDots = !isOpenDots;
 									isOpenDotsId = comment.id;
-								}} class="rounded-full bg-[#1f1f2e] p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
-									<EllipsisVertical class="h-5 w-5 text-gray-400" />
-								</button>
-								{#if isOpenDots && isOpenDotsId === comment.id}
-									<div class="absolute right-0 top-10 z-10 w-48 rounded-lg bg-black border border-white/20 p-2 shadow-lg" transition:fade={{ duration: 100 }}>
-										<ul class="space-y-1">
-											<li class="px-4 py-2 hover:bg-gray-500 text-red-500 cursor-pointer"><button on:click={async () => {
-												isCommentLoadingDelete = true;
-												isOpenDots = false;
-												await UserMobileClient.deleteComment(comment.id);
-												await fetchComment();
-												isCommentLoadingDelete = false;
-											}}>
-											{#if isCommentLoadingDelete}
-												<Loader color="red" class="animate-spin" />
-											{:else}
-												Hapus
-											{/if}
-											</button></li>
-										</ul>
-									</div>
-								{/if}
-							</div>
-						{/if}
+								}}
+								class="rounded-full bg-[#1f1f2e] p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+							>
+								<EllipsisVertical class="h-5 w-5 text-gray-400" />
+							</button>
+							{#if isOpenDots && isOpenDotsId === comment.id}
+								<div
+									class="absolute right-0 top-10 z-10 w-48 rounded-lg border border-white/20 bg-black p-2 shadow-lg"
+									transition:fade={{ duration: 100 }}
+								>
+									<ul class="space-y-1">
+										<li class="cursor-pointer px-4 py-2 text-white hover:bg-gray-500">
+											<a
+												href="/user/{comment.user.username}"
+											>
+												Lihat profile
+											</a>
+										</li>
+										{#if (Object.keys(user).length > 0 && user.id == comment.user.id) || (user?.role && user?.role == "ADMIN")}
+											<li class="cursor-pointer px-4 py-2 text-red-500 hover:bg-gray-500">
+												<button
+													on:click={async () => {
+														isCommentLoadingDelete = true;
+														isOpenDots = false;
+														await UserMobileClient.deleteComment(comment.id);
+														await fetchComment();
+														isCommentLoadingDelete = false;
+													}}
+												>
+													{#if isCommentLoadingDelete}
+														<Loader color="red" class="animate-spin" />
+													{:else}
+														Hapus
+													{/if}
+												</button>
+											</li>
+										{/if}
+									</ul>
+								</div>
+							{/if}
+						</div>
+						<!-- {#if Object.keys(user).length > 0 && user.id == comment.user.id}
+						{/if} -->
 						<!-- <p class="ml-auto text-xs font-semibold text-gray-400">Lv. 9999999</p> -->
 					</div>
-					<p class="font-normal text-title-small leading-snug text-white">
+					<p class="text-title-small font-normal leading-snug text-white">
 						{comment.content}
 					</p>
 					<div class="flex justify-between text-xs font-normal text-gray-400">
-						<span> {(new Date(comment.created_at)).toLocaleDateString()} </span>
+						<span> {new Date(comment.created_at).toLocaleDateString()} </span>
 						<!-- <button class="font-bold text-white"> Balas (0) </button> -->
 					</div>
 				</div>

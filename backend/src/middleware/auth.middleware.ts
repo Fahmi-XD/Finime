@@ -10,7 +10,7 @@ export const authMiddleware = async ({ headers, store, path, request }: Context)
   const token = headers['x-token']
 
   const isExcept = EXCEPT_AUTH_ROUTE.some(([url, method]) => {
-    if (path.replace('/api/v1', '') == url && request.method === method) {
+    if (path.replace('/api/v1', '').includes(url) && request.method === method) {
       return true;
     } else {
       return false;

@@ -11,12 +11,32 @@ import { Context } from "elysia";
 import { ZodError } from "zod";
 import { CreateCommentRequest } from "@models/comment.model.js";
 import type { ResponseModel } from "@models/response.model.js";
+import webpush from 'web-push';
 
 export default class UserController {
 
+  // Notification
+  static async pushNotif(context: Context): Promise<ResponseModel<any>> {
+    const response = await UserService.getUser((context.store as { userId: string }).userId);
+
+    console.log("Anjay")
+
+    return response;
+  }
+
   // User Controller
   static async getUser(context: Context): Promise<ResponseModel<any>> {
-    const response = await UserService.getUser((context.store as { userId: string }).userId);
+    const isStatistics = !!context.query?.statistics || false;
+    const username = context.query?.username || null;
+    const response = await UserService.getUser((context.store as { userId: string }).userId, isStatistics, username);
+
+    return response;
+  }
+
+  // User Controller
+  static async getUserByUsername(context: Context): Promise<ResponseModel<any>> {
+    const username = context.params?.username || null;
+    const response = await UserService.getUser((context.store as { userId: string }).userId, false, username);
 
     return response;
   }

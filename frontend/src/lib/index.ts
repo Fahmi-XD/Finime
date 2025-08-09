@@ -13,7 +13,7 @@ function truncate(text: string, maxLength: number) {
 const handleResize = (path: string) => {
 	if (window.innerWidth < 768) {
 		modeStore.set("flat")
-		if (!publicRoute.some((route) => path == route)) goto("/mobile", { replaceState: true });
+		if (!publicRoute.some((route) => path.includes(route))) goto("/mobile", { replaceState: true });
 	} else {
 		modeStore.set("colorful")
 	}
@@ -23,4 +23,18 @@ function getInitials(name: string | undefined) {
 	return name ? name.charAt(0).toUpperCase() : '?';
 }
 
-export { truncate, handleResize, getInitials }
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+
+export { truncate, handleResize, getInitials, urlBase64ToUint8Array }

@@ -2,7 +2,7 @@
 	import type { IAnimeSlug } from './+page';
 	import { onMount, onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
-	import { ArrowLeft, Star } from '@lucide/svelte';
+	import { ArrowLeft, Star, LinkIcon, CheckIcon } from '@lucide/svelte';
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
 	import type { IAnimeDetail } from '$lib/api/types/mobile/detailType';
@@ -22,6 +22,8 @@
 
 	let animeDetail: IAnimeDetail;
 	let isLoading = true;
+
+	let isCopy = false;
 
 	const handleResize = () => {
 		bgHeight = imgEl.clientHeight;
@@ -64,87 +66,83 @@
 </script>
 
 <svelte:head>
-  <title>Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online</title>
-  <meta
-	name="description"
-	content="Finime adalah situs nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime terbaru, koleksi manga terlengkap, update episode & chapter setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman menonton dan membaca tanpa gangguan iklan!"
-  />
-  <meta
-	name="keywords"
-	content="nonton anime gratis, baca manga gratis, streaming anime sub indo, download anime, anime tanpa iklan, manga tanpa iklan, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime no ads, manga no ads, anime anti judi, situs anime terbaik, situs manga terbaik, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia, anime tanpa iklan judi, manga tanpa iklan judi"
-  />
-  <meta name="author" content="Finime Team" />
-  <link rel="canonical" href="https://www.finime.my.id/" />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<title>Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online</title>
+	<meta
+		name="description"
+		content="Finime adalah situs nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime terbaru, koleksi manga terlengkap, update episode & chapter setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman menonton dan membaca tanpa gangguan iklan!"
+	/>
+	<meta
+		name="keywords"
+		content="nonton anime gratis, baca manga gratis, streaming anime sub indo, download anime, anime tanpa iklan, manga tanpa iklan, anime sub indo, manga sub indo, anime terbaru, manga terbaru, anime update, manga update, anime HD, anime no ads, manga no ads, anime anti judi, situs anime terbaik, situs manga terbaik, finime, anime indonesia, manga indonesia, anime legal, baca komik, baca komik gratis, streaming anime indonesia, anime subtitle indonesia, anime tanpa iklan judi, manga tanpa iklan judi"
+	/>
+	<meta name="author" content="Finime Team" />
+	<link rel="canonical" href="https://www.finime.my.id/" />
+	<meta
+		name="robots"
+		content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+	/>
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.finime.my.id/" />
-  <meta
-	property="og:title"
-	content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
-  />
-  <meta
-	property="og:description"
-	content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
-  />
-  <meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="id_ID" />
-  <meta property="og:site_name" content="Finime" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://www.finime.my.id/" />
+	<meta
+		property="og:title"
+		content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
+	/>
+	<meta
+		property="og:description"
+		content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
+	/>
+	<meta property="og:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:site_name" content="Finime" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@finime_id" />
-  <meta name="twitter:creator" content="@finime_id" />
-  <meta name="twitter:url" content="https://www.finime.my.id/" />
-  <meta
-	name="twitter:title"
-	content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
-  />
-  <meta
-	name="twitter:description"
-	content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
-  />
-  <meta
-	name="twitter:image"
-	content="https://www.finime.my.id/web-app-manifest-512x512.png"
-  />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@finime_id" />
+	<meta name="twitter:creator" content="@finime_id" />
+	<meta name="twitter:url" content="https://www.finime.my.id/" />
+	<meta
+		name="twitter:title"
+		content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
+	/>
+	<meta
+		name="twitter:description"
+		content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
+	/>
+	<meta name="twitter:image" content="https://www.finime.my.id/web-app-manifest-512x512.png" />
 
-  <script type="application/ld+json">
-	{
-	  "@context": "https://schema.org",
-	  "@type": "WebSite",
-	  "name": "Finime",
-	  "url": "https://www.finime.my.id/",
-	  "description": "Finime adalah website nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime & manga terlengkap, update setiap hari, kualitas HD, dan komunitas aktif.",
-	  "potentialAction": {
-		"@type": "SearchAction",
-		"target": {
-		  "@type": "EntryPoint",
-		  "urlTemplate": "https://www.finime.my.id/search?q={search_term_string}"
-		},
-		"query-input": "required name=search_term_string"
-	  },
-	  "publisher": {
-		"@type": "Organization",
-		"name": "Finime",
-		"logo": {
-		  "@type": "ImageObject",
-		  "url": "https://www.finime.my.id/web-app-manifest-512x512.png"
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": "Finime",
+			"url": "https://www.finime.my.id/",
+			"description": "Finime adalah website nonton anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Streaming anime & manga terlengkap, update setiap hari, kualitas HD, dan komunitas aktif.",
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": {
+					"@type": "EntryPoint",
+					"urlTemplate": "https://www.finime.my.id/search?q={search_term_string}"
+				},
+				"query-input": "required name=search_term_string"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Finime",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "https://www.finime.my.id/web-app-manifest-512x512.png"
+				}
+			}
 		}
-	  }
-	}
-  </script>
+	</script>
 
-  <link
-	rel="apple-touch-icon"
-	sizes="180x180"
-	href="/apple-touch-icon.png"
-  />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#111827" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+	<meta name="msapplication-TileColor" content="#da532c" />
+	<meta name="theme-color" content="#111827" />
 </svelte:head>
 
 {#if isLoading}
@@ -166,7 +164,7 @@
 
 	<div class="mx-auto max-w-md pb-20 pt-3">
 		<!-- Top bar -->
-		<div class="mb-4 px-4 flex items-center justify-between">
+		<div class="mb-4 flex items-center justify-between px-4">
 			<button aria-label="Back" class="text-2xl text-white" on:click={() => window.history.back()}>
 				<ArrowLeft size={24} />
 			</button>
@@ -176,7 +174,7 @@
 		</div>
 
 		<!-- Poster -->
-		<div class="mb-4 px-4 mt-10 flex justify-center">
+		<div class="mb-4 mt-10 flex justify-center px-4">
 			<img
 				alt="Anime poster showing five characters around a table with various dishes, one standing behind, colorful anime style"
 				class="h-[380px] w-[270px] rounded-xl object-cover shadow-lg"
@@ -204,7 +202,7 @@
 		</div>
 
 		<!-- Tags -->
-		<div class="mb-4 px-4 flex flex-wrap justify-center gap-2">
+		<div class="mb-4 flex flex-wrap justify-center gap-2 px-4">
 			{#each animeDetail?.genres as genre}
 				<span class="rounded-full border-2 border-red-500 px-3 py-1 text-xs font-medium text-white">
 					{genre.replace(',', '')}
@@ -221,7 +219,7 @@
 
 		<!-- Description -->
 		<div
-			class="no-scroll px-4 max-h-50 relative mb-3 min-h-0 overflow-y-hidden text-center text-sm leading-relaxed text-gray-300"
+			class="no-scroll max-h-50 relative mb-3 min-h-0 overflow-y-hidden px-4 text-center text-sm leading-relaxed text-gray-300"
 		>
 			<span
 				class="pointer-events-none absolute inset-0 block h-full w-full bg-gradient-to-b from-black/20 via-transparent to-black/20"
@@ -231,8 +229,31 @@
 
 		<div class="mt-10">
 			{#if Object.keys(animeDetail || {}).length > 0}
-				<Carousel slides={[Episode, Detail, Comming]} slidesBtn={["Episode", "Detail", "Komentar"]} animeDetail={animeDetail} {data} />
+				<Carousel
+					slides={[Episode, Detail, Comming]}
+					slidesBtn={['Episode', 'Detail', 'Komentar']}
+					{animeDetail}
+					{data}
+				/>
 			{/if}
 		</div>
 	</div>
+</div>
+<div class="fixed bottom-4 right-4 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
+	<button on:click={() => {
+		if (!isCopy) {
+			const thisLink = window.location.href;
+			navigator.clipboard.writeText(thisLink || '');
+			isCopy = true;
+			setTimeout(() => {
+				isCopy = false;
+			}, 2000);
+		}
+	}} disabled={isCopy} class="flex items-center justify-center disabled:cursor-not-allowed">
+		{#if isCopy}
+			<CheckIcon class="text-white" size={24} />
+		{:else}
+			<LinkIcon class="text-white" size={24} />
+		{/if}
+	</button>
 </div>

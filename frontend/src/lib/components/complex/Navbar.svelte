@@ -67,7 +67,7 @@
 	}
 
 	$: isClearDisplay = clearDisplay.some((route) => route == path || (new RegExp(route, "i")).test(path))
-	$: isExClearDisplayHeader = exClearDisplayHeader.some((route) => route == path)
+	$: isExClearDisplayHeader = exClearDisplayHeader.some((route) => route == path || (new RegExp(route, "i")).test(path))
 </script>
 
 {#if !isClearDisplay || isExClearDisplayHeader}
@@ -131,7 +131,7 @@
 							>
 								{#if profile?.avatar}
 									<img
-										src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={profile?.avatar}"
+										src={`${PUBLIC_API}/api/v1/proxy-media?mediaUrl=${profile?.avatar}` || "/web-app-manifest-192x192.png"}
 										alt="Profile"
 										class="h-8 w-8 rounded-full object-cover"
 									/>

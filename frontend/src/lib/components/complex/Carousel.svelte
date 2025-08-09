@@ -58,7 +58,7 @@
   {/each}
 </div>
 
-<div class="embla" use:emblaCarouselSvelte on:emblaInit={onEmblaInit}>
+<div class="embla" use:emblaCarouselSvelte={{ options: { duration: 15, containScroll: "keepSnaps" }, plugins: [] }} on:emblaInit={onEmblaInit}>
   <div class="embla__container">
     {#each slides as Slide, i (i)}
       <div class="embla__slide px-4 transition-all duration-300 w-full">

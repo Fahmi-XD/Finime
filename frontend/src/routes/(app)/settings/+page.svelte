@@ -2,6 +2,7 @@
   import Account from "$lib/components/fragments/Account.svelte";
   import { page } from "$app/state";
   import { badges as badgesStore } from "$lib/stores/user";
+  import { ArrowLeft } from "@lucide/svelte";
 
   const fragmentObj: any = {
     account: Account
@@ -19,9 +20,18 @@
   }
 </script>
 
-<section
-  class="max-w-7xl text-red-500 mt-20 w-full bg-[hsl(var(--background))] mx-auto px-4 sm:px-6 lg:px-8 py-8"
+<div
+  class="max-w-7xl text-red-500 mt-10 w-full bg-[hsl(var(--background))] mx-auto px-4 sm:px-6 lg:px-8"
 >
+  <div class="mb-4 flex items-center justify-between px-4">
+    <button aria-label="Back" class="text-2xl text-white" on:click={() => window.history.back()}>
+      <ArrowLeft size={24} />
+    </button>
+    <button class="rounded-full bg-white px-5 py-1.5 text-sm font-medium text-black">
+      Settings
+    </button>
+  </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 w-full">
     <div class="lg:col-span-1 flex">
       <nav class="space-y-2 flex flex-col w-full items-center">
@@ -61,4 +71,4 @@
       </div> -->
     </div>
   </div>
-</section>
+</div>

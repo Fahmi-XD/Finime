@@ -9,8 +9,11 @@ import { adminMiddleware } from "@middleware/admin.middleware.js";
 export const userRoute = (app: Elysia) => app
 
   .get("/user", UserController.getUser)
+  .get("/user/username/:username", UserController.getUserByUsername)
   // .get("/users", UserController.getAllUser, { beforeHandle: adminMiddleware }) // Memerlukan Token + Role Admin
   .patch("/user", UserController.updateUser)
+
+  .post("/notification", UserController.pushNotif)
 
   .group("/comment", (app) => app
     .post("/post", UserController.commentPostAnimeId)

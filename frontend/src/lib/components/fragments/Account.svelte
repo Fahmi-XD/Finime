@@ -37,6 +37,7 @@
       toast.error("Gagal memperbarui profile", toastOption);
     } finally {
       isLoading = false;
+      window.history.back();
     }
   }
 
@@ -145,7 +146,7 @@
               <input id="banner" type="text" bind:value={form.banner} class="w-full px-4 py-2 bg-[hsl(var(--background))] border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-all" />
             </div>
           </div>
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <h4 class="text-lg font-bold text-white mb-4">Statistics</h4>
             <div class="grid grid-cols-2 gap-4">
               <div class="bg-blue-500/10 p-4 rounded-xl border border-blue-500/20 flex flex-col items-center">
@@ -157,7 +158,7 @@
                 <span class="text-gray-300 text-sm mt-1">Manga Read</span>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <button
             class="mt-5 mb-5 flex justify-center items-center w-full py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:from-red-600 hover:to-pink-700 transition-all"

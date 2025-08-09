@@ -13,7 +13,7 @@
     LinkIcon
   } from "@lucide/svelte";
   import { PUBLIC_API } from "$env/static/public";
-  import { getInitials } from "$lib";
+  import { getInitials, truncate } from "$lib";
 
 	export let user: any;
   export let statistics: any = { anime: [], manga: [] };
@@ -24,13 +24,13 @@
 </script>
 
 <div
-	class="overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--background))] shadow-xl backdrop-blur-md"
+	class="overflow-hidden rounded-2xl bg-[hsl(var(--background))] shadow-xl backdrop-blur-md"
 >
   <div class="mb-4 flex items-center justify-between px-4">
     <button aria-label="Back" class="text-2xl text-white" on:click={() => window.history.back()}>
-      <ArrowLeft size={24} />
+      <ArrowLeft size={20} />
     </button>
-    <button class="rounded-full bg-white px-5 py-1.5 text-sm font-medium text-black">
+    <button class="rounded-full bg-white px-5 py-1.5 text-xs font-medium text-black">
       Profile
     </button>
   </div>
@@ -73,15 +73,15 @@
 				</div>
 			</div>
 
-			<div class="mt-24 flex items-center gap-3">
+			<div class="mt-5 flex items-center ml-auto gap-3">
 				<h1 class="text-2xl font-bold tracking-tight">
-					{user.name}
+					{truncate(user.name, 50)}
 				</h1>
 				{#if user.role === 'ADMIN' || user.isVerify}
 					<BadgeCheckIcon fill="#1DA1F2" />
 				{/if}
 			</div>
-			<p class="mt-1 text-sm text-gray-400">
+			<p class="mt-1 ml-auto text-sm text-gray-400">
 				@{user.username}
 				{user?.pronoun ? `(${user.pronoun})` : ''}
 			</p>
@@ -145,7 +145,7 @@
 		</div>
 
 		<div
-			class="w-full border-t border-white/10 bg-[hsl(var(--background))] p-8 md:w-2/3 md:border-l md:border-t-0"
+			class="w-full border-t border-white/10 bg-[hsl(var(--background))] px-8 md:w-2/3 md:border-l md:border-t-0"
 		>
 			<div class="mb-8">
 				<h2 class="mb-6 border-b border-white/20 pb-2 text-xl font-semibold">{visitor ? "" : "Your "}Statistics</h2>
@@ -159,7 +159,7 @@
 							</div>
 							<div>
 								<p class="text-sm font-medium text-gray-400">Anime Watched</p>
-								<p class="mt-1 text-2xl font-bold">{(visitor ? user : statistics).anime.length}</p>
+								<p class="mt-1 text-lg font-bold">{(visitor ? user : statistics).anime.length}</p>
 							</div>
 						</div>
 					</div>
@@ -172,7 +172,7 @@
 							</div>
 							<div>
 								<p class="text-sm font-medium text-gray-400">Manga Read</p>
-								<p class="mt-1 text-2xl font-bold">{(visitor ? user : statistics).manga.length}</p>
+								<p class="mt-1 text-lg font-bold">{(visitor ? user : statistics).manga.length}</p>
 							</div>
 						</div>
 					</div>

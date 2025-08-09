@@ -3,7 +3,7 @@
   import { BadgeCheckIcon } from "@lucide/svelte";
   import { UserClient } from "$lib/api/clients/userClient";
   import { invalidateAll } from "$app/navigation";
-  import { Loader } from "@lucide/svelte";
+  import { Loader, CloudUpload } from "@lucide/svelte";
   import toast from 'svelte-french-toast';
 	import { toastOption } from "$lib/config/app";
 
@@ -73,25 +73,30 @@
               <img class="h-[160px] w-full object-cover rounded-xl" src="placeholder.png" alt={form.name} />
             {/if}
 
-            <div class="absolute left-1/2 -bottom-12 transform -translate-x-1/2">
-              {#if form.avatar}
-                <img class="h-24 w-24 rounded-full border-4 border-white shadow-lg object-cover bg-white" src="{form.avatar}" alt={form.name} />
-              {:else}
-              <div class="flex items-center border-4 rounded-full border-red-500/30 bg-white/50 justify-center w-32 h-32 text-4xl font-bold text-white bg-gradient-to-br from-red-500 to-blue-500">
-                {getInitials(form.name)}
+            <div class="flex mt-5 items-center justify-around">
+              <div class="">
+                {#if form.avatar}
+                  <img class="h-[145px] w-[145px] rounded-full border-4 border-white shadow-lg object-cover bg-white" src="{form.avatar}" alt={form.name} />
+                {:else}
+                <div class="flex items-center border-4 rounded-full border-red-500/30 bg-white/50 justify-center w-32 h-32 text-4xl font-bold text-white bg-gradient-to-br from-red-500 to-blue-500">
+                  {getInitials(form.name)}
+                </div>
+                {/if}
               </div>
-              {/if}
+
+              <div class="flex flex-col items-center mt-4">
+                <h2 class="text-2xl font-bold text-white text-center">{form.name}</h2>
+                <p class="text-gray-400 text-sm mb-2">@{form.username} {form?.pronoun ? `(${form?.pronoun})` : ""}</p>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-xs font-bold">{user.role}</span>
+                  {#if user.isVerify}
+                    <BadgeCheckIcon class="text-blue-400" />
+                  {/if}
+                </div>
+              </div>
             </div>
           </div>
-          <div class="mt-16 flex flex-col items-center w-full px-8">
-            <h2 class="text-2xl font-bold text-white text-center">{form.name}</h2>
-            <p class="text-gray-400 text-sm mb-2">@{form.username} {form?.pronoun ? `(${form?.pronoun})` : ""}</p>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-xs font-bold">{user.role}</span>
-              {#if user.isVerify}
-                <BadgeCheckIcon class="text-blue-400" />
-              {/if}
-            </div>
+          <div class="mt-5 flex flex-col items-center w-full">
             <div class="flex flex-wrap gap-2 justify-center mt-2">
               {#each badges as badge}
                 <span class="inline-flex items-center gap-1 px-3 py-1 bg-white/20 border-l-4 border-red-500 text-white text-xs font-semibold shadow">
@@ -99,7 +104,7 @@
                 </span>
               {/each}
             </div>
-            <div class="mt-8 w-full">
+            <div class="mt-8 w-full px-8">
               <label for="bio" class="block text-sm font-medium text-gray-300 mb-2">Bio</label>
               <textarea
                 class="w-full px-4 py-2 bg-[hsl(var(--background))] border border-white/20 rounded-lg text-white focus:outline-none focus:border-pink-500 transition-all resize-none min-h-[60px] mb-2"
@@ -137,7 +142,7 @@
                 <input id="avatar-url" type="text" bind:value={form.avatar} class="w-full px-4 py-2 bg-[hsl(var(--background))] border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-all" />
               </div>
               <div class="flex items-center h-[40px] gap-2 mt-10">
-                <label for="avatar" class="flex items-center justify-center text-sm font-medium text-gray-300 mb-2 cursor-pointer bg-red-500 px-4 h-full rounded-lg">Pilih dari lokal</label>
+                <label for="avatar" class="flex items-center justify-center text-sm font-medium text-gray-300 mb-2 cursor-pointer bg-red-500 px-4 h-full rounded-lg text-tiny"><CloudUpload /></label>
                 <input id="avatar" type="file" accept="image/*" on:change={handleAvatarChange} class="w-full hidden px-4 py-2 bg-[hsl(var(--background))] border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-all" />
               </div>
             </div>

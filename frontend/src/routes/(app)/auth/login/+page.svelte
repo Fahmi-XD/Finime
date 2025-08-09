@@ -193,7 +193,7 @@
 
 <div class="min-h-screen mt-15 flex items-center justify-center bg-black relative overflow-hidden p-8">
   <div class="w-full max-w-md z-10">
-    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-white/20 shadow-2xl">
+    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-5 border border-white/20 shadow-2xl">
       <div class="text-center mb-10">
         <div class="mb-6">
           <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white">

@@ -103,15 +103,15 @@
 >
 	<div class="mb-6 flex items-center justify-between">
 		<button on:click={() => window.history.back()} class="rounded-full p-2">
-			<ArrowLeft />
+			<ArrowLeft size={20} />
 		</button>
-		<h1 class="text-title-large font-bold">Info</h1>
+		<h1 class="text-lg font-bold">Info</h1>
 		<div class="w-8"></div>
 	</div>
 
 	<div class="mb-8 mt-5">
-		<h2 class="mb-2 text-xl font-semibold">Tentang Aplikasi Finime</h2>
-		<p class="opacity-60">
+		<h2 class="mb-2 text-lg font-semibold">Tentang Aplikasi Finime</h2>
+		<p class="opacity-60 text-sm">
 			Finime adalah platform mobile yang dirancang untuk pecinta anime, menyediakan streaming cepat,
 			interaksi komunitas, dan fitur kustom. Salah satu fitur unggulan adalah sistem badge pengguna
 			yang memberikan pengakuan peran dan tingkatan akses.
@@ -119,7 +119,7 @@
 	</div>
 
 	<div>
-		<h2 class="mb-4 text-xl font-semibold">List Badge</h2>
+		<h2 class="mb-4 text-lg font-semibold">List Badge</h2>
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 			{#each badges as badge}
 				<div
@@ -143,7 +143,7 @@
 
 	<div class="border-l-3 mt-10 border-yellow-500 pl-5">
 		<TriangleAlertIcon font-size={35} color="var(--color-yellow-500)" />
-		<p class="mt-2 opacity-70">
+		<p class="mt-2 opacity-70 text-sm">
 			Harap diperhatikan bahwa konten anime di aplikasi ini bersumber dari proses pengambilan
 			(scraping) situs pihak ketiga. Kami tidak memiliki lisensi resmi untuk menayangkan konten
 			tersebut.
@@ -152,7 +152,7 @@
 
 	<div class="border-l-3 mt-10 border-cyan-500 pl-5">
 		<Info font-size={35} color="var(--color-cyan-500)" />
-		<p class="mt-2 opacity-70">
+		<p class="mt-2 opacity-70 text-sm">
 			Untuk pengalaman menonton yang sepenuhnya legal, kami menyarankan Anda berkunjung ke layanan
 			resmi seperti Crunchyroll, Netflix, atau platform lokal berlisensi. Dengan begitu, Anda turut
 			mendukung para kreator dan industri anime.
@@ -162,22 +162,22 @@
 	<div class="border-l-3 mt-10 border-yellow-500 pl-5">
 		<TriangleAlertIcon font-size={35} color="var(--color-yellow-500)" />
 		<ul class="mt-3 list-decimal">
-			<li class="ml-5 opacity-70">
+			<li class="ml-5 opacity-70 text-sm">
 				Aplikasi ini hanya bersifat edukasi/demontrasi dan bukan distributor resmi.
 			</li>
-			<li class="ml-5 opacity-70">
+			<li class="ml-5 opacity-70 text-sm">
 				Nikmati anime secara aman dan legal melalui situs atau aplikasi berizin.
 			</li>
-			<li class="ml-5 opacity-70">
+			<li class="ml-5 opacity-70 text-sm">
 				Terima kasih atas pengertian dan dukungan Anda terhadap ekosistem anime!
 			</li>
 		</ul>
 	</div>
 
 	<div class="mt-10 flex w-full justify-center gap-5">
-		<Github font-size="35" />
-		<Hexagon font-size="35" />
-		<ChartArea font-size="35" />
-		<RocketIcon font-size="35" />
+		<Github size={20} />
+		<Hexagon size={20} />
+		<ChartArea size={20} />
+		<RocketIcon size={20} />
 	</div>
 </div>

@@ -332,10 +332,10 @@
 		></iframe>
 	{/if}
 	<div class="bg-gradient-to-t from-black/90 to-transparent px-5 pb-8 pt-5">
-		<h1 class="text-title-large font-extrabold leading-tight opacity-70">
+		<h1 class="text-sm font-extrabold leading-tight opacity-70">
 			{(animeDetail?.title || '').replace('- Kuramanime', '')}
 		</h1>
-		<p class="mb-4 mt-1 text-base font-normal">
+		<p class="mb-4 mt-1 text-sm font-normal">
 			Episode {parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1') ||
 				'1'}
 		</p>
@@ -406,15 +406,14 @@
 				</button>
 			{/each}
 		</div>
-		<h2 class="mb-4 text-xl font-extrabold">Komentar</h2>
+		<h2 class="mb-4 text-lg font-extrabold">Komentar</h2>
 		{#if Object.keys(user).length > 0}
 			<form class="mb-6 flex gap-3">
-				<input
-					class="flex-grow rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
+				<textarea
+					class="flex-grow text-sm rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
 					placeholder="Komentar.."
-					type="text"
 					bind:value={commentStr}
-				/>
+				></textarea>
 				<button
 					aria-label="Send comment"
 					class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1f1f2e] text-white"
@@ -447,7 +446,7 @@
 		{:else}
 			<a
 				href="/auth/login?from={btoa('/mobile/anime/watch/' + animeSlugWithEpisode)}"
-				class="text-title-medium my-4 text-blue-500">Masuk untuk berkomentar</a
+				class="text-sm my-4 text-blue-500">Masuk untuk berkomentar</a
 			>
 		{/if}
 		<div class="space-y-3">
@@ -461,22 +460,22 @@
 							{#if comment.user.avatar}
 								<img
 									alt="Avatar of {comment.user.name}"
-									class="h-12 w-12 rounded-full object-cover"
-									height="48"
+									class="h-10 w-10 rounded-full object-cover"
+									height="40"
 									src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={comment.user.avatar}"
-									width="48"
+									width="40"
 								/>
 							{:else}
 								<div
-									class="flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[hsl(var(--primary))] text-lg font-bold text-white"
+									class="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[hsl(var(--primary))] text-lg font-bold text-white"
 								>
 									{getInitials(comment.user.name)}
 								</div>
 							{/if}
 						</div>
 						<div>
-							<div class="flex items-center gap-2">
-								<p class="font-semibold text-white">{comment.user.name}</p>
+							<div class="flex items-center gap-1">
+								<p class="font-semibold text-sm text-white">{comment.user.name}</p>
 								<!-- {#if comment.user.role == "ADMIN"}
 									<p class="font-semibold text-red-500">( Admin )</p>
 								{/if} -->
@@ -485,19 +484,19 @@
 										class="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
 										title="Verified"
 									>
-										<BadgeCheckIcon color="#1DA1F2" />
+										<BadgeCheckIcon size={15} color="#1DA1F2" />
 									</span>
-									<Star size={20} />
-									<Shield size={20} />
+									<Star size={15} />
+									<Shield size={15} />
 								{/if}
 							</div>
 							<div class="flex items-center gap-2">
 								<span
-									class="rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-2 py-0.5 text-xs font-semibold"
+									class="rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-2 py-0.5 text-tiny font-semibold"
 								>
 									{comment.user.role}
 								</span>
-								<p class="text-sm text-gray-400">@{comment.user.username}</p>
+								<p class="text-tiny text-gray-400">@{comment.user.username}</p>
 							</div>
 						</div>
 						<div
@@ -553,10 +552,10 @@
 						{/if} -->
 						<!-- <p class="ml-auto text-xs font-semibold text-gray-400">Lv. 9999999</p> -->
 					</div>
-					<p class="text-title-small font-normal leading-snug text-white">
+					<p class="text-sm opacity-70 font-normal leading-snug text-white">
 						{comment.content}
 					</p>
-					<div class="flex justify-between text-xs font-normal text-gray-400">
+					<div class="flex justify-between text-tiny font-normal text-gray-400">
 						<span> {new Date(comment.created_at).toLocaleDateString()} </span>
 						<!-- <button class="font-bold text-white"> Balas (0) </button> -->
 					</div>

@@ -166,9 +166,9 @@
 		<!-- Top bar -->
 		<div class="mb-4 flex items-center justify-between px-4">
 			<button aria-label="Back" class="text-2xl text-white" on:click={() => window.history.back()}>
-				<ArrowLeft size={24} />
+				<ArrowLeft size={20} />
 			</button>
-			<button class="rounded-full bg-white px-5 py-1.5 text-sm font-medium text-black">
+			<button class="rounded-full bg-white px-5 py-1.5 text-xs font-medium text-black">
 				My Kisah
 			</button>
 		</div>
@@ -188,13 +188,13 @@
 				{animeDetail?.title}
 			</h1>
 			{#each animeDetail?.altTitles as title}
-				<p class="mb-1 text-center text-sm text-gray-300">{title}</p>
+				<p class="mb-1 text-center text-tiny text-gray-300">{title}</p>
 			{/each}
 			<p class="mb-1 text-center text-sm text-gray-300">
 				{animeDetail?.type} | {animeDetail?.status} | {animeDetail?.airing?.from}
 			</p>
 			<p
-				class="mb-3 flex items-center justify-center space-x-1 text-center font-semibold text-yellow-400"
+				class="mb-3 text-tiny flex items-center justify-center space-x-1 text-center font-semibold text-yellow-400"
 			>
 				<Star size={18} fill="yellow" />
 				<span> 7.19 </span>
@@ -224,7 +224,7 @@
 			<span
 				class="pointer-events-none absolute inset-0 block h-full w-full bg-gradient-to-b from-black/20 via-transparent to-black/20"
 			></span>
-			<p class="max-h-50 no-scroll h-full w-full overflow-y-auto">{animeDetail?.description}</p>
+			<p class="max-h-50 no-scroll text-xs h-full w-full overflow-y-auto">{animeDetail?.description}</p>
 		</div>
 
 		<div class="mt-10">

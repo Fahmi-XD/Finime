@@ -35,11 +35,11 @@
 <div class="max-w-md pt-10 pb-5 px-6" in:scale={{ duration: 200, start: 0.95 }}>
 	<header class="mb-10 flex items-center space-x-4">
 		<button aria-label="Back" on:click={() => window.history.back()} class="text-lg flex items-center gap-1 text-white">
-			<ArrowLeft />
+			<ArrowLeft size={20} />
 			<h1 class="text-lg font-semibold text-white opacity-70">{$seeAllTitle}</h1>
 		</button>
 		<button aria-label="Search" class="ml-auto text-lg text-white" on:click={() => {goto("/mobile/search", { replaceState: true })}}>
-			<Search />
+			<Search size={20} />
 		</button>
 	</header>
 
@@ -57,10 +57,10 @@
 							class="h-[160px] w-[120px] rounded-lg object-cover"
 							src={anime.image_portrait_url}
 						/>
-						<span class="absolute text-white left-2 top-2 rounded bg-red-500 px-2 py-0.5 text-xs font-semibold">
+						<span class="absolute text-white left-2 top-2 rounded bg-red-500 px-2 py-0.5 text-tiny font-semibold">
 							{anime.posts?.length} / {anime.total_episodes} Eps
 						</span>
-						<span class="absolute text-white right-2 bottom-2 rounded bg-red-500 px-2 py-0.5 text-xs font-semibold">
+						<span class="absolute text-white right-2 bottom-2 rounded bg-red-500 px-2 py-0.5 text-tiny font-semibold">
 							{anime.type}
 						</span>
 					</div>
@@ -69,11 +69,11 @@
 							<h2 class="text-lg font-semibold leading-tight text-white">
 								{truncate(anime.title || "", 50)}
 							</h2>
-							<p class="mt-4 text-xs text-gray-400">{anime.aired_from}</p>
-							<p class="mt-1 max-w-xs text-xs text-gray-400">
+							<p class="mt-4 text-tiny text-gray-400">{anime.aired_from}</p>
+							<p class="mt-1 max-w-xs text-tiny text-gray-400">
 								Schedule: {anime.scheduled_day}
 							</p>
-							<p class="mt-1 max-w-xs text-xs text-gray-400">
+							<p class="mt-1 max-w-xs text-tiny text-gray-400">
 								Source: {anime.source}
 							</p>
 							<div class="flex gap-1 items-center">
@@ -84,12 +84,12 @@
 						<div class="flex gap-3 items-center">
 							<a
 								href="/mobile/anime/{anime.id}/{anime.slug}"
-								class="mt-3 w-max rounded-full bg-red-500 px-5 py-2 text-xs font-bold text-white"
+								class="mt-3 w-max rounded-full bg-red-500 px-5 py-2 text-tiny font-bold text-white"
 							>
 								Tonton
 							</a>
 							<button
-								class="mt-3 w-max rounded-full border-2 border-red-500 px-5 py-2 text-xs font-bold text-white"
+								class="mt-3 w-max text-tiny rounded-full border-2 border-red-500 px-5 py-2 font-bold text-white"
 							>
 								Add to list
 							</button>

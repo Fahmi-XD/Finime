@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="pointer-events-auto block w-full overflow-x-hidden text-white"
+	class="pointer-events-auto text-sm block w-full overflow-x-hidden text-white"
 	style="max-width: 100vw;"
 >
 	<table

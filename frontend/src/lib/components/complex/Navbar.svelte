@@ -154,7 +154,7 @@
 						<a
 							data-sveltekit-preload-data="tap"
 							href="/auth/login"
-							class="rounded-md border border-[hsl(var(--primary))] px-4 py-1 text-lg font-medium text-[hsl(var(--primary))] transition-colors hover:bg-[hsl(var(--primary)/0.1)] md:py-2"
+							class="rounded-md border border-[hsl(var(--primary))] px-4 py-1 text-sm font-medium text-[hsl(var(--primary))] transition-colors hover:bg-[hsl(var(--primary)/0.1)] md:py-2"
 						>
 							Sign In
 						</a>

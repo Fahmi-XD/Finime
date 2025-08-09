@@ -30,7 +30,7 @@
   <div>
     <div class="mt-10">
       <div class="flex w-full h-auto items-center">
-        <h1 class="text-[25px] flex items-center gap-1 font-bold">Sedang Tayang</h1>
+        <h1 class="text-lg flex items-center gap-1 font-bold">Sedang Tayang</h1>
         <button class="ml-auto">
           <ArrowRight class="ml-auto" />
         </button>
@@ -54,19 +54,19 @@
                   />
                 </div>
                 <div class="flex flex-col justify-between h-full mt-2">
-                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                  <h1 class="text-sm font-semibold mb-1 flex">
                     {truncate(anime?.title || "", 30)}
                   </h1>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
                       <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.status}</h1>
                     </div>
                     <div class="flex gap-1 flex-col text-label-medium">
-                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.aired_from}</h1>
                       <div class="flex gap-1 items-center">
                         <Star size="15" fill="green" color="green" />
-                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                        <h1 class="opacity-80 text-green-500 text-tiny">{anime.score || "Unknown"}</h1>
                       </div>
                     </div>
                   </div>
@@ -82,7 +82,7 @@
   <div>
     <div class="mt-10">
       <div class="flex w-full h-auto items-center">
-        <h1 class="text-[25px] flex items-center gap-1 font-bold">Tamat</h1>
+        <h1 class="text-lg flex items-center gap-1 font-bold">Tamat</h1>
         <button class="ml-auto">
           <ArrowRight class="ml-auto" />
         </button>
@@ -106,19 +106,19 @@
                   />
                 </div>
                 <div class="flex flex-col justify-between h-full mt-2">
-                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                  <h1 class="text-sm font-semibold mb-1 flex">
                     {truncate(anime?.title || "", 30)}
                   </h1>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
                       <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.status}</h1>
                     </div>
                     <div class="flex gap-1 flex-col text-label-medium">
-                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.aired_from}</h1>
                       <div class="flex gap-1 items-center">
                         <Star size="15" fill="green" color="green" />
-                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                        <h1 class="opacity-80 text-green-500 text-tiny">{anime.score || "Unknown"}</h1>
                       </div>
                     </div>
                   </div>
@@ -134,7 +134,7 @@
   <div>
     <div class="mt-10">
       <div class="flex w-full h-auto items-center">
-        <h1 class="text-[25px] flex items-center gap-1 font-bold">Movie</h1>
+        <h1 class="text-lg flex items-center gap-1 font-bold">Movie</h1>
         <button class="ml-auto">
           <ArrowRight class="ml-auto" />
         </button>
@@ -158,19 +158,19 @@
                   />
                 </div>
                 <div class="flex flex-col justify-between h-full mt-2">
-                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                  <h1 class="text-sm font-semibold mb-1 flex">
                     {truncate(anime?.title || "", 30)}
                   </h1>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
                       <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.status}</h1>
                     </div>
                     <div class="flex gap-1 flex-col text-label-medium">
-                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.aired_from}</h1>
                       <div class="flex gap-1 items-center">
                         <Star size="15" fill="green" color="green" />
-                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                        <h1 class="opacity-80 text-green-500 text-tiny">{anime.score || "Unknown"}</h1>
                       </div>
                     </div>
                   </div>
@@ -186,7 +186,7 @@
   <div>
     <div class="mt-10">
       <div class="flex w-full h-auto items-center">
-        <h1 class="text-[25px] flex items-center gap-1 font-bold">Top Anime</h1>
+        <h1 class="text-lg flex items-center gap-1 font-bold">Top Anime</h1>
         <button class="ml-auto">
           <ArrowRight class="ml-auto" />
         </button>
@@ -210,19 +210,19 @@
                   />
                 </div>
                 <div class="flex flex-col justify-between h-full mt-2">
-                  <h1 class="text-body-medium font-semibold mb-1 flex">
+                  <h1 class="text-sm font-semibold mb-1 flex">
                     {truncate(anime?.title || "", 30)}
                   </h1>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
                       <span class="block w-[10px] h-[10px] bg-yellow-500 rounded-full"></span>
-                      <h1 class="opacity-80 text-label-medium">{anime.status}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.status}</h1>
                     </div>
                     <div class="flex gap-1 flex-col text-label-medium">
-                      <h1 class="opacity-80">{anime.aired_from}</h1>
+                      <h1 class="opacity-80 text-tiny">{anime.aired_from}</h1>
                       <div class="flex gap-1 items-center">
                         <Star size="15" fill="green" color="green" />
-                        <h1 class="opacity-80 text-green-500">{anime.score || "Unknown"}</h1>
+                        <h1 class="opacity-80 text-green-500 text-tiny">{anime.score || "Unknown"}</h1>
                       </div>
                     </div>
                   </div>

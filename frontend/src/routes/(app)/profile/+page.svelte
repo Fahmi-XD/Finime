@@ -23,7 +23,7 @@
 </script>
 
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black py-12 px-4 sm:px-6 lg:px-8"
+  class="min-h-screen flex items-center justify-center bg-transparent py-12"
 >
   <div class="w-full max-w-5xl mx-auto">
     {#if $isLoading}

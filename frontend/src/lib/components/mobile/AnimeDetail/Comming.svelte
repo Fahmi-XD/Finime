@@ -1,1 +1,1 @@
-<h1 class="text-white text-2xl px-4 opacity-70 text-center">Comming Soon!</h1>
+<h1 class="text-white text-lg px-4 opacity-70 text-center">Comming Soon!</h1>

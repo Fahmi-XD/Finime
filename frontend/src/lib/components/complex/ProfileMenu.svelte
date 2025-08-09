@@ -23,8 +23,8 @@
   <div class="py-1">
     {#each menuItems as item}
       {#if item.show}
-        <a href={item.href} class="flex items-center gap-2 px-4 py-2 text-sm text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))]/60 rounded-md transition-all" data-sveltekit-preload-data={item.name === 'Dashboard' ? 'tap' : ''}>
-          <item.icon class="w-5 h-5" />
+        <a href={item.href} class="flex items-center gap-2 px-4 py-2 text-tiny text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))]/60 rounded-md transition-all" data-sveltekit-preload-data={item.name === 'Dashboard' ? 'tap' : ''}>
+          <item.icon class="w-3 h-3" />
           {item.name}
         </a>
       {/if}

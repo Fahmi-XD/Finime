@@ -209,7 +209,7 @@
 				</span>
 			{/each}
 		</div>
-		<div class="mb-4 flex flex-wrap justify-center gap-2">
+		<div class="mb-4 flex flex-wrap justify-center gap-2 px-4">
 			{#each animeDetail?.relatedTags as tag}
 				<span class="rounded-full bg-red-500 px-3 py-1 text-xs font-medium text-white">
 					{tag.replace(',', '')}

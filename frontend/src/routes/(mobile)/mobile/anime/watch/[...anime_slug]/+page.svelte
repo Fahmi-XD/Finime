@@ -9,7 +9,9 @@
 		EllipsisVertical,
 		Loader,
 		CheckIcon,
-		LinkIcon
+		LinkIcon,
+		ThumbsUp,
+		ThumbsDown
 	} from '@lucide/svelte';
 	import { scale, fade } from 'svelte/transition';
 	import { page } from '$app/state';
@@ -296,7 +298,6 @@
 
 {#if isLoading}
 	<LoadingElements />
-	<!-- {:else} -->
 {/if}
 <div class="mx-auto max-w-md pb-20 text-white" in:scale={{ duration: 200, start: 0.95 }}>
 	{#if Array.isArray(animeDetail?.videoUrls) && animeDetail?.videoUrls.length > 0}
@@ -331,35 +332,18 @@
 			title="Anime Video Player"
 		></iframe>
 	{/if}
-	<div class="bg-gradient-to-t from-black/90 to-transparent px-5 pb-8 pt-5">
-		<h1 class="text-sm font-extrabold leading-tight opacity-70">
-			{(animeDetail?.title || '').replace('- Kuramanime', '')}
-		</h1>
-		<p class="mb-4 mt-1 text-sm font-normal">
-			Episode {parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1') ||
-				'1'}
-		</p>
-		<div class="mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-red-500 p-4">
-			<button
-				on:click={() => {
-					if (!isCopy) {
-						const thisLink = window.location.href;
-						navigator.clipboard.writeText(thisLink || '');
-						isCopy = true;
-						setTimeout(() => {
-							isCopy = false;
-						}, 2000);
-					}
-				}}
-				disabled={isCopy}
-				class="flex items-center justify-center disabled:cursor-not-allowed"
-			>
-				{#if isCopy}
-					<CheckIcon class="text-white" size={20} />
-				{:else}
-					<LinkIcon class="text-white" size={20} />
-				{/if}
-			</button>
+	<div class="bg-gradient-to-t w-full from-black/90 to-transparent pb-8 pt-5">
+		<div class="px-4 flex items-start gap-3 mb-4">
+			<img src={animeDetail2?.image} alt={(animeDetail?.title || '').replace('- Kuramanime', '')} class="w-[40px] h-[40px] object-cover rounded-full shrink-0" />
+			<div class="flex flex-col justify-center min-w-0">
+				<h1 class="text-sm font-extrabold leading-tight opacity-70">
+					{(animeDetail?.title || '').replace('- Kuramanime', '')}
+				</h1>
+				<p class="mt-1 text-sm font-normal">
+					Episode {parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1') ||
+						'1'}
+				</p>
+			</div>
 		</div>
 		<!-- <div class="mb-3 flex flex-wrap gap-2">
 			<button
@@ -385,7 +369,53 @@
 				Ganti Server
 			</button>
 		</div> -->
-		<div class="mb-6 flex flex-wrap justify-center gap-3">
+		<div class="flex gap-2 items-center px-4">
+			<div class="mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+				<button
+					on:click={() => {
+						if (!isCopy) {
+							const thisLink = window.location.href;
+							navigator.clipboard.writeText(thisLink || '');
+							isCopy = true;
+							setTimeout(() => {
+								isCopy = false;
+							}, 2000);
+						}
+					}}
+					disabled={isCopy}
+					class="flex items-center justify-center disabled:cursor-not-allowed"
+				>
+					{#if isCopy}
+						<CheckIcon class="text-white" size={20} />
+					{:else}
+						<LinkIcon class="text-white" size={20} />
+					{/if}
+				</button>
+			</div>
+			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+				<button
+					on:click={() => {
+						console.log("Anjay")
+					}}
+					class="flex items-center gap-1 justify-center disabled:cursor-not-allowed"
+				>
+					<ThumbsUp class="text-white" size={20} />
+					<p class="text-sm">0</p>
+				</button>
+			</div>
+			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+				<button
+					on:click={() => {
+						console.log("Anjay")
+					}}
+					class="flex items-center gap-1 justify-center disabled:cursor-not-allowed"
+				>
+					<ThumbsDown class="text-white" size={20} />
+					<p class="text-sm">0</p>
+				</button>
+			</div>
+		</div>
+		<div class="mb-6 flex flex-nowrap no-scroll px-4 overflow-x-auto w-full gap-3">
 			<!-- <button
 				class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold"
 			>
@@ -400,15 +430,15 @@
 					class="flex {i + 1 ==
 					parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1')
 						? 'bg-red-500'
-						: 'bg-[#3a3a4a]'} cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
+						: 'bg-[#3a3a4a]'} shrink-0 min-w-0 cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
 				>
-					Eps {i + 1}
+					{i + 1}
 				</button>
 			{/each}
 		</div>
-		<h2 class="mb-4 text-lg font-extrabold">Komentar</h2>
+		<h2 class="mb-4 text-lg font-extrabold px-4">Komentar</h2>
 		{#if Object.keys(user).length > 0}
-			<form class="mb-6 flex gap-3">
+			<form class="mb-6 flex gap-3 px-4">
 				<textarea
 					class="flex-grow text-sm rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
 					placeholder="Komentar.."
@@ -446,10 +476,10 @@
 		{:else}
 			<a
 				href="/auth/login?from={btoa('/mobile/anime/watch/' + animeSlugWithEpisode)}"
-				class="text-sm my-4 text-blue-500">Masuk untuk berkomentar</a
+				class="text-sm my-4 text-blue-500 px-4">Masuk untuk berkomentar</a
 			>
 		{/if}
-		<div class="space-y-3">
+		<div class="space-y-3 px-4">
 			{#each commentList as comment}
 				<div
 					aria-label="Comment by {comment.user.name}"
@@ -535,6 +565,7 @@
 														await fetchComment();
 														isCommentLoadingDelete = false;
 													}}
+													disabled={isCommentLoadingDelete}
 												>
 													{#if isCommentLoadingDelete}
 														<Loader color="red" class="animate-spin" />

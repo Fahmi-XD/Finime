@@ -4,7 +4,7 @@
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import { Toaster } from 'svelte-french-toast';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	interface PushSubscriptionJSON {
 		endpoint: string;
@@ -85,6 +85,10 @@
 		}
 	}
 
+	function onPop(e: PopStateEvent) {
+		console.log("Kembali");
+	}
+
 	onMount(() => {
 		if (typeof window != 'undefined') {
 			if ('scrollRestoration' in history) {
@@ -94,6 +98,22 @@
 
 		if (typeof window != 'undefined') {
 			// initPush();
+		}
+
+    function initBackButtonInterceptor() {
+      // history.pushState({ key: "initial" }, "", "");
+      console.log("Event popstate aktif")
+
+      window.addEventListener('popstate', onPop);
+    }
+
+    initBackButtonInterceptor();
+	});
+
+	onDestroy(() => {
+		if (typeof window != 'undefined') {
+			console.log("Event popstate gak aktif");
+			window.removeEventListener('popstate', onPop);
 		}
 	});
 

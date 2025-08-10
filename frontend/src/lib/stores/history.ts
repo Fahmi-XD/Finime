@@ -9,5 +9,7 @@ history.subscribe(() => {
   }
 })
 navigate.subscribe((value) => {
-  history.update((prev) => [...prev, value])
+  if (value[0] != "back") {
+    history.update((prev) => [...prev, value])
+  }
 })

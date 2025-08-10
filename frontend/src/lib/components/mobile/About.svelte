@@ -126,13 +126,13 @@
 					class="flex items-start space-x-4 rounded-2xl p-1 shadow-sm transition hover:shadow-md"
 				>
 					<div class={`rounded-full p-3 ${badge.bgColor}`}>
-						<svelte:component this={badge.icon} class={`h-6 w-6 ${badge.textColor}`} />
+						<svelte:component this={badge.icon} class={`h-5 w-5 ${badge.textColor}`} />
 					</div>
 					<div>
-						<h3 class="text-lg font-medium">
+						<h3 class="text-sm font-medium">
 							{badge.label}
 						</h3>
-						<p class="text-sm opacity-60">
+						<p class="text-xs opacity-60">
 							{badge.description}
 						</p>
 					</div>

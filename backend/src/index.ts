@@ -4,7 +4,7 @@
  */
 
 import "dotenv/config.js";
-import { Elysia, Context } from "elysia";
+import { Elysia } from "elysia";
 import { cors } from '@elysiajs/cors'
 import * as cache from "elysia-cache";
 import HttpException from "@lib/httpException.js";
@@ -41,8 +41,12 @@ const app = new Elysia()
   // Route Utama ( Gakguna jir 😂 )
   .get("/", () => {
     return {
-      message: "Service active.",
-      source: "Finime, Kuramanime, Otakudesu, MyAnimeList, Komi-Komi, AnimeLovers, AnimePlay"
+      status: "Active.",
+      source: "Finime, Kuramanime, Otakudesu, MyAnimeList, Komi-Komi, AnimeLovers, AnimePlay",
+      message: "Welcome to Finime API",
+      warning: "Semua anime dan manga yang ada di Finime API ini adalah hasil dari web lain, jadi jangan harap bisa request data anime atau manga yang tidak ada di web tersebut.",
+      note: "Jika ada yang ingin ditambahkan, silahkan buat issue di github atau discord kami.",
+      github: "https://github.com/SyntxFlow/Finime"
     }
   })
 
@@ -66,12 +70,12 @@ const app = new Elysia()
    * Karna elysia js itu pake runtime bun, jadi gak bisa di deploy di serverless kayak vercel
    * Kalo mau jalanin api backend ini di mode development
    * Uncomment sementara kode .listen ini
-   * Lalu kalau udah dan ingin di deploy, comment lagi kodenya
+   * Lalu kalau udah dan ingin di deploy, kasih komentar lagi kodenya
    */
   // .listen(PORT)
 
 /**
- * Inimah gak usah di apa-apain, biarin aja
+ * Gak usah di apa-apain, biarin aja
  */
 export const GET = app.handle
 export const POST = app.handle

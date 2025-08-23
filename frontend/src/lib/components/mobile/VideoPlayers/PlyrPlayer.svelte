@@ -82,8 +82,6 @@
 
 			player.destroy();
 		}
-    
-		unlockOrientation();
   })
 </script>
 
@@ -93,6 +91,7 @@
 	controls
 	crossorigin="anonymous"
 	playsinline
+	class="plyr-player"
 	poster="/images/finime-poster.png"
 >
 	{#each animeDetail?.videoUrls as videoUrl}

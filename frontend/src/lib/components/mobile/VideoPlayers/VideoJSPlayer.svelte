@@ -14,18 +14,6 @@
   let playerElement: HTMLElement;
   let player: Player;
 
-  function lockLandscape() {
-		if (screen.orientation && (screen.orientation as any).lock) {
-			(screen.orientation as any).lock('landscape-primary').catch(() => {});
-		}
-	}
-
-	function unlockOrientation() {
-		if (screen.orientation && screen.orientation.unlock) {
-			screen.orientation.unlock();
-		}
-	}
-
   onMount(() => {
     player = Videojs(playerElement, {
       controls: true,
@@ -63,7 +51,7 @@
 	playsinline
   controls
   preload="auto"
-  class="video-js"
+  class="video-js videojs-player"
   poster="/images/finime-poster.png"
   disablePictureInPicture
   data-setup={'{"controlBar": {"pictureInPictureToggle": false, "captionsButton": false, "captionSettingsMenuItem": false, "skipButtons": { "backward": 10, "forward": 10 }}}'}

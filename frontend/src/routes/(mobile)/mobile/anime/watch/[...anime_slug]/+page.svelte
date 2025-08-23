@@ -38,6 +38,10 @@
 
 	const animeSlug = page.url.pathname.split('/').slice(-3, -1).join('/');
 	const user = page.data.user;
+	const PLAYER_MAP = {
+		"plyr": PlyrPlayer,
+		"videojs": VideoJsPlayer
+	}
 
 	$: animeSlugWithEpisode = '';
 
@@ -60,15 +64,33 @@
 	let isCommentLoading = false;
 	let isCommentLoadingDelete = false;
 	let commentStr = '';
-	let playerType = BrowserData.get("playerType") ? BrowserData.get("playerType") : "plyr";
+
+	$: playerType = "plyr";
 
 	$: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
 		lastSlug = animeSlugWithEpisode;
 		fetchAllData();
 	}
 
-	$: if (playerType) {
+	$: if (playerType && typeof window != "undefined") {
 		BrowserData.set("playerType", playerType);
+
+		const plyrPlayer = document.querySelectorAll(".plyr-player");
+		const videojsPlayer = document.querySelectorAll(".videojs-player");
+
+		console.log(plyrPlayer.length, videojsPlayer.length)
+		
+		if (playerType == "videojs" && plyrPlayer) {
+			console.log("PLYR Remove")
+			plyrPlayer.forEach((el) => {
+				el.remove();
+			})
+		} else if (playerType == "pylr" && videojsPlayer) {
+			console.log("VideoJS Remove")
+			videojsPlayer.forEach((el) => {
+				el.remove();
+			})
+		}
 	}
 
 	async function postComment(comment: string) {
@@ -136,6 +158,8 @@
 
 	onMount(async () => {
 		if (typeof window == 'undefined') return;
+
+		playerType = BrowserData.get("playerType") as string || "plyr";
 
 		await fetchAllData();
 
@@ -243,11 +267,9 @@
 		<!-- <CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} /> -->
 
 		<div class="container">
-			{#if (playerType == "plyr")}
-				<PlyrPlayer {animeDetail} />
-			{:else if (playerType == "videojs")}
-				<VideoJsPlayer {animeDetail} />
-			{/if}
+			{#key playerType}
+				<svelte:component this={(PLAYER_MAP as any)[playerType as any]} {animeDetail} />
+			{/key}
 		</div>
 	{:else}
 		<iframe

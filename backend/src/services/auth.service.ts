@@ -97,7 +97,7 @@ export default class AuthService {
 
       const isPasswordValid = await bcrypt.compare(
         request.password,
-        user.password,
+        user.password as string,
       );
 
       if (!isPasswordValid) {

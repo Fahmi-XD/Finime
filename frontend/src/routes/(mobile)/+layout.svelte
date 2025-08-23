@@ -5,6 +5,13 @@
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import { onMount, onDestroy } from 'svelte';
+	import { page } from '$app/state';
+	import { ONLINE_DELAY } from '$lib/config/app';
+	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
+
+	const user = page.data?.user;
+
+	let interval: number;
 
 	interface PushSubscriptionJSON {
 		endpoint: string;
@@ -91,8 +98,15 @@
 
 	onMount(() => {
 		if (typeof window != 'undefined') {
+			UserMobileClient.sendOnline();
 			if ('scrollRestoration' in history) {
 				history.scrollRestoration = 'manual';
+			}
+
+			if (user) {
+				interval = setInterval(() => {
+					UserMobileClient.sendOnline();
+				}, ONLINE_DELAY)
 			}
 		}
 
@@ -114,6 +128,10 @@
 		if (typeof window != 'undefined') {
 			console.log("Event popstate gak aktif");
 			window.removeEventListener('popstate', onPop);
+
+			if (user) {
+				clearInterval(interval);
+			}
 		}
 	});
 

@@ -2,7 +2,7 @@
 	import type { IAnimeSlug } from './+page';
 	import { onMount, onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
-	import { ArrowLeft, Star, LinkIcon, CheckIcon } from '@lucide/svelte';
+	import { ArrowLeft, Star, LinkIcon, CheckIcon, Bookmark, BookmarkCheck } from '@lucide/svelte';
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
 	import type { IAnimeDetail } from '$lib/api/types/mobile/detailType';
@@ -24,6 +24,7 @@
 	let isLoading = true;
 
 	let isCopy = false;
+	let isBookmart = false;
 
 	const handleResize = () => {
 		bgHeight = imgEl.clientHeight;
@@ -148,7 +149,7 @@
 {#if isLoading}
 	<LoadingElements />
 {/if}
-<div class="relative block overflow-x-hidden" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="relative block overflow-x-hidden will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
 	<div class="fixed top-0 -z-[5] flex h-auto w-screen bg-green-500">
 		<span
 			style="height: {bgHeight + 20}px"
@@ -239,7 +240,7 @@
 		</div>
 	</div>
 </div>
-<div class="fixed bottom-4 right-4 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
+<div class="fixed bottom-4 right-20 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
 	<button on:click={() => {
 		if (!isCopy) {
 			const thisLink = window.location.href;
@@ -254,6 +255,21 @@
 			<CheckIcon class="text-white" size={24} />
 		{:else}
 			<LinkIcon class="text-white" size={24} />
+		{/if}
+	</button>
+</div>
+<div class="fixed bottom-4 right-4 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
+	<button on:click={() => {
+		if (!isBookmart) {
+			const thisLink = window.location.href;
+			navigator.clipboard.writeText(thisLink || '');
+			isBookmart = true;
+		}
+	}} disabled={isBookmart} class="flex items-center justify-center disabled:cursor-not-allowed">
+		{#if isBookmart}
+			<BookmarkCheck class="text-white" size={24} />
+		{:else}
+			<Bookmark class="text-white" size={24} />
 		{/if}
 	</button>
 </div>

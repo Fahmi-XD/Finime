@@ -7,7 +7,7 @@
 
 	export let data: any;
 
-  const user = data.userByUsername;
+  let user = data.userByUsername;
   $: badges = $badgesStore.filter((badge) => Object.keys(user).length > 0 ? user.badges.includes(badge.id) : false);
 </script>
 
@@ -26,14 +26,14 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.finime.my.id/" />
+  <meta property="og:url" content="https://www.finime.my.id/user/{user?.username}" />
   <meta
     property="og:title"
     content="{user?.name || "User tidak ditemukan"} - Finime"
   />
   <meta
     property="og:description"
-    content="Finime adalah website streaming anime dan baca manga sub Indo gratis tanpa iklan, terutama tanpa iklan judi online. Koleksi anime & manga terlengkap, update setiap hari, kualitas HD, dan tanpa gangguan iklan. Nikmati pengalaman terbaik di Finime!"
+    content="{user?.bio || "User tidak ditemukan"} - Finime"
   />
   <meta property="og:image" content={user?.avatar ? `${PUBLIC_API}/api/v1/proxy-media?mediaUrl=${user?.avatar}` : "/web-app-manifest-192x192.png"} />
   <meta property="og:image:width" content="1200" />
@@ -44,14 +44,14 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@finime_id" />
   <meta name="twitter:creator" content="@finime_id" />
-  <meta name="twitter:url" content="https://www.finime.my.id/" />
+  <meta name="twitter:url" content="https://www.finime.my.id/{user?.username}" />
   <meta
     name="twitter:title"
-    content="Finime - Nonton Anime & Baca Manga Gratis Tanpa Iklan Judi Online"
+    content="{user?.name || "User tidak ditemukan"} - Finime"
   />
   <meta
     name="twitter:description"
-    content="Finime adalah situs streaming anime dan baca manga gratis tanpa iklan, terutama tanpa iklan judi online. Update anime & manga terbaru setiap hari, kualitas HD, dan komunitas aktif. Nikmati pengalaman tanpa gangguan iklan di Finime!"
+    content="{user?.bio || "User tidak ditemukan"} - Finime"
   />
   <meta
     name="twitter:image"
@@ -96,7 +96,7 @@
 </svelte:head>
 
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black py-12"
+  class="min-h-screen flex items-center justify-center bg-black pt-10"
 >
   <div class="w-full max-w-5xl mx-auto">
     {#if Object.keys(user).length === 0}

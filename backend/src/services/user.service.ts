@@ -16,7 +16,7 @@ import { CommentValidation } from "@validations/comment.validation.js";
 export default class UserService {
 
   // Mendapatkan User berdasarkan id
-  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null): Promise<ResponseModel<any>> {
+  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false): Promise<ResponseModel<any>> {
     let user;
 
     if (isStatistics) {
@@ -25,6 +25,13 @@ export default class UserService {
         select: {
           anime: true,
           manga: true,
+        },
+      });
+    } else if (online) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          lastSeen: true,
         },
       });
     } else if (username) {
@@ -42,6 +49,7 @@ export default class UserService {
           pronoun: true,
           role: true,
           isVerify: true,
+          lastSeen: true,
           bio: true,
           badges: true,
           created_at: true,
@@ -61,6 +69,7 @@ export default class UserService {
           banner: true,
           email: true,
           pronoun: true,
+          lastSeen: true,
           role: true,
           isVerify: true,
           bio: true,

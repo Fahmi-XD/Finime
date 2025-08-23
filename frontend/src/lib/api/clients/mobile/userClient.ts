@@ -31,4 +31,14 @@ export class UserMobileClient {
     const response = await fetchApi("/user/username/" + username, "GET", {});
     return response.result;
   }
+
+  static async getUserInfoOnline(): Promise<any> {
+    const response = await fetchApi("/user/online/", "GET", {});
+    return response.result;
+  }
+
+  static async sendOnline(): Promise<any> {
+    const response = await fetchApi("/live", "GET", {});
+    return response.result;
+  }
 }

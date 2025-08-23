@@ -17,6 +17,8 @@
   onMount(async () => {
     $isLoading = true;
     const userInfo = await UserMobileClient.getUserInfoStatistics();
+    const online = await UserMobileClient.getUserInfoOnline();
+    user.lastSeen = online.lastSeen;
     statistics = userInfo;
     $isLoading = false;
   })

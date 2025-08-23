@@ -37,7 +37,7 @@
   }
 </script>
 
-<main class="relative block w-full h-screen overflow-hidden" in:scale={{ duration: 200, start: 1.3 }}>
+<main class="relative block w-full h-screen overflow-hidden will-change-auto" in:scale={{ duration: 200, start: 1.2 }}>
   {#each Object.entries(tabsCache) as [key, component], i (i)}
     <section
       class="block w-full h-full overflow-x-hidden absolute bg-black transition-opacity duration-200 inset-0 {key == currentTab ? "overflow-y-auto z-10 pointer-events-auto opacity-100" : "overflow-y-hidden z-0 pointer-events-none opacity-0"}"

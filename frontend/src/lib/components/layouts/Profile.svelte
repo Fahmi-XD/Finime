@@ -20,11 +20,21 @@
   export let badges: any[] = [];
   export let visitor: boolean = false;
 
+	
   let isCopy = false;
+	let preview = false;
+	let isOnline = false;
+	
+	if (user?.lastSeen) {
+		const lastSeen = user?.lastSeen ? user?.lastSeen : new Date();
+		isOnline = (new Date().getTime() - new Date(lastSeen).getTime()) < 5 * 60 * 1000; // 5 Menit YGY
+	} else {
+		isOnline = false;
+	}
 </script>
 
 <div
-	class="overflow-hidden rounded-2xl bg-[hsl(var(--background))] shadow-xl backdrop-blur-md"
+	class="overflow-hidden rounded-2xl bg-[hsl(var(--background))] backdrop-blur-md"
 >
   <div class="mb-4 flex items-center justify-between px-4">
     <button aria-label="Back" class="text-2xl text-white" on:click={() => window.history.back()}>
@@ -36,7 +46,7 @@
   </div>
 
 	<div class="flex flex-col md:flex-row">
-		<div class="flex w-full flex-col bg-gradient-to-b from-red-500/10 to-transparent p-8 md:w-1/2">
+		<div class="flex w-full flex-col bg-gradient-to-b from-neutral-500/10 to-transparent p-8 md:w-1/2">
 			<div class="relative flex w-auto">
 				{#if user.banner && user.banner.includes('mp4')}
 					<video class="h-[160px] w-full rounded-xl object-cover" autoplay loop muted playsinline>
@@ -56,13 +66,17 @@
 						class="h-[160px] w-full rounded-xl object-cover"
 					/>
 				{/if}
-				<div class="absolute -bottom-20 left-0 flex h-auto w-auto overflow-hidden rounded-full">
+
+				<span class="{isOnline ? "bg-green-500" : "bg-neutral-500"} rounded-full w-6 h-6 absolute -bottom-15 border-2 border-black left-27 z-10 block"></span>
+				<div class="absolute border-4 border-black -bottom-20 left-0 flex h-auto w-auto overflow-hidden rounded-full">
 					{#if user.avatar}
-						<img
-							src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.avatar}"
-							alt="Profile picture of {user.name}"
-							class="h-32 w-32 rounded-full border-4 border-red-500/30 bg-white/50 object-cover transition-all duration-300 hover:scale-110"
-						/>
+						<button on:click={() => preview = true} class="h-32 w-32 rounded-full bg-white/50 object-cover transition-all duration-300 hover:scale-110">
+							<img
+								src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.avatar}"
+								alt="Profile picture of {user.name}"
+								class="h-32 w-32 rounded-full object-cover"
+							/>
+						</button>
 					{:else}
 						<div
 							class="flex h-32 w-32 items-center justify-center rounded-full border-4 border-red-500/30 bg-white/50 bg-gradient-to-br from-red-500 to-blue-500 text-4xl font-bold text-white"
@@ -71,6 +85,7 @@
 						</div>
 					{/if}
 				</div>
+
 			</div>
 
 			<div class="mt-5 flex items-center ml-auto gap-3">
@@ -113,7 +128,7 @@
 				</div>
 				<ul class="flex flex-wrap gap-2">
 					{#each badges as badge}
-						<li class="flex items-center gap-1 border-l-4 border-red-500 bg-white/20 px-1">
+						<li class="flex items-center gap-1 border-l-4 border-red-500 bg-transparent px-1">
 							<div class="flex-shrink-0 items-center">
 								<div class="flex h-5 w-5 items-center justify-center rounded-full text-white">
 									<svelte:component this={badge.icon} size={15} />
@@ -145,7 +160,7 @@
 		</div>
 
 		<div
-			class="w-full border-t border-white/10 bg-[hsl(var(--background))] px-8 md:w-2/3 md:border-l md:border-t-0"
+			class="w-full flex flex-col border-t border-white/10 bg-[hsl(var(--background))] px-8 md:w-2/3 md:border-l md:border-t-0"
 		>
 			<div class="mb-8">
 				<h2 class="mb-6 border-b border-white/20 pb-2 text-xl font-semibold">{visitor ? "" : "Your "}Statistics</h2>
@@ -179,7 +194,7 @@
 				</div>
 			</div>
 
-			<div class="mb-2 border-t border-white/20 pt-6">
+			<div class="mb-2 border-t border-white/20 {visitor ? "-order-4 mb-5 pt-0" : "pt-6"}">
 				<h2 class="mb-3 border-b border-white/20 pb-2 text-xl font-semibold">Bio</h2>
 				<div class="flex">
 					<p class="text-[15px] opacity-70">{user.bio || 'No bio'}</p>
@@ -225,5 +240,11 @@
 		{:else}
 			<LinkIcon class="text-white" size={24} />
 		{/if}
+	</button>
+</div>
+
+<div class="fixed z-50 justify-center items-center flex inset-0 transition-all duration-100 {preview ? "scale-100 visible pointer-events-auto bg-black" : "scale-0 pointer-events-none invisible bg-transparent"}">
+	<button on:click={() => preview = false} class="w-full h-full">
+		<img class="w-full object-contain h-auto" src="https://files.catbox.moe/kvvq3j.jpg" alt="Preview">
 	</button>
 </div>

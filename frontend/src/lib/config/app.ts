@@ -14,3 +14,5 @@ export const publicRoute = ["/auth/login", "/auth/register", "/auth/logout", "/p
 
 export const MAX_RUNTIME_CACHE = 45;
 export const MAX_RUNTIME_CACHE_MOBILE = 35;
+
+export const ONLINE_DELAY = 4 * 60 * 1000; // 4 Menit sekali

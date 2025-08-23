@@ -36,5 +36,16 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray;
 }
 
+class BrowserData {
+  static get(key: string) {
+    return window.localStorage.getItem(key)
+  }
 
-export { truncate, handleResize, getInitials, urlBase64ToUint8Array }
+  static set(key: string, value: any) {
+    window.localStorage.setItem(key, value);
+    return true
+  }
+}
+
+
+export { truncate, handleResize, getInitials, urlBase64ToUint8Array, BrowserData }

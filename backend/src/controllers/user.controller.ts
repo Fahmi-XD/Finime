@@ -11,9 +11,33 @@ import { Context } from "elysia";
 import { ZodError } from "zod";
 import { CreateCommentRequest } from "@models/comment.model.js";
 import type { ResponseModel } from "@models/response.model.js";
-import webpush from 'web-push';
+// import webpush from 'web-push';
+import prismaClient from "@databases/prisma.client.js";
+import Response from "@lib/response.js";
 
 export default class UserController {
+
+  // Online Tracker
+  static async onlineTracker(context: Context): Promise<ResponseModel<any>> {
+    const userId = (context.store as { userId: string }).userId;
+    
+    const response = await prismaClient.user.upsert({
+      where: { id: userId },
+      create: {
+        id: userId,
+        lastSeen: new Date(),
+      },
+      update: {
+        lastSeen: new Date()
+      },
+      select: {
+        lastSeen: true,
+        name: true
+      }
+    });
+
+    return Response.standarResponse(200, "1");
+  }
 
   // Notification
   static async pushNotif(context: Context): Promise<ResponseModel<any>> {
@@ -37,6 +61,14 @@ export default class UserController {
   static async getUserByUsername(context: Context): Promise<ResponseModel<any>> {
     const username = context.params?.username || null;
     const response = await UserService.getUser((context.store as { userId: string }).userId, false, username);
+
+    return response;
+  }
+
+  // User Controller Online
+  static async getUserOnline(context: Context): Promise<ResponseModel<any>> {
+    const username = context.params?.username || null;
+    const response = await UserService.getUser((context.store as { userId: string }).userId, false, username, true);
 
     return response;
   }

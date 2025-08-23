@@ -11,14 +11,14 @@
 		CheckIcon,
 		LinkIcon,
 		ThumbsUp,
-		ThumbsDown
+		ThumbsDown,
+		Code
 	} from '@lucide/svelte';
 	import { scale, fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import { page as pages } from '$app/stores';
-	import Plyr from 'plyr';
-	import 'plyr/dist/plyr.css';
 	import { PUBLIC_API } from '$env/static/public';
+	import { BrowserData } from '$lib';
 
 	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
 	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
@@ -28,16 +28,14 @@
 	import { runtimeMobile } from '$lib/stores/runtime';
 	import { getInitials } from '$lib';
 
+	import PlyrPlayer from '$lib/components/mobile/VideoPlayers/PlyrPlayer.svelte';
+	import VideoJsPlayer from '$lib/components/mobile/VideoPlayers/VideoJSPlayer.svelte';
+
 	import LoadingElements from '$lib/components/ui/LoadingElements.svelte';
 	import { goto } from '$app/navigation';
 
 	export let data: IAnimeSlug;
 
-	const QUALITY = {
-		'360': 0,
-		'480': 1,
-		'720': 2
-	};
 	const animeSlug = page.url.pathname.split('/').slice(-3, -1).join('/');
 	const user = page.data.user;
 
@@ -54,8 +52,7 @@
 	let animeDetail: IAnimeEpisodeDetail;
 	let animeDetail2: IAnimeDetail;
 	let commentList: ICommentModel[] = [];
-	let isLoading = true;
-	let player: Plyr;
+	let isLoading = false;
 	let lastSlug = data.animeSlug;
 	let isOpenDots = false;
 	let isCopy = false;
@@ -63,24 +60,15 @@
 	let isCommentLoading = false;
 	let isCommentLoadingDelete = false;
 	let commentStr = '';
+	let playerType = BrowserData.get("playerType") ? BrowserData.get("playerType") : "plyr";
 
 	$: if (animeSlugWithEpisode && animeSlugWithEpisode !== lastSlug) {
 		lastSlug = animeSlugWithEpisode;
 		fetchAllData();
 	}
 
-	let playerElement: HTMLElement;
-
-	function lockLandscape() {
-		if (screen.orientation && (screen.orientation as any).lock) {
-			(screen.orientation as any).lock('landscape-primary').catch(() => {});
-		}
-	}
-
-	function unlockOrientation() {
-		if (screen.orientation && screen.orientation.unlock) {
-			screen.orientation.unlock();
-		}
+	$: if (playerType) {
+		BrowserData.set("playerType", playerType);
 	}
 
 	async function postComment(comment: string) {
@@ -154,47 +142,6 @@
 		setTimeout(() => {
 			// console.log(animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]);
 
-			player = new Plyr(playerElement, {
-				controls: [
-					'play-large', // The large play button in the center
-					'rewind', // Rewind by the seek time (default 10 seconds)
-					'play', // Play/pause playback
-					'fast-forward', // Fast forward by the seek time (default 10 seconds)
-					'progress', // The progress bar and scrubber for playback and buffering
-					'current-time', // The current time of playback
-					'duration', // The full duration of the media
-					'mute', // Toggle mute
-					'settings', // Settings menu
-					'airplay', // Airplay (currently Safari only)
-					'fullscreen' // Toggle fullscreen
-				],
-				autoplay: true,
-				quality: {
-					default: 360,
-					options: [360, 480, 720],
-					forced: true,
-					onChange(quality) {
-						// console.log('Quality changed to:', quality);
-						// console.log(animeDetail?.videoUrls.length - ((QUALITY as any)[quality]))
-						const currentTime = (playerElement as HTMLVideoElement).currentTime;
-						const isPaused = (playerElement as HTMLVideoElement).paused;
-
-						(playerElement as HTMLVideoElement).src =
-							animeDetail?.videoUrls[animeDetail?.videoUrls.length - 1 - (QUALITY as any)[quality]];
-
-						(playerElement as HTMLVideoElement).load();
-						(playerElement as HTMLVideoElement).currentTime = currentTime;
-						if (!isPaused) {
-							(playerElement as HTMLVideoElement).play();
-						}
-					}
-				}
-			});
-
-			player.on('enterfullscreen', lockLandscape);
-
-			player.on('exitfullscreen', unlockOrientation);
-
 			if (typeof window !== 'undefined') {
 				window.addEventListener('click', handleCloseDots);
 			}
@@ -205,14 +152,6 @@
 		if (typeof window !== 'undefined') {
 			window.removeEventListener('click', handleCloseDots);
 		}
-
-		if (player) {
-			player.off('enterfullscreen', lockLandscape);
-			player.off('exitfullscreen', unlockOrientation);
-
-			player.destroy();
-		}
-		unlockOrientation();
 	});
 </script>
 
@@ -299,27 +238,16 @@
 {#if isLoading}
 	<LoadingElements />
 {/if}
-<div class="mx-auto max-w-md pb-20 text-white" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="mx-auto max-w-md pb-20 text-white will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
 	{#if Array.isArray(animeDetail?.videoUrls) && animeDetail?.videoUrls.length > 0}
 		<!-- <CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} /> -->
 
 		<div class="container">
-			<video
-				bind:this={playerElement}
-				src={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]}
-				controls
-				crossorigin="anonymous"
-				playsinline
-				poster="/images/finime-poster.png"
-			>
-				{#each animeDetail?.videoUrls as videoUrl}
-					<source src={videoUrl} type="video/mp4" />
-				{/each}
-
-				<track kind="captions" />
-
-				<a href={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} download>Download</a>
-			</video>
+			{#if (playerType == "plyr")}
+				<PlyrPlayer {animeDetail} />
+			{:else if (playerType == "videojs")}
+				<VideoJsPlayer {animeDetail} />
+			{/if}
 		</div>
 	{:else}
 		<iframe
@@ -347,13 +275,13 @@
 		</div>
 		<!-- <div class="mb-3 flex flex-wrap gap-2">
 			<button
-				class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-3 py-2 text-sm font-semibold"
+				class="flex items-center gap-2 rounded-md bg-neutral-800/60 px-3 py-2 text-sm font-semibold"
 			>
 				<i class="fas fa-thumbs-up"> </i>
 				396
 			</button>
 			<button
-				class="flex items-center gap-2 rounded-md border-l border-gray-600 bg-[#3a3a4a] px-3 py-2 pl-3 text-sm font-semibold"
+				class="flex items-center gap-2 rounded-md border-l border-gray-600 bg-neutral-800/60 px-3 py-2 pl-3 text-sm font-semibold"
 			>
 				1
 				<i class="fas fa-thumbs-down"> </i>
@@ -361,16 +289,16 @@
 			<button class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">
 				360p
 			</button>
-			<button class="rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold"> Ganti </button>
+			<button class="rounded-md bg-neutral-800/60 px-4 py-2 text-sm font-semibold"> Ganti </button>
 			<button class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black">
 				S1
 			</button>
-			<button class="rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold">
+			<button class="rounded-md bg-neutral-800/60 px-4 py-2 text-sm font-semibold">
 				Ganti Server
 			</button>
 		</div> -->
 		<div class="flex gap-2 items-center px-4">
-			<div class="mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+			<div class="mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-neutral-800/60 p-4">
 				<button
 					on:click={() => {
 						if (!isCopy) {
@@ -392,32 +320,42 @@
 					{/if}
 				</button>
 			</div>
-			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-neutral-800/60 p-4">
 				<button
 					on:click={() => {
 						console.log("Anjay")
 					}}
 					class="flex items-center gap-1 justify-center disabled:cursor-not-allowed"
 				>
-					<ThumbsUp class="text-white" size={20} />
+					<ThumbsUp class="text-white" size={15} />
 					<p class="text-sm">0</p>
 				</button>
 			</div>
-			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-[#3a3a4a] p-4">
+			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-neutral-800/60 p-4">
 				<button
 					on:click={() => {
 						console.log("Anjay")
 					}}
 					class="flex items-center gap-1 justify-center disabled:cursor-not-allowed"
 				>
-					<ThumbsDown class="text-white" size={20} />
+					<ThumbsDown class="text-white" size={15} />
 					<p class="text-sm">0</p>
 				</button>
+			</div>
+			<div class="mb-4 flex h-[40px] w-auto items-center justify-center rounded-2xl bg-neutral-800/60 p-4">
+				<Code class="text-white mr-1" size={15} />
+				<select
+					bind:value={playerType}
+					class="flex items-center text-xs gap-1 justify-center disabled:cursor-not-allowed"
+				>
+					<option value="plyr" class="text-xs text-white bg-black">PLYR</option>
+					<option value="videojs" class="text-xs text-white bg-black">Video JS</option>
+				</select>
 			</div>
 		</div>
 		<div class="mb-6 flex flex-nowrap no-scroll px-4 overflow-x-auto w-full gap-3">
 			<!-- <button
-				class="flex items-center gap-2 rounded-md bg-[#3a3a4a] px-4 py-2 text-sm font-semibold"
+				class="flex items-center gap-2 rounded-md bg-neutral-800/60 px-4 py-2 text-sm font-semibold"
 			>
 				<i class="fas fa-arrow-down"> </i>
 				Download
@@ -430,7 +368,7 @@
 					class="flex {i + 1 ==
 					parseInt((animeDetail?.title || '-').match(/\(\w+\s?([0-9]+)\)/i)?.[1] || '1')
 						? 'bg-red-500'
-						: 'bg-[#3a3a4a]'} shrink-0 min-w-0 cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold"
+						: 'bg-neutral-800/60'} shrink-0 min-w-0 cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-xs font-semibold"
 				>
 					{i + 1}
 				</button>

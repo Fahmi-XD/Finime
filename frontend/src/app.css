@@ -100,13 +100,13 @@
   user-select: none;
 }
 
-html {
+/* html {
   overscroll-behavior: contain;
-}
+} */
 
 body {
   display: block;
-  overscroll-behavior: contain;
+  /* overscroll-behavior: contain; */
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-style: normal;
@@ -118,6 +118,21 @@ body {
   position: relative;
   width: 100vw;
   height: 100%;
+}
+
+.vjs-texttrack-settings,
+.vjs-caption-settings {
+  display: none;
+}
+
+.vjs-default-skin .vjs-captions-button,
+.vjs-default-skin .vjs-subtitles-button {
+  display: none !important;
+}
+
+.vjs-texttrack-settings,
+.vjs-caption-settings {
+  display: none;
 }
 
 .no-scroll::-webkit-scrollbar {

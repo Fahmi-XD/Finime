@@ -10,10 +10,12 @@ export const userRoute = (app: Elysia) => app
 
   .get("/user", UserController.getUser)
   .get("/user/username/:username", UserController.getUserByUsername)
+  .get("/user/online", UserController.getUserOnline)
   // .get("/users", UserController.getAllUser, { beforeHandle: adminMiddleware }) // Memerlukan Token + Role Admin
   .patch("/user", UserController.updateUser)
 
   .post("/notification", UserController.pushNotif)
+  .get("/live", UserController.onlineTracker)
 
   .group("/comment", (app) => app
     .post("/post", UserController.commentPostAnimeId)

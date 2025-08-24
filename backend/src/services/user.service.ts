@@ -12,76 +12,90 @@ import { ResponseModel } from "@models/response.model.js";
 import Response from "@lib/response.js";
 import type { CreateCommentRequest } from "@models/comment.model.js";
 import { CommentValidation } from "@validations/comment.validation.js";
+import type { IAnimeHistoryModel } from "@models/history.model.js";
 
 export default class UserService {
 
   // Mendapatkan User berdasarkan id
-  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false): Promise<ResponseModel<any>> {
+  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false, history: boolean = false): Promise<ResponseModel<any>> {
     let user;
 
-    if (isStatistics) {
-      user = await prismaClient.user.findUnique({
-        where: { id: userId },
-        select: {
-          anime: true,
-          manga: true,
-        },
-      });
-    } else if (online) {
-      user = await prismaClient.user.findUnique({
-        where: { id: userId },
-        select: {
-          lastSeen: true,
-        },
-      });
-    } else if (username) {
-      user = await prismaClient.user.findFirst({
-        where: { username: username },
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          anime: true,
-          manga: true,
-          avatar: true,
-          banner: true,
-          email: true,
-          pronoun: true,
-          role: true,
-          isVerify: true,
-          lastSeen: true,
-          bio: true,
-          badges: true,
-          created_at: true,
-          updated_at: true,
-        },
-      });
-    } else {
-      user = await prismaClient.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          anime: true,
-          manga: true,
-          avatar: true,
-          banner: true,
-          email: true,
-          pronoun: true,
-          lastSeen: true,
-          role: true,
-          isVerify: true,
-          bio: true,
-          badges: true,
-          created_at: true,
-          updated_at: true,
-        },
-      });
+    if (userId) {
+      if (isStatistics) {
+        user = await prismaClient.user.findUnique({
+          where: { id: userId },
+          select: {
+            anime: true,
+            manga: true,
+          },
+        });
+      } else if (history) {
+        user = await prismaClient.user.findUnique({
+          where: { id: userId },
+          select: {
+            history: {
+              orderBy: {
+                updated_at: "desc"
+              }
+            }
+          },
+        });
+      } else if (online) {
+        user = await prismaClient.user.findUnique({
+          where: { id: userId },
+          select: {
+            lastSeen: true,
+          },
+        });
+      } else if (username) {
+        user = await prismaClient.user.findFirst({
+          where: { username: username },
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            anime: true,
+            manga: true,
+            avatar: true,
+            banner: true,
+            email: true,
+            pronoun: true,
+            role: true,
+            isVerify: true,
+            lastSeen: true,
+            bio: true,
+            badges: true,
+            created_at: true,
+            updated_at: true,
+          },
+        });
+      } else {
+        user = await prismaClient.user.findUnique({
+          where: { id: userId },
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            anime: true,
+            manga: true,
+            avatar: true,
+            banner: true,
+            email: true,
+            pronoun: true,
+            lastSeen: true,
+            role: true,
+            isVerify: true,
+            bio: true,
+            badges: true,
+            created_at: true,
+            updated_at: true,
+          },
+        });
+      }
     }
 
     if (!user) {
-      return HttpException.standarException(404, { message: "User not found" });
+      return Response.standarResponse(200, {});
     }
 
     return Response.standarResponse(200, user);
@@ -428,4 +442,37 @@ export default class UserService {
     return Response.standarResponse(200, response);
   }
 
+  static async updateAnimeHistory(user_id: string, animeMetadata: IAnimeHistoryModel) {
+    try {
+      const existing = await prismaClient.animeHistory.findFirst({
+        where: {
+          user_id,
+          anime_id: animeMetadata.anime_id
+        },
+        select: {
+          id: true
+        }
+      });
+
+      if (existing) {
+        await prismaClient.animeHistory.update({
+          where: { id: existing.id },
+          data: { updated_at: new Date() }
+        });
+      } else {
+        await prismaClient.animeHistory.create({
+          data: {
+            user_id,
+            ...animeMetadata,
+            updated_at: new Date()
+          }
+        });
+      }
+
+      return Response.standarResponse(200, "History updated");
+    } catch (error) {
+      console.log(error);
+      return Response.standarResponse(500, "error jir");
+    }
+  }
 }

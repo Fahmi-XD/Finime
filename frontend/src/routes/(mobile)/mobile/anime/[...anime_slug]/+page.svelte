@@ -45,12 +45,14 @@
 		isLoading = false;
 
 		setTimeout(() => {
-			if (imgEl.complete) {
-				bgHeight = imgEl.clientHeight;
-			} else {
-				imgEl.addEventListener('load', () => {
+			if (imgEl) {
+				if (imgEl.complete) {
 					bgHeight = imgEl.clientHeight;
-				});
+				} else {
+					imgEl.addEventListener('load', () => {
+						bgHeight = imgEl.clientHeight;
+					});
+				}
 			}
 
 			if (typeof window !== 'undefined') {

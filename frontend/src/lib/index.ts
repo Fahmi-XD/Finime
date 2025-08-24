@@ -47,5 +47,23 @@ class BrowserData {
   }
 }
 
+function isBlobUrl(url: string) {
+  try {
+    const u = new URL(url);
+    return u.protocol === "blob:";
+  } catch (e) {
+    return false;
+  }
+}
 
-export { truncate, handleResize, getInitials, urlBase64ToUint8Array, BrowserData }
+function isPublicUrl(url: string) {
+  try {
+    const u = new URL(url);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch (e) {
+    return false;
+  }
+}
+
+
+export { truncate, handleResize, getInitials, urlBase64ToUint8Array, BrowserData, isBlobUrl, isPublicUrl }

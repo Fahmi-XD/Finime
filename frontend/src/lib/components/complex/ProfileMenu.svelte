@@ -1,5 +1,6 @@
 <script lang="ts">
   import { User, LogOut, LayoutDashboard } from "@lucide/svelte";
+  import { mode } from "$lib/stores/mode";
   
   export let profile: {
     name: string;
@@ -10,7 +11,7 @@
   
   const menuItems = [
     { name: "Profile", href: "/profile", icon: User, show: true },
-    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, show: profile.role === "ADMIN" },
+    { name: "Dashboard", href: `${$mode == "flat" ? "/mobile" : ""}/dashboard`, icon: LayoutDashboard, show: profile.role === "ADMIN" },
     { name: "Logout", href: "/auth/logout", icon: LogOut, show: true }
   ];
 </script>

@@ -93,7 +93,7 @@
 	});
 </script>
 
-<div class="pt-15 px-5 pb-[70px] text-white will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="pt-15 px-5 pb-[70px] text-white will-change-transform" in:scale={{ duration: 200, start: 0.95 }}>
 	<div class="!fixed left-0 top-0 z-10 block h-auto w-full bg-black p-4">
 		<div class="flex h-auto w-full items-center justify-between">
 			<button on:click={() => window.history.back()}>

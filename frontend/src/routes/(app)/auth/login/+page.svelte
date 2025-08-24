@@ -10,7 +10,7 @@
   
   let username = page.url.searchParams.get('payload') ? JSON.parse(atob(page.url.searchParams.get('payload') || '')).username : '';
   let password = page.url.searchParams.get('payload') ? JSON.parse(atob(page.url.searchParams.get('payload') || '')).password : '';
-  let redirectTo = page.url.searchParams.get('from') ? atob(page.url.searchParams.get('from') || '') : $mode == "flat" ? "/mobile?fragment=Home" : "/";
+  let redirectTo = page.url.searchParams.get('from') ? atob(page.url.searchParams.get('from') || '') : $mode == "flat" ? "/mobile" : "/";
   let isLoading = false;
   let showPassword = false;
   

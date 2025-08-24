@@ -3,9 +3,10 @@
 	import { scale } from "svelte/transition";
 	import { seeAllTitle } from "$lib/stores/home.mobile";
 	import { onMount } from "svelte";
-	import type { Animes } from "$lib/api/types/mobile/summerType";
+	import type { Animes, Post } from "$lib/api/types/mobile/summerType";
 	import { truncate } from "$lib";
 	import { goto } from "$app/navigation";
+	import { UserMobileClient } from "$lib/api/clients/mobile/userClient";
 
 	import { runtimeData } from "$lib/stores/runtime";
 
@@ -13,21 +14,48 @@
 
 	import { AnimeMobileClient } from "$lib/api/clients/mobile/animeClient";
 
-	let animeList: Animes | undefined = {};
+	let animeList: Partial<Animes> | undefined = {};
 	let isLoading = true;
 
 	onMount(async () => {
-		if ($runtimeData["seeall.cache"] && typeof $runtimeData["seeall.cache"] == "object") {
-			isLoading = false;
-			animeList = $runtimeData["seeall.cache"];
-		} else {
-			isLoading = true;
-			if ($seeAllTitle == "Teratas") {
-				const animes = await AnimeMobileClient.getSummer();
-				animeList = animes.animes;
-				$runtimeData["seeall.cache"] = animes.animes
+		try {
+			if ($runtimeData["seeall.cache." + $seeAllTitle] && typeof $runtimeData["seeall.cache." + $seeAllTitle] == "object") {
 				isLoading = false;
+				animeList = $runtimeData["seeall.cache." + $seeAllTitle];
+			} else {
+				isLoading = true;
+				if ($seeAllTitle == "Teratas") {
+					const animes = await AnimeMobileClient.getSummer();
+					animeList = animes.animes;
+					$runtimeData["seeall.cache." + $seeAllTitle] = animes.animes
+				} else if ($seeAllTitle == "Historimu") {
+					const animes = await UserMobileClient.getUserInfoHistory();
+					const serialization = {
+						data: animes.map((p) => {
+							return {
+								title: p.title,
+								image_portrait_url: p.cover,
+								posts: Array.from({ length: parseInt(p.current_eps || "0") }).fill({}) as Post[],
+								total_episodes: parseInt(p.total_eps || "0"),
+								type: "TV",
+								aired_from: p.date,
+								scheduled_day: p.schedule,
+								source: p.source,
+								score: parseFloat(p.rating || "0"),
+								id: parseInt(p.anime_id?.split("/")[0] || "0"),
+								slug: p.anime_id?.split("/")[1]
+							}
+						})
+					};
+					
+					animeList = serialization
+				}
 			}
+		} catch (error) {
+			console.log(error)
+		} finally {
+			console.log(!animeList?.data)
+			isLoading = false;
 		}
 	})
 </script>
@@ -48,6 +76,8 @@
 			<div class="h-30 w-full flex justify-center items-center">
 				<LoadingElements variant="normal" />
 			</div>
+		{:else if (!animeList?.data)}
+			<h1 class="text-sm opacity-70 text-white text-center">Belum ada data :(</h1>
 		{:else}
 			{#each animeList?.data || [] as anime}	
 				<li class="flex space-x-4">

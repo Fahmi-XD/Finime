@@ -400,13 +400,13 @@
 		{#if Object.keys(user).length > 0}
 			<form class="mb-6 flex gap-3 px-4">
 				<textarea
-					class="flex-grow text-sm rounded-lg bg-[#1f1f2e] px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
+					class="flex-grow text-sm rounded-lg bg-neutral-800/50 border border-white/15 px-4 py-3 text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#6b6bf5]"
 					placeholder="Komentar.."
 					bind:value={commentStr}
 				></textarea>
 				<button
 					aria-label="Send comment"
-					class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1f1f2e] text-white"
+					class="flex h-12 w-12 items-center justify-center rounded-lg bg-neutral-800/50 border border-white/15 text-white"
 					type="submit"
 					disabled={isCommentLoading}
 					on:click={async (e) => {
@@ -443,7 +443,7 @@
 			{#each commentList as comment}
 				<div
 					aria-label="Comment by {comment.user.name}"
-					class="flex max-w-full flex-col gap-2 rounded-xl bg-[#1f1f2e] p-5"
+					class="flex max-w-full flex-col gap-2 rounded-xl bg-neutral-800/50 border border-white/15 p-5"
 				>
 					<div class="flex items-center gap-4">
 						<div class="relative">
@@ -498,7 +498,7 @@
 									isOpenDots = !isOpenDots;
 									isOpenDotsId = comment.id;
 								}}
-								class="rounded-full bg-[#1f1f2e] p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+								class="rounded-full bg-neutral-800/50 border border-white/15 p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
 							>
 								<EllipsisVertical class="h-5 w-5 text-gray-400" />
 							</button>

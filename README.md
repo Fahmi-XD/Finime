@@ -13,6 +13,10 @@
 ![Uploader](https://img.shields.io/badge/@zanixongroup/uploader-FF69B4?style=for-the-badge&logo=upload&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Open--Source-%E2%9D%A4-333333?style=for-the-badge&logo=github&logoColor=white)
 
+
+> [!IMPORTANT]
+> Untuk saat ini hanya support di ukuran layar *Smartphone ( < 500 )*
+
 ---
 
 # Screenshot
@@ -255,6 +259,13 @@ PUBLIC_API=http://localhost:3000
 3. Autentikasi & session pakai cookies (dengan `js-cookie`)
 <!-- 4. Bagian Admin di frontend ada guard & role check
 5. Notifikasi email buat daftar & reset password via **NodeMailer** -->
+
+---
+
+## Sedang Dibuat
+
+[x] Mobile UI
+[ ] Desktop UI
 
 ---
 

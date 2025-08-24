@@ -21,22 +21,26 @@ export default class UserController {
   static async onlineTracker(context: Context): Promise<ResponseModel<any>> {
     const userId = (context.store as { userId: string }).userId;
     
-    const response = await prismaClient.user.upsert({
-      where: { id: userId },
-      create: {
-        id: userId,
-        lastSeen: new Date(),
-      },
-      update: {
-        lastSeen: new Date()
-      },
-      select: {
-        lastSeen: true,
-        name: true
-      }
-    });
+    if (userId) {
+      const response = await prismaClient.user.upsert({
+        where: { id: userId },
+        create: {
+          id: userId,
+          lastSeen: new Date(),
+        },
+        update: {
+          lastSeen: new Date()
+        },
+        select: {
+          lastSeen: true,
+          name: true
+        }
+      });
 
-    return Response.standarResponse(200, "1");
+      return Response.standarResponse(200, "1");
+    }
+
+    return Response.standarResponse(200, "0");
   }
 
   // Notification
@@ -73,6 +77,14 @@ export default class UserController {
     return response;
   }
 
+  // User Controller Online
+  static async getUserHistory(context: Context): Promise<ResponseModel<any>> {
+    const username = context.params?.username || null;
+    const response = await UserService.getUser((context.store as { userId: string }).userId, false, username, false, true);
+
+    return response;
+  }
+
   // Update User Controller
   static async updateUser(context: Context): Promise<ResponseModel<any>> {
     try {
@@ -87,10 +99,10 @@ export default class UserController {
 
         if (avatar instanceof File) {
           try {
-            const { link } = await ImageUpload.zanixonGroupMirror(avatar);
-            // const { link } = await ImageUpload.freeHosting(avatar);
+            const { link } = await ImageUpload.zanixonGroup(avatar);
             request.avatar = link;
           } catch (error) {
+            console.log(error)
             return HttpException.standarException(500, { error: "Failed to upload image" });
           }
         } else if (typeof avatar === "string") {

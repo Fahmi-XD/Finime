@@ -8,8 +8,9 @@ export const toastOption: Partial<Pick<Toast, "style" | "icon" | "id" | "duratio
   duration: 2_000
 }
 
-export const clearDisplay = ["/mobile/search", "/mobile/about", "/mobile/see-all", "/auth/login", "/auth/register", "/profile", "/settings", "/mobile/anime.*", "/user/.*"];
+export const clearDisplay = ["/mobile/search", "/mobile/about", "/mobile/see-all", "/auth/login", "/auth/register", "/profile", "/settings", "/mobile/anime.*", "/user/.*", "/mobile/dashboard", "fragment=Other"];
 export const exClearDisplayHeader = ["/auth/login", "/auth/register", "/auth/logout"];
+export const exClearDisplayBottom = ["fragment=Other"];
 export const publicRoute = ["/auth/login", "/auth/register", "/auth/logout", "/profile", "/settings", "/user/"];
 
 export const MAX_RUNTIME_CACHE = 45;

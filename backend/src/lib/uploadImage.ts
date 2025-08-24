@@ -56,6 +56,7 @@ export default class ImageUpload {
 
       return { link: data };
     } catch (error) {
+      console.log(error)
       throw new Error("Failed to upload image.");
     }
   }

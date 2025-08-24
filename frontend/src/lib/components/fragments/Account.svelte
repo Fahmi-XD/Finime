@@ -6,6 +6,7 @@
   import { Loader, CloudUpload } from "@lucide/svelte";
   import toast from 'svelte-french-toast';
 	import { toastOption } from "$lib/config/app";
+  import { isBlobUrl } from "$lib";
 
   export let user: any;
   export let badges: any;
@@ -76,7 +77,7 @@
             <div class="flex mt-5 items-center justify-around">
               <div class="">
                 {#if form.avatar}
-                  <img class="h-[145px] w-[145px] rounded-full border-4 border-white shadow-lg object-cover bg-white" src="{form.avatar}" alt={form.name} />
+                  <img class="h-[145px] w-[145px] rounded-full border-4 border-white shadow-lg object-cover bg-white" src={isBlobUrl(form.avatar) ? form.avatar : `${PUBLIC_API}/api/v1/proxy-media?mediaUrl=${form.avatar}`} alt={form.name} />
                 {:else}
                 <div class="flex items-center border-4 rounded-full border-red-500/30 bg-white/50 justify-center w-32 h-32 text-4xl font-bold text-white bg-gradient-to-br from-red-500 to-blue-500">
                   {getInitials(form.name)}
@@ -99,7 +100,7 @@
           <div class="mt-5 flex flex-col items-center w-full">
             <div class="flex flex-wrap gap-2 justify-center mt-2">
               {#each badges as badge}
-                <span class="inline-flex items-center gap-1 px-3 py-1 bg-white/20 border-l-4 border-red-500 text-white text-xs font-semibold shadow">
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-transparent border-l-4 border-red-500 text-white text-xs font-semibold shadow">
                   <svelte:component this={badge.icon} size={14} /> {badge.name}
                 </span>
               {/each}

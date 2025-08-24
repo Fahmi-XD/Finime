@@ -8,11 +8,13 @@
 		BookOpen,
 		InfoIcon,
 		PaintBucketIcon,
-		Smartphone
+		Smartphone,
+		History,
+		Grip
 	} from '@lucide/svelte';
 	import ProfileMenu from '$lib/components/complex/ProfileMenu.svelte';
 	import { fade } from 'svelte/transition';
-	import { title, clearDisplay, exClearDisplayHeader } from '$lib/config/app';
+	import { title, clearDisplay, exClearDisplayHeader, exClearDisplayBottom } from '$lib/config/app';
 	import { page } from '$app/stores';
 	import { PUBLIC_API } from '$env/static/public';
 	import { mode } from '$lib/stores/mode';
@@ -49,6 +51,7 @@
 
 	$: path = $page.url.pathname;
 	$: profile = $page.data.user;
+	$: isClearDisplayBottom = false;
 
 	function getInitials(name: string | undefined) {
 		return name ? name.charAt(0).toUpperCase() : '?';
@@ -62,12 +65,13 @@
 			{ name: 'Anime', link: `${$mode == 'colorful' ? '' : '/mobile'}/anime`, icon: Tv },
 			{ name: 'Search', link: `${$mode == 'colorful' ? '' : '/mobile'}/search`, icon: Search },
 			{ name: 'Manga', link: `${$mode == 'colorful' ? '' : '/mobile'}/manga`, icon: BookOpen },
-			{ name: 'About', link: `${$mode == 'colorful' ? '' : '/mobile'}/about`, icon: InfoIcon }
+			{ name: 'Other', link: `${$mode == 'colorful' ? '' : '/mobile'}/other`, icon: Grip }
 		];
 	}
 
-	$: isClearDisplay = clearDisplay.some((route) => route == path || (new RegExp(route, "i")).test(path))
+	$: isClearDisplay = clearDisplay.some((route) => route == path || (new RegExp(route, "i")).test(path) || (route.replace("fragment=", "") == $navigate[1] && path == "/mobile"))
 	$: isExClearDisplayHeader = exClearDisplayHeader.some((route) => route == path || (new RegExp(route, "i")).test(path))
+	$: if (path) isClearDisplayBottom = exClearDisplayBottom.some((route) => route == path || (route.replace("fragment=", "") == $navigate[1] && path == "/mobile"))
 </script>
 
 {#if !isClearDisplay || isExClearDisplayHeader}
@@ -100,7 +104,7 @@
 							{/if}
 						</button> -->
 
-					<a href={$mode == "flat" ? "/mobile?fragment=Home" : "/"} on:click={() => { if ($mode == "flat") navigate.set(["/", "Home"]) }} class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
+					<a href={$mode == "flat" ? "/mobile" : "/"} on:click={() => { if ($mode == "flat") navigate.set(["/", "Home"]) }} class="flex items-center gap-2 text-lg font-bold text-[hsl(var(--primary))]">
 						<Bot />
 						{title}
 					</a>
@@ -181,7 +185,7 @@
 	</nav>
 {/if}
 
-{#if $mode == 'flat' && !isClearDisplay}
+{#if ($mode == 'flat' && !isClearDisplay) || isClearDisplayBottom}
 	<nav
 		class="fixed bottom-0 left-0 z-50 flex h-auto w-full justify-around bg-[hsl(var(--background)/0.8)] py-2 pb-4 shadow-sm backdrop-blur-lg md:hidden"
 	>

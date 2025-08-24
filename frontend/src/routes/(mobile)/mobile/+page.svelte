@@ -4,13 +4,15 @@
   import Home from "$lib/components/mobile/Home.svelte";
   import Anime from "$lib/components/mobile/Anime.svelte";
   import Manga from "$lib/components/mobile/Manga.svelte";
+  import Other from "$lib/components/mobile/Other.svelte";
 
   import { navigate, history as his } from "$lib/stores/history";
 
   const tabs = {
     Home: Home,
     Anime: Anime,
-    Manga: Manga
+    Manga: Manga,
+    Other: Other
   }
 
   let tabsCache: Partial<Record<keyof typeof tabs, any>> = {};

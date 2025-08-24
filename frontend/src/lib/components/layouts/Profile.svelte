@@ -14,16 +14,32 @@
   } from "@lucide/svelte";
   import { PUBLIC_API } from "$env/static/public";
   import { getInitials, truncate } from "$lib";
+	import { onMount, onDestroy } from "svelte";
+	import { goto } from "$app/navigation";
 
 	export let user: any;
   export let statistics: any = { anime: [], manga: [] };
   export let badges: any[] = [];
   export let visitor: boolean = false;
-
 	
   let isCopy = false;
 	let preview = false;
 	let isOnline = false;
+
+	function handlePreview(value: boolean, isBack: boolean = false) {
+		preview = value;
+		const thisUrl = window.location.href;
+		if (value) {
+			goto(thisUrl + "#preview")
+		} else if (isBack) {
+			window.history.back()
+		}
+	}
+
+	function handleHashChange() {
+		console.log("Hash change")
+		preview = false;
+	}
 	
 	if (user?.lastSeen) {
 		const lastSeen = user?.lastSeen ? user?.lastSeen : new Date();
@@ -31,6 +47,18 @@
 	} else {
 		isOnline = false;
 	}
+
+	onMount(() => {
+		if (typeof window != "undefined") {
+			window.addEventListener("hashchange", handleHashChange)
+		}
+	})
+
+	onDestroy(() => {
+		if (typeof window != "undefined") {
+			window.removeEventListener("hashchange", handleHashChange)
+		}
+	})
 </script>
 
 <div
@@ -70,7 +98,7 @@
 				<span class="{isOnline ? "bg-green-500" : "bg-neutral-500"} rounded-full w-6 h-6 absolute -bottom-15 border-2 border-black left-27 z-10 block"></span>
 				<div class="absolute border-4 border-black -bottom-20 left-0 flex h-auto w-auto overflow-hidden rounded-full">
 					{#if user.avatar}
-						<button on:click={() => preview = true} class="h-32 w-32 rounded-full bg-white/50 object-cover transition-all duration-300 hover:scale-110">
+						<button on:click={() => handlePreview(true)} class="h-32 w-32 rounded-full bg-white/50 object-cover transition-all duration-300 hover:scale-110">
 							<img
 								src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.avatar}"
 								alt="Profile picture of {user.name}"
@@ -243,8 +271,8 @@
 	</button>
 </div>
 
-<div class="fixed z-50 justify-center items-center flex inset-0 transition-all duration-100 {preview ? "scale-100 visible pointer-events-auto bg-black" : "scale-0 pointer-events-none invisible bg-transparent"}">
-	<button on:click={() => preview = false} class="w-full h-full">
-		<img class="w-full object-contain h-auto" src="https://files.catbox.moe/kvvq3j.jpg" alt="Preview">
+<div class="fixed z-50 justify-center items-center flex will-change-transform inset-0 transition-all duration-100 {preview ? "scale-100 visible pointer-events-auto bg-black" : "scale-0 pointer-events-none invisible bg-transparent"}">
+	<button on:click={() => handlePreview(false, true)} class="w-full h-full">
+		<img class="w-full object-contain h-auto" src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user.avatar}" alt="Preview">
 	</button>
 </div>

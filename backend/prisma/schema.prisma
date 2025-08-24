@@ -11,7 +11,7 @@ model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   google_id String?  @default("")
   github_id String?  @default("")
-  username  String?   @unique
+  username  String?  @unique
   email     String?  @unique
   password  String?
   name      String?
@@ -23,11 +23,14 @@ model User {
   isVerify  Boolean  @default(false)
   badges    String[]
 
-  lastSeen  DateTime? @default(now())
+  lastSeen DateTime? @default(now())
 
   anime    Anime[]
   manga    Manga[]
   comments Comment[]
+
+  favorites Favorite[]
+  history   AnimeHistory[]
 
   role Role @default(MEMBER)
 
@@ -75,6 +78,42 @@ model Comment {
   created_at DateTime @default(now())
 
   @@map("comments")
+}
+
+model Favorite {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  anime_id String?
+  manga_id String?
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+
+  created_at DateTime @default(now())
+
+  @@map("favorites")
+}
+
+model AnimeHistory {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String?
+  cover       String?
+  current_eps String?
+  total_eps   String?
+  anime_id    String?
+  date        String?
+  schedule    String?
+  source      String?
+  rating      String?
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+
+  updated_at DateTime? @default(now())
+  created_at DateTime  @default(now())
+
+  @@map("anime_histories")
 }
 
 enum Role {

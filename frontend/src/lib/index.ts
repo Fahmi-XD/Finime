@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 import { mode as modeStore } from '$lib/stores/mode';
-import { publicRoute } from './config/app';
+import { publicRoute, OFFLINE_MINUTE } from './config/app';
 import { goto } from '$app/navigation';
 import { crossfade as svelteCrossfade } from 'svelte/transition';
 
@@ -65,5 +65,9 @@ function isPublicUrl(url: string) {
   }
 }
 
+function checkOnline(lastSeen: Date) {
+  return (new Date().getTime() - new Date(lastSeen).getTime()) < OFFLINE_MINUTE * 60 * 1000;
+}
 
-export { truncate, handleResize, getInitials, urlBase64ToUint8Array, BrowserData, isBlobUrl, isPublicUrl }
+
+export { truncate, handleResize, getInitials, urlBase64ToUint8Array, BrowserData, isBlobUrl, isPublicUrl, checkOnline }

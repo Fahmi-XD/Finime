@@ -20,78 +20,76 @@ export default class UserService {
   static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false, history: boolean = false): Promise<ResponseModel<any>> {
     let user;
 
-    if (userId) {
-      if (isStatistics) {
-        user = await prismaClient.user.findUnique({
-          where: { id: userId },
-          select: {
-            anime: true,
-            manga: true,
-          },
-        });
-      } else if (history) {
-        user = await prismaClient.user.findUnique({
-          where: { id: userId },
-          select: {
-            history: {
-              orderBy: {
-                updated_at: "desc"
-              }
+    if (isStatistics && userId) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          anime: true,
+          manga: true,
+        },
+      });
+    } else if (history && userId) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          history: {
+            orderBy: {
+              updated_at: "desc"
             }
-          },
-        });
-      } else if (online) {
-        user = await prismaClient.user.findUnique({
-          where: { id: userId },
-          select: {
-            lastSeen: true,
-          },
-        });
-      } else if (username) {
-        user = await prismaClient.user.findFirst({
-          where: { username: username },
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            anime: true,
-            manga: true,
-            avatar: true,
-            banner: true,
-            email: true,
-            pronoun: true,
-            role: true,
-            isVerify: true,
-            lastSeen: true,
-            bio: true,
-            badges: true,
-            created_at: true,
-            updated_at: true,
-          },
-        });
-      } else {
-        user = await prismaClient.user.findUnique({
-          where: { id: userId },
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            anime: true,
-            manga: true,
-            avatar: true,
-            banner: true,
-            email: true,
-            pronoun: true,
-            lastSeen: true,
-            role: true,
-            isVerify: true,
-            bio: true,
-            badges: true,
-            created_at: true,
-            updated_at: true,
-          },
-        });
-      }
+          }
+        },
+      });
+    } else if (online && userId) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          lastSeen: true,
+        },
+      });
+    } else if (username) {
+      user = await prismaClient.user.findFirst({
+        where: { username: username },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          role: true,
+          isVerify: true,
+          lastSeen: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+    } else if (userId) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          lastSeen: true,
+          role: true,
+          isVerify: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
     }
 
     if (!user) {
@@ -156,41 +154,41 @@ export default class UserService {
     }
   }
 
-  // Mendapatkan Profile User
-  static async getUserProfile(username: string) {
-    try {
-      const user = await prismaClient.user.findUnique({
-        where: {
-          username,
-        },
-        select: {
-          id: true,
-          username: true,
-          name: true,
-          avatar: true,
-          banner: true,
-          role: true,
-          bio: true,
-          isVerify: true,
-          badges: true,
-          created_at: true,
-          updated_at: true,
-        },
-      });
+  // // Mendapatkan Profile User
+  // static async getUserProfile(username: string) {
+  //   try {
+  //     const user = await prismaClient.user.findUnique({
+  //       where: {
+  //         username,
+  //       },
+  //       select: {
+  //         id: true,
+  //         username: true,
+  //         name: true,
+  //         avatar: true,
+  //         banner: true,
+  //         role: true,
+  //         bio: true,
+  //         isVerify: true,
+  //         badges: true,
+  //         created_at: true,
+  //         updated_at: true,
+  //       },
+  //     });
 
-      if (!user) {
-        return HttpException.standarException(404, { message: "User not found" });
-      }
+  //     if (!user) {
+  //       return HttpException.standarException(404, { message: "User not found" });
+  //     }
 
-      return Response.standarResponse(200, user);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return HttpException.standarException(400, error.issues)
-      } else {
-        return HttpException.standarException(500, { message: "Error" })
-      }
-    }
-  }
+  //     return Response.standarResponse(200, user);
+  //   } catch (error) {
+  //     if (error instanceof ZodError) {
+  //       return HttpException.standarException(400, error.issues)
+  //     } else {
+  //       return HttpException.standarException(500, { message: "Error" })
+  //     }
+  //   }
+  // }
 
   // // Total Menonton
   // static async updateWatch(userId: string, isAnime: boolean = false, isManga: boolean = false) {
@@ -221,32 +219,76 @@ export default class UserService {
   //   return userUpdated;
   // }
 
-  // // Mendapatkan Data Semua User
-  // static async getAllUser() {
-  //   const users = await prismaClient.user.findMany({
-  //     select: {
-  //       id: true,
-  //       username: true,
-  //       name: true,
-  //       avatar: true,
-  //       banner: true,
-  //       role: true,
-  //       anime_read: true,
-  //       manga_read: true,
-  //       created_at: true,
-  //       updated_at: true,
-  //     },
-  //   });
+  // Mendapatkan Data Semua User
+  static async getAllUser(query: string | boolean) {
+    let users = [];
 
-  //   if (users.length === 0) {
-  //     return new Response(
-  //       JSON.stringify({ message: 'User not found!' }),
-  //       { status: 404, headers: { 'Content-Type': 'application/json' } }
-  //     )
-  //   }
+    if (query && typeof query == "string" && query != "") {
+      users = await prismaClient.user.findMany({
+        where: {
+          OR: [
+            {
+              username: {
+                contains: query,
+                mode: "insensitive"
+              }
+            },
+            {
+              name: {
+                contains: query,
+                mode: "insensitive"
+              }
+            }
+          ]
+        },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          lastSeen: true,
+          role: true,
+          isVerify: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+    } else {
+      users = await prismaClient.user.findMany({
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          anime: true,
+          manga: true,
+          avatar: true,
+          banner: true,
+          email: true,
+          pronoun: true,
+          lastSeen: true,
+          role: true,
+          isVerify: true,
+          bio: true,
+          badges: true,
+          created_at: true,
+          updated_at: true,
+        },
+      });
+    }
 
-  //   return users;
-  // }
+    if (users.length === 0) {
+      return Response.standarResponse(200, { users: [], message: "User tidak ada di database!" });
+    }
+
+    return Response.standarResponse(200, { users, message: "Berhasil mendapatkan semua user" });
+  }
 
   // static async replyComment(userId: string, request: ReplyCommentRequest) {
   //   request = CommentValidation.REPLY_COMMENT.parse(request);

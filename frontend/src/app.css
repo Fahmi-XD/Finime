@@ -71,7 +71,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 72.2% 50.6%; */
-    --radius: 0.3rem;
+    --radius: 1rem;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -160,4 +160,136 @@ body {
 
 button {
   cursor: pointer;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px) 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    #363636 37%,
+    hsl(var(--muted)) 63%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--radius);
+}
+
+.skeleton-text {
+  /* height: 1rem; */
+}
+
+.skeleton-text:last-child {
+  margin-bottom: 0;
+}
+
+.skeleton-text.short {
+  width: 60%;
+}
+
+.skeleton-text.medium {
+  width: 80%;
+}
+
+.skeleton-text.long {
+  width: 100%;
+}
+
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.skeleton-avatar.large {
+  width: 60px;
+  height: 60px;
+}
+
+.skeleton-avatar.small {
+  width: 32px;
+  height: 32px;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.skeleton-image.square {
+  aspect-ratio: 1;
+  height: auto;
+}
+
+.skeleton-image.portrait {
+  aspect-ratio: 2/3;
+  height: auto;
+}
+
+.skeleton-button {
+  height: 40px;
+  border-radius: var(--radius);
+}
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+
+.skeleton-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+
+.skeleton-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.skeleton-grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.skeleton-grid.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.skeleton-grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 768px) {
+  .skeleton-grid.cols-2,
+  .skeleton-grid.cols-3,
+  .skeleton-grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-grid.cols-2,
+  .skeleton-grid.cols-3,
+  .skeleton-grid.cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quality-btn {
+  display: block;
+  width: 50px;
+  height: 50px;
 }

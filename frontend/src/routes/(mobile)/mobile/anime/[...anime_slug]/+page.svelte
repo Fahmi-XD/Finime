@@ -8,7 +8,7 @@
 	import type { IAnimeDetail } from '$lib/api/types/mobile/detailType';
 	import { runtimeMobile } from '$lib/stores/runtime';
 
-	import LoadingElements from '$lib/components/ui/LoadingElements.svelte';
+	import SkeletonLoading from '$lib/components/ui/SkeletonLoading.svelte';
 	import Carousel from '$lib/components/complex/Carousel.svelte';
 
 	import Episode from '$lib/components/mobile/AnimeDetail/Episode.svelte';
@@ -148,21 +148,25 @@
 	<meta name="theme-color" content="#111827" />
 </svelte:head>
 
-{#if isLoading}
-	<LoadingElements />
-{/if}
-<div class="relative block overflow-x-hidden will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
-	<div class="fixed top-0 -z-[5] flex h-auto w-screen bg-green-500">
-		<span
-			style="height: {bgHeight + 20}px"
-			class="absolute top-0 z-[5] flex w-screen bg-gradient-to-b from-black/30 to-black/95 transition-all duration-200"
-		></span>
-		<img
-			bind:this={imgEl}
-			class="h-full w-screen object-contain blur-[2px]"
-			src={animeDetail?.image}
-			alt={animeDetail?.title}
-		/>
+<div
+	class="relative block overflow-x-hidden will-change-auto"
+	in:scale={{ duration: 200, start: 0.95 }}
+>
+	<div class="fixed top-0 -z-[5] flex h-auto w-screen">
+		{#if isLoading}
+			<SkeletonLoading type="image" className="bg-black" />
+		{:else}
+			<span
+				style="height: {bgHeight + 20}px"
+				class="absolute top-0 z-[5] flex w-screen bg-gradient-to-b from-black/30 to-black/95 transition-all duration-200"
+			></span>
+			<img
+				bind:this={imgEl}
+				class="h-full w-screen object-contain blur-[2px]"
+				src={animeDetail?.image}
+				alt={animeDetail?.title}
+			/>
+		{/if}
 	</div>
 
 	<div class="mx-auto max-w-md pb-20 pt-3">
@@ -178,46 +182,93 @@
 
 		<!-- Poster -->
 		<div class="mb-4 mt-10 flex justify-center px-4">
-			<img
-				alt="Anime poster showing five characters around a table with various dishes, one standing behind, colorful anime style"
-				class="h-[380px] w-[270px] rounded-xl object-cover shadow-lg"
-				src={animeDetail?.image}
-			/>
+			{#if isLoading}
+				<SkeletonLoading type="image" className="!h-[380px] !w-[270px]" />
+			{:else}
+				<img
+					alt="Anime poster showing five characters around a table with various dishes, one standing behind, colorful anime style"
+					class="h-[380px] w-[270px] rounded-xl object-cover shadow-lg"
+					src={animeDetail?.image}
+				/>
+			{/if}
 		</div>
 
 		<div class="px-4">
 			<!-- Title and info -->
-			<h1 class="mb-1 text-center text-xl font-semibold text-white">
-				{animeDetail?.title}
-			</h1>
-			{#each animeDetail?.altTitles as title}
-				<p class="mb-1 text-center text-tiny text-gray-300">{title}</p>
-			{/each}
-			<p class="mb-1 text-center text-sm text-gray-300">
-				{animeDetail?.type} | {animeDetail?.status} | {animeDetail?.airing?.from}
-			</p>
+			{#if isLoading}
+				<div class="flex flex-col items-center">
+					<SkeletonLoading type="text" className="!h-[20px] !w-[270px]" />
+					<SkeletonLoading type="text" className="!h-[20px] !w-[200px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[20px] !w-[270px] mt-1" />
+				</div>
+			{:else}
+				<h1 class="mb-1 text-center text-xl font-semibold text-white">
+					{animeDetail?.title}
+				</h1>
+			{/if}
+			{#if isLoading}
+				<div class="mt-5 flex flex-col items-center">
+					<SkeletonLoading type="text" className="!h-[10px] !w-[180px]" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[220px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[160px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[200px] mt-1" />
+				</div>
+			{:else}
+				{#each animeDetail?.altTitles as title}
+					<p class="text-tiny mb-1 text-center text-gray-300">{title}</p>
+				{/each}
+			{/if}
+			{#if isLoading}
+				<SkeletonLoading type="text" className="!h-[20px] !w-[200px] mt-5 mx-auto" />
+			{:else}
+				<p class="mb-1 text-center text-sm text-gray-300">
+					{animeDetail?.type} | {animeDetail?.status} | {animeDetail?.airing?.from}
+				</p>
+			{/if}
 			<p
-				class="mb-3 text-tiny flex items-center justify-center space-x-1 text-center font-semibold text-yellow-400"
+				class="text-tiny mb-3 flex items-center justify-center space-x-1 text-center font-semibold text-yellow-400"
 			>
 				<Star size={18} fill="yellow" />
-				<span> 7.19 </span>
+				{#if isLoading}
+					<SkeletonLoading type="text" className="!h-[10px] !w-[50px] mt-1" />
+				{:else}
+					<span>7.19</span>
+				{/if}
 			</p>
 		</div>
 
 		<!-- Tags -->
 		<div class="mb-4 flex flex-wrap justify-center gap-2 px-4">
-			{#each animeDetail?.genres as genre}
-				<span class="rounded-full border-2 border-red-500 px-3 py-1 text-xs font-medium text-white">
-					{genre.replace(',', '')}
-				</span>
-			{/each}
+			{#if isLoading}
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+			{:else}
+				{#each animeDetail?.genres as genre}
+					<span
+						class="rounded-full border-2 border-red-500 px-3 py-1 text-xs font-medium text-white"
+					>
+						{genre.replace(',', '')}
+					</span>
+				{/each}
+			{/if}
 		</div>
 		<div class="mb-4 flex flex-wrap justify-center gap-2 px-4">
-			{#each animeDetail?.relatedTags as tag}
-				<span class="rounded-full bg-red-500 px-3 py-1 text-xs font-medium text-white">
-					{tag.replace(',', '')}
-				</span>
-			{/each}
+			{#if isLoading}
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+				<SkeletonLoading type="text" className="!h-[30px] !w-[100px]" />
+			{:else}
+				{#each animeDetail?.relatedTags as tag}
+					<span class="rounded-full bg-red-500 px-3 py-1 text-xs font-medium text-white">
+						{tag.replace(',', '')}
+					</span>
+				{/each}
+			{/if}
 		</div>
 
 		<!-- Description -->
@@ -227,7 +278,22 @@
 			<span
 				class="pointer-events-none absolute inset-0 block h-full w-full bg-gradient-to-b from-black/20 via-transparent to-black/20"
 			></span>
-			<p class="max-h-50 no-scroll text-xs h-full w-full overflow-y-auto">{animeDetail?.description}</p>
+			{#if isLoading}
+				<div class="flex flex-col items-center">
+					<SkeletonLoading type="text" className="!h-[10px] !w-full" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[300px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[200px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[2500px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-full mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[179px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-[239px] mt-1" />
+					<SkeletonLoading type="text" className="!h-[10px] !w-full mt-1" />
+				</div>
+			{:else}
+				<p class="max-h-50 no-scroll h-full w-full overflow-y-auto text-xs">
+					{animeDetail?.description}
+				</p>
+			{/if}
 		</div>
 
 		<div class="mt-10">
@@ -242,17 +308,23 @@
 		</div>
 	</div>
 </div>
-<div class="fixed bottom-4 right-20 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
-	<button on:click={() => {
-		if (!isCopy) {
-			const thisLink = window.location.href;
-			navigator.clipboard.writeText(thisLink || '');
-			isCopy = true;
-			setTimeout(() => {
-				isCopy = false;
-			}, 2000);
-		}
-	}} disabled={isCopy} class="flex items-center justify-center disabled:cursor-not-allowed">
+<div
+	class="fixed bottom-4 right-20 z-10 flex h-[50px] w-[50px] items-center justify-center rounded-full bg-red-500 p-4"
+>
+	<button
+		on:click={() => {
+			if (!isCopy) {
+				const thisLink = window.location.href;
+				navigator.clipboard.writeText(thisLink || '');
+				isCopy = true;
+				setTimeout(() => {
+					isCopy = false;
+				}, 2000);
+			}
+		}}
+		disabled={isCopy}
+		class="flex items-center justify-center disabled:cursor-not-allowed"
+	>
 		{#if isCopy}
 			<CheckIcon class="text-white" size={24} />
 		{:else}
@@ -260,14 +332,20 @@
 		{/if}
 	</button>
 </div>
-<div class="fixed bottom-4 right-4 z-10 flex items-center justify-center bg-red-500 p-4 w-[50px] h-[50px] rounded-full">
-	<button on:click={() => {
-		if (!isBookmart) {
-			const thisLink = window.location.href;
-			navigator.clipboard.writeText(thisLink || '');
-			isBookmart = true;
-		}
-	}} disabled={isBookmart} class="flex items-center justify-center disabled:cursor-not-allowed">
+<div
+	class="fixed bottom-4 right-4 z-10 flex h-[50px] w-[50px] items-center justify-center rounded-full bg-red-500 p-4"
+>
+	<button
+		on:click={() => {
+			if (!isBookmart) {
+				const thisLink = window.location.href;
+				navigator.clipboard.writeText(thisLink || '');
+				isBookmart = true;
+			}
+		}}
+		disabled={isBookmart}
+		class="flex items-center justify-center disabled:cursor-not-allowed"
+	>
 		{#if isBookmart}
 			<BookmarkCheck class="text-white" size={24} />
 		{:else}

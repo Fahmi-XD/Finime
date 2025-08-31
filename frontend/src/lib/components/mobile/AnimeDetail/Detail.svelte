@@ -16,8 +16,6 @@
 	>
 		<tbody>
 			<tr><th>ID</th><td>{animeDetail.id}</td></tr>
-			<tr><th>Judul Alternatif</th><td>{animeDetail.altTitles?.join(', ')}</td></tr>
-			<tr><th>Deskripsi</th><td>{animeDetail.description}</td></tr>
 			<tr><th>Skor</th><td>{animeDetail.score ?? '-'}</td></tr>
 			<tr><th>Status</th><td>{animeDetail.status ?? '-'}</td></tr>
 			<tr><th>Hari Tayang</th><td>{animeDetail.scheduleDay ?? '-'}</td></tr>
@@ -36,45 +34,8 @@
 			<tr><th>Rating</th><td>{animeDetail.rating ?? '-'}</td></tr>
 			<tr><th>Kredit</th><td>{animeDetail.credit ?? '-'}</td></tr>
 			<tr><th>Genre</th><td>{animeDetail.genres?.join(', ')}</td></tr>
-			<tr><th>Tag</th><td>{animeDetail.tags?.join(', ')}</td></tr>
-			<tr><th>Related Tags</th><td>{animeDetail.relatedTags?.join(', ')}</td></tr>
 			<tr><th>Followers</th><td>{animeDetail.followers ?? '-'}</td></tr>
 			<tr><th>HD/BD</th><td>{animeDetail.hdBd ?? '-'}</td></tr>
-			<tr><th>View Count</th><td>{animeDetail.viewCount ?? '-'}</td></tr>
-			<tr><th>Comment Count</th><td>{animeDetail.commentCount ?? '-'}</td></tr>
-			<tr><th>Copyright</th><td>{animeDetail.copyright ?? '-'}</td></tr>
-			<tr>
-				<th>Share Link</th>
-				<td>
-					{#if animeDetail.shareLink}
-						<a href={animeDetail.shareLink} target="_blank">{animeDetail.shareLink}</a>
-					{:else}
-						-
-					{/if}
-				</td>
-			</tr>
-			<tr
-				><th>Episode List</th><td
-					>{animeDetail.episodeList?.length
-						? animeDetail.episodeList.map((e: any) => `${e.ep}`).join(', ')
-						: '-'}</td
-				></tr
-			>
-			<tr><th>Themes</th><td>{animeDetail.themes?.join(', ')}</td></tr>
-			<tr
-				><th>Social Media</th><td
-					>{animeDetail.socialMedia?.length
-						? animeDetail.socialMedia.map((s: any) => `${s.name}`).join(', ')
-						: '-'}</td
-				></tr
-			>
-			<tr
-				><th>Navigation</th><td
-					>{animeDetail.navigation?.length
-						? animeDetail.navigation.map((n: any) => `${n.name}`).join(', ')
-						: '-'}</td
-				></tr
-			>
 		</tbody>
 	</table>
   

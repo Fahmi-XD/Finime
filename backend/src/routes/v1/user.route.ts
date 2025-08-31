@@ -4,7 +4,6 @@
 
 import UserController from "@controllers/user.controller.js";
 import { Elysia } from "elysia";
-import { adminMiddleware } from "@middleware/admin.middleware.js";
 
 export const userRoute = (app: Elysia) => app
 
@@ -13,7 +12,7 @@ export const userRoute = (app: Elysia) => app
   .get("/user/online", UserController.getUserOnline)
   .get("/user/history", UserController.getUserHistory)
 
-  // .get("/users", UserController.getAllUser, { beforeHandle: adminMiddleware }) // Memerlukan Token + Role Admin
+  .get("/users", UserController.getAllUser)
 
   .patch("/user", UserController.updateUser)
 

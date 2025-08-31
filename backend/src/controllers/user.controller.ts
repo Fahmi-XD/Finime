@@ -8,7 +8,7 @@ import UserService from "@services/user.service.js";
 import { UpdateUserRequest } from "@models/user.model.js";
 import { UserValidation } from "@validations/user.validation.js";
 import { Context } from "elysia";
-import { ZodError } from "zod";
+import { boolean, ZodError } from "zod";
 import { CreateCommentRequest } from "@models/comment.model.js";
 import type { ResponseModel } from "@models/response.model.js";
 // import webpush from 'web-push';
@@ -138,12 +138,14 @@ export default class UserController {
   //   return response;
   // }
 
-  // // Mendapatkan Semua User ( Controller )
-  // static async getAllUser(): Promise<ResponseModel<any>> {
-  //   const response = await UserService.getAllUser();
+  // Mendapatkan Semua User atau Sesuai username || nama ( Controller )
+  static async getAllUser(context: Context): Promise<ResponseModel<any>> {
+    const query: string | boolean = context.query?.query || false;
 
-  //   return response;
-  // }
+    const response = await UserService.getAllUser(query);
+
+    return response;
+  }
 
   // // Reply
   // static async reply(context: Context): Promise<ResponseModel<any>> {

@@ -52,12 +52,13 @@
 					forced: true,
 					onChange(quality) {
 						// console.log('Quality changed to:', quality);
-						// console.log(animeDetail?.videoUrls.length - ((QUALITY as any)[quality]))
+						// console.log((animeDetail?.videoUrls.length - 1 - ((QUALITY as any)[quality])))
+						// console.log(animeDetail?.videoUrls[(animeDetail?.videoUrls.length - 1 - ((QUALITY as any)[quality]))])
 						const currentTime = (playerElement as HTMLVideoElement).currentTime;
 						const isPaused = (playerElement as HTMLVideoElement).paused;
 
 						(playerElement as HTMLVideoElement).src =
-							animeDetail?.videoUrls[animeDetail?.videoUrls.length - 1 - (QUALITY as any)[quality]];
+							animeDetail?.videoUrls[(animeDetail?.videoUrls.length - 1 - ((QUALITY as any)[quality]))];
 
 						(playerElement as HTMLVideoElement).load();
 						(playerElement as HTMLVideoElement).currentTime = currentTime;
@@ -94,7 +95,7 @@
 	class="plyr-player"
 	poster="/images/finime-poster.png"
 >
-	{#each animeDetail?.videoUrls as videoUrl}
+	{#each (animeDetail?.videoUrls as string[]).map(i => i).reverse() as videoUrl}
 		<source src={videoUrl} type="video/mp4" />
 	{/each}
 

@@ -13,6 +13,7 @@
         "svelte-french-toast": "^1.2.0",
         "video.js": "^8.23.4",
         "videojs-landscape-fullscreen": "^12.3.0",
+        "videojs-resolution-switcher-vjs7": "^1.0.0",
       },
       "devDependencies": {
         "@eslint/compat": "^1.2.5",
@@ -23,6 +24,7 @@
         "@tailwindcss/typography": "^0.5.15",
         "@tailwindcss/vite": "^4.0.0",
         "@types/js-cookie": "^3.0.6",
+        "@types/node": "^24.3.0",
         "@types/video.js": "^7.3.58",
         "eslint": "^9.18.0",
         "eslint-config-prettier": "^10.0.1",
@@ -247,6 +249,8 @@
     "@types/js-cookie": ["@types/js-cookie@3.0.6", "", {}, "sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ=="],
 
     "@types/json-schema": ["@types/json-schema@7.0.15", "", {}, "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="],
+
+    "@types/node": ["@types/node@24.3.0", "", { "dependencies": { "undici-types": "~7.10.0" } }, "sha512-aPTXCrfwnDLj4VvXrm+UUCQjNEvJgNA8s5F1cvwQU+3KNltTOkBm1j30uNLyqqPNe7gE3KFzImYoZEfLhp4Yow=="],
 
     "@types/video.js": ["@types/video.js@7.3.58", "", {}, "sha512-1CQjuSrgbv1/dhmcfQ83eVyYbvGyqhTvb2Opxr0QCV+iJ4J6/J+XWQ3Om59WiwCd1MN3rDUHasx5XRrpUtewYQ=="],
 
@@ -734,6 +738,8 @@
 
     "typescript-eslint": ["typescript-eslint@8.36.0", "", { "dependencies": { "@typescript-eslint/eslint-plugin": "8.36.0", "@typescript-eslint/parser": "8.36.0", "@typescript-eslint/utils": "8.36.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0", "typescript": ">=4.8.4 <5.9.0" } }, "sha512-fTCqxthY+h9QbEgSIBfL9iV6CvKDFuoxg6bHPNpJ9HIUzS+jy2lCEyCmGyZRWEBSaykqcDPf1SJ+BfCI8DRopA=="],
 
+    "undici-types": ["undici-types@7.10.0", "", {}, "sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag=="],
+
     "uri-js": ["uri-js@4.4.1", "", { "dependencies": { "punycode": "^2.1.0" } }, "sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg=="],
 
     "url-polyfill": ["url-polyfill@1.1.13", "", {}, "sha512-tXzkojrv2SujumYthZ/WjF7jaSfNhSXlYMpE5AYdL2I3D7DCeo+mch8KtW2rUuKjDg+3VXODXHVgipt8yGY/eQ=="],
@@ -747,6 +753,8 @@
     "videojs-font": ["videojs-font@4.2.0", "", {}, "sha512-YPq+wiKoGy2/M7ccjmlvwi58z2xsykkkfNMyIg4xb7EZQQNwB71hcSsB3o75CqQV7/y5lXkXhI/rsGAS7jfEmQ=="],
 
     "videojs-landscape-fullscreen": ["videojs-landscape-fullscreen@12.3.0", "", { "dependencies": { "global": "^4.4.0" }, "peerDependencies": { "video.js": "5.x || 6.x || 7.x || 8.x" } }, "sha512-4cGcsHvmYVVoELZoY4R80UJHJrMPEvrDqc28FHCMOYNVQV9gFYtb+i1tB8EzsinHTuO09fNU7CwzHsyKqV5LAA=="],
+
+    "videojs-resolution-switcher-vjs7": ["videojs-resolution-switcher-vjs7@1.0.0", "", {}, "sha512-BowDOEJ63lJKThw9WlxAP86vNwjRWsLjYkelJ01wIuFHNLlyJghstfs8U9QZwT5b3Fevbg+cHUVxtvlB9J4s4w=="],
 
     "videojs-vtt.js": ["videojs-vtt.js@0.15.5", "", { "dependencies": { "global": "^4.3.1" } }, "sha512-yZbBxvA7QMYn15Lr/ZfhhLPrNpI/RmCSCqgIff57GC2gIrV5YfyzLfLyZMj0NnZSAz8syB4N0nHXpZg9MyrMOQ=="],
 

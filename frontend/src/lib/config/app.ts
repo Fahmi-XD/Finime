@@ -17,3 +17,5 @@ export const MAX_RUNTIME_CACHE = 45;
 export const MAX_RUNTIME_CACHE_MOBILE = 35;
 
 export const ONLINE_DELAY = 4 * 60 * 1000; // 4 Menit sekali
+// Buat jadi offline jika user tidak aktif selama: 5 menit
+export const OFFLINE_MINUTE = 5; // Menit

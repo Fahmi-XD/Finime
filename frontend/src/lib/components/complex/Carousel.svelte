@@ -61,7 +61,7 @@
 <div class="embla" use:emblaCarouselSvelte={{ options: { duration: 15, containScroll: "keepSnaps" }, plugins: [] }} on:emblaInit={onEmblaInit}>
   <div class="embla__container">
     {#each slides as Slide, i (i)}
-      <div class="embla__slide px-4 transition-all duration-300 w-full">
+      <div class="embla__slide px-4 will-change-auto transition-all duration-300 w-full">
         <div class="block w-full h-auto" bind:this={container[i]}>
           <!-- <svelte:component this={slide} data={{ animeDetail, data }} /> -->
            <Slide data={{ animeDetail, data }}></Slide>

@@ -219,7 +219,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-black text-white px-4 pb-[70px] pt-5" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="min-h-screen bg-black text-white px-4 pb-[70px] pt-5">
 	<!-- Header -->
 	<div class="mb-6">
 		<div class="flex items-center justify-between mb-4">

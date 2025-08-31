@@ -30,3 +30,5 @@ prisma/migrations*
 
 .trash
 .vercel
+ns
+test/

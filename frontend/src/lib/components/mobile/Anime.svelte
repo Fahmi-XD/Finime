@@ -7,7 +7,9 @@
 
   import type { IHomeModel } from "$lib/api/types/mobile/homeType";
   import { AnimeMobileClient } from "$lib/api/clients/mobile/animeClient";
+
   import LoadingElements from "../ui/LoadingElements.svelte";
+  import SkeletonLoading from "../ui/SkeletonLoading.svelte";
 
   let animeList: IHomeModel | undefined = {};
   let isLoading = true;
@@ -39,9 +41,7 @@
         class="flex gap-5 flex-nowrap min-w-0 min-h-0 overflow-x-auto w-full mt-5 no-scroll"
       >
         {#if isLoading}
-          <div class="flex w-full justify-center items-center h-auto">
-            <LoadingElements variant="normal" />
-          </div>
+          <SkeletonLoading type="card" count={5} className="h-[160px] w-[120px]" />
         {:else}
           {#each animeList?.ongoingAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
@@ -91,9 +91,7 @@
         class="flex gap-5 flex-nowrap min-w-0 min-h-0 overflow-x-auto w-full mt-5 no-scroll"
       >
         {#if isLoading}
-          <div class="flex w-full justify-center items-center h-auto">
-            <LoadingElements variant="normal" />
-          </div>
+          <SkeletonLoading type="card" count={5} className="h-[160px] w-[120px]" />
         {:else}
           {#each animeList?.finishedAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
@@ -143,9 +141,7 @@
         class="flex gap-5 flex-nowrap min-w-0 min-h-0 overflow-x-auto w-full mt-5 no-scroll"
       >
         {#if isLoading}
-          <div class="flex w-full justify-center items-center h-auto">
-            <LoadingElements variant="normal" />
-          </div>
+          <SkeletonLoading type="card" count={5} className="h-[160px] w-[120px]" />
         {:else}
           {#each animeList?.movieAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">
@@ -195,9 +191,7 @@
         class="flex gap-5 flex-nowrap min-w-0 min-h-0 overflow-x-auto w-full mt-5 no-scroll"
       >
         {#if isLoading}
-          <div class="flex w-full justify-center items-center h-auto">
-            <LoadingElements variant="normal" />
-          </div>
+          <SkeletonLoading type="card" count={5} className="h-[160px] w-[120px]" />
         {:else}
           {#each animeList?.topAnimes?.data || [] as anime}
             <li class="flex flex-col w-[120px]">

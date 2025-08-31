@@ -11,6 +11,7 @@
 	import { runtimeData } from "$lib/stores/runtime";
 
 	import LoadingElements from "../ui/LoadingElements.svelte";
+	import SkeletonLoading from "../ui/SkeletonLoading.svelte";
 
 	import { AnimeMobileClient } from "$lib/api/clients/mobile/animeClient";
 
@@ -73,9 +74,7 @@
 
 	<ul class="space-y-6">
 		{#if isLoading}
-			<div class="h-30 w-full flex justify-center items-center">
-				<LoadingElements variant="normal" />
-			</div>
+			<SkeletonLoading type="card-2" count={5} />
 		{:else if (!animeList?.data)}
 			<h1 class="text-sm opacity-70 text-white text-center">Belum ada data :(</h1>
 		{:else}

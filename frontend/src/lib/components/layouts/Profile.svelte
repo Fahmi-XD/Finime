@@ -16,6 +16,9 @@
   import { getInitials, truncate } from "$lib";
 	import { onMount, onDestroy } from "svelte";
 	import { goto } from "$app/navigation";
+	import { seeAllTitle } from "$lib/stores/home.mobile";
+
+	import { checkOnline } from "$lib";
 
 	export let user: any;
   export let statistics: any = { anime: [], manga: [] };
@@ -43,7 +46,7 @@
 	
 	if (user?.lastSeen) {
 		const lastSeen = user?.lastSeen ? user?.lastSeen : new Date();
-		isOnline = (new Date().getTime() - new Date(lastSeen).getTime()) < 5 * 60 * 1000; // 5 Menit YGY
+		isOnline = checkOnline(lastSeen)
 	} else {
 		isOnline = false;
 	}
@@ -234,6 +237,10 @@
           <h2 class="mb-6 border-b border-white/20 pb-2 text-xl font-semibold">Quick Actions</h2>
           <div class="grid grid-cols-2 gap-4">
             <button
+							on:click={() => {
+								seeAllTitle.set("Historimu")
+								goto("/mobile/see-all")
+							}}
               class="flex h-24 w-full flex-col items-center justify-center rounded-xl border-2 border-white/10 bg-white/5 transition-all hover:bg-[hsl(var(--background))]"
             >
               <History size={24} class="mb-2 text-blue-500" />

@@ -6,6 +6,7 @@
   import { truncate } from "$lib";
 
   import LoadingElements from "../ui/LoadingElements.svelte";
+  import SkeletonLoading from "../ui/SkeletonLoading.svelte";
 
   import { runtimeData } from "$lib/stores/runtime";
 
@@ -33,33 +34,63 @@
 	<h1 class="opacity-70 mt-4 text-sm px-8">Watch today</h1>
   <div class="relative w-full h-auto overflow-hidden">
     <div class="relative z-10 min-h-0 bg-transparent flex w-full h-auto py-3 overflow-hidden justify-center">
-      <img
-        class="w-[200px] h-[300px] translate-y-3 object-cover border border-white/60 rounded-2xl -rotate-5 absolute -translate-x-15"
-        src={popularAnime?.data?.[0].image_portrait_url}
-        alt="Watch today"
-      />
-      <img
-        class="w-[200px] h-[300px] translate-y-3 object-cover border border-white/60 rounded-2xl rotate-8 absolute translate-x-15"
-        src={popularAnime?.data?.[1].image_portrait_url}
-        alt="Watch today"
-      />
-      <img
-        class="w-[250px] h-[350px] object-cover border border-white/60 rounded-2xl rotate-1"
-        src={popularAnime?.data?.[2].image_portrait_url}
-        alt="Watch today"
-      />
+      <div class="w-[200px] bg-neutral-700 h-[300px] translate-y-3 object-cover border border-white/60 rounded-2xl -rotate-5 absolute -translate-x-15">
+        <img
+          class="w-[200px] bg-neutral-700 h-[300px] object-cover border border-white/60 rounded-2xl"
+          src={popularAnime?.data?.[0].image_portrait_url}
+          alt=""
+        />
+        {#if isLoading}
+          <SkeletonLoading type="image" className="absolute inset-0 rounded-2xl" />
+        {/if}
+      </div>
+      <div class="w-[200px] bg-neutral-700 h-[300px] translate-y-3 object-cover border border-white/60 rounded-2xl rotate-8 absolute translate-x-15">
+        <img
+          class="w-[200px] bg-neutral-700 h-[300px] object-cover border border-white/60 rounded-2xl"
+          src={popularAnime?.data?.[1].image_portrait_url}
+          alt=""
+        />
+        {#if isLoading}
+            <SkeletonLoading type="image" className="absolute inset-0 rounded-2xl" />
+          {/if}
+      </div>
+      <div class="w-[250px] bg-neutral-700 h-[350px] object-cover border border-white/60 rounded-2xl rotate-1">
+        <img
+          class="w-[250px] bg-neutral-700 h-[350px] object-cover border border-white/60 rounded-2xl"
+          src={popularAnime?.data?.[2].image_portrait_url}
+          alt=""
+        />
+        {#if isLoading}
+            <SkeletonLoading type="image" className="absolute inset-0 rounded-2xl" />
+          {/if}
+      </div>
     </div>
 
     <div class="block relative z-10 h-auto w-full mt-5">
       <h1 class="px-10 font-normal opacity-70 text-sm">
         Up on your watchlist
       </h1>
-      <h1 class="px-10 font-bold text-lg">{popularAnime?.data?.[2].title}</h1>
+      <div class="relative">
+        <h1 class="px-10 font-bold text-lg">{popularAnime?.data?.[2].title || "-"}</h1>
+        {#if isLoading}
+            <SkeletonLoading type="text" className="absolute inset-0 ml-10" variant="short" />
+          {/if}
+      </div>
       <div class="flex gap-5 px-10 mt-1 items-center">
-        <h1 class="opacity-80 text-sm">{popularAnime?.data?.[2].aired_from}</h1>
+        <div class="relative">
+          <h1 class="opacity-80 text-sm">{popularAnime?.data?.[2].aired_from || "----------"}</h1>
+          {#if isLoading}
+            <SkeletonLoading type="text" className="absolute inset-0" variant="long" />
+          {/if}
+        </div>
         <div class="flex gap-2 items-center">
           <Star size="15" fill="green" color="green" />
-          <h1 class="opacity-80 text-green-500 text-sm">{popularAnime?.data?.[2].score}</h1>
+          <div class="relative">
+            <h1 class="opacity-80 text-green-500 text-sm">{popularAnime?.data?.[2].score || "------"}</h1>
+            {#if isLoading}
+              <SkeletonLoading type="text" className="absolute inset-0" variant="long" />
+            {/if}
+          </div>
         </div>
       </div>
     </div>
@@ -78,11 +109,9 @@
 			</h1>
 			<button class="text-red-500 flex items-center gap-1 text-lg" on:click={() => {seeAllTitle.set("Teratas"); goto("/mobile/see-all")}}>Lainnya <ArrowRight /></button>
 		</div>
-    <div class="mt-7 grid {isLoading ? "grid-cols-1" : "grid-cols-2"} overflow-x-hidden gap-5">
+    <div class="mt-7 grid grid-cols-2 overflow-x-hidden gap-5">
       {#if isLoading}
-        <div class="flex w-full justify-center items-center h-auto">
-          <LoadingElements variant="normal" />
-        </div>
+        <SkeletonLoading type="card" count={5} className="h-[220px]" />
       {:else}
         {#each popularAnime?.data || [] as anime}
           <a href="/mobile/anime/{anime.id}/{anime.slug}">

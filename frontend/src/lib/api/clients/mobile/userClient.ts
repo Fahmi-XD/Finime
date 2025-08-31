@@ -1,6 +1,7 @@
 import { fetchApi } from "$lib/utils/fetch";
 import type { ICommentModel } from "$lib/api/types/mobile/commentType";
 import type { IUserHistory } from "$lib/api/types/mobile/historyType";
+import type { IUserModel } from "$lib/api/types/mobile/usersType";
 
 export class UserMobileClient {
   static async postComment(comment: string, animeId: string): Promise<any> {
@@ -41,6 +42,11 @@ export class UserMobileClient {
   static async getUserInfoHistory(): Promise<IUserHistory[]> {
     const response = await fetchApi("/user/history", "GET", {});
     return response.result.history;
+  }
+
+  static async getUsersByQuery(query: string): Promise<IUserModel> {
+    const response = await fetchApi("/users?query=" + encodeURIComponent(query), "GET", {});
+    return response.result;
   }
 
   static async sendOnline(): Promise<any> {

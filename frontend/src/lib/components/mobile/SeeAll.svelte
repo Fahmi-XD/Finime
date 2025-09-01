@@ -41,6 +41,7 @@
 								type: "TV",
 								aired_from: p.date,
 								scheduled_day: p.schedule,
+								watch_eps: p.watch_eps,
 								source: p.source,
 								score: parseFloat(p.rating || "0"),
 								id: parseInt(p.anime_id?.split("/")[0] || "0"),
@@ -117,11 +118,12 @@
 							>
 								Tonton
 							</a>
-							<button
+							<a
+								href="/mobile/anime/watch/{anime.id}/{anime.slug}/{anime.watch_eps}"
 								class="mt-3 w-max text-tiny rounded-full border-2 border-red-500 px-5 py-2 font-bold text-white"
 							>
-								{$seeAllTitle == "Historimu" ? "Lanjutkan Eps " + "4" : "Favorite"}
-							</button>
+								{$seeAllTitle == "Historimu" ? "Lanjutkan Eps " + anime.watch_eps : "Favorite"}
+							</a>
 						</div>
 					</div>
 				</li>

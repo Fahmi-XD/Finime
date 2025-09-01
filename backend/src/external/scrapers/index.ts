@@ -1,6 +1,7 @@
 /**
  * Manga Scrapers
  */
+export { kiryuuRoute } from "./manga/kiryuu/index.js";
 
 /**
  * Anime Scrapers

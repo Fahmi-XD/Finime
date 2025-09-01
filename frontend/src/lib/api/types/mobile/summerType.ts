@@ -43,6 +43,7 @@ export interface Datum {
     latest_post_at?:          Date;
     created_at?:              Date;
     updated_at?:              Date;
+    watch_eps?:               string;
     deleted_at?:              null;
     abbreviation?:            string;
     folder_name?:             string;

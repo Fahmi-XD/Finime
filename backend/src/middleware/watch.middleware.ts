@@ -26,7 +26,9 @@ export const watchMiddleware = async ({ headers, path }: any) => {
 
   if (user && isEpisodeRoute) {
     const animeSlug = path.split("/").slice(-4, -2).join("/")
+    const watchEpisode = path.split("/").reverse()[1] || "1";
     const animeDetail: Partial<IAnimeDetail> = await KuramanimeParser.detailAnime(animeSlug);
+
     Promise.all([
       UserService.increaseWatchStatistics({
         user_id: user.id,
@@ -39,6 +41,7 @@ export const watchMiddleware = async ({ headers, path }: any) => {
         current_eps: (animeDetail.episodeList?.length || 1).toString(),
         date: animeDetail.airing?.from || "",
         rating: animeDetail.score,
+        watch_eps: watchEpisode,
         schedule: animeDetail.scheduleDay || "",
         source: animeDetail.source,
         title: animeDetail.title,

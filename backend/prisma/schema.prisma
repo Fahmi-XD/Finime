@@ -30,7 +30,9 @@ model User {
   comments Comment[]
 
   favorites Favorite[]
-  history   AnimeHistory[]
+
+  history      AnimeHistory[]
+  mangaHistory MangaHistory[]
 
   role Role @default(MEMBER)
 
@@ -107,6 +109,8 @@ model AnimeHistory {
   source      String?
   rating      String?
 
+  watch_eps String @default("1")
+
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String @db.ObjectId
 
@@ -114,6 +118,31 @@ model AnimeHistory {
   created_at DateTime  @default(now())
 
   @@map("anime_histories")
+}
+
+model MangaHistory {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String?
+  cover       String?
+  current_eps String?
+  total_eps   String?
+  anime_id    String?
+  date        String?
+  schedule    String?
+  source      String?
+  rating      String?
+
+  read_chapter String @default("1")
+  page         String @default("1")
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+
+  updated_at DateTime? @default(now())
+  created_at DateTime  @default(now())
+
+  @@map("manga_histories")
 }
 
 enum Role {

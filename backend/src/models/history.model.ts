@@ -7,5 +7,6 @@ export interface IAnimeHistoryModel {
   date?: string;
   schedule?: string;
   source?: string;
+  watch_eps?: string;
   rating?: string | null;
 }

@@ -7,6 +7,7 @@ export interface IUserHistory {
   anime_id?:    string;
   date?:        string;
   schedule?:    string;
+  watch_eps?:   string;
   source?:      string;
   rating?:      string;
   user_id?:     string;

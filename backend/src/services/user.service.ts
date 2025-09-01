@@ -17,7 +17,7 @@ import type { IAnimeHistoryModel } from "@models/history.model.js";
 export default class UserService {
 
   // Mendapatkan User berdasarkan id
-  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false, history: boolean = false): Promise<ResponseModel<any>> {
+  static async getUser(userId: string, isStatistics: boolean = false, username: string | null = null, online: boolean = false, history: boolean = false, historyManga: boolean = false): Promise<ResponseModel<any>> {
     let user;
 
     if (isStatistics && userId) {
@@ -33,6 +33,17 @@ export default class UserService {
         where: { id: userId },
         select: {
           history: {
+            orderBy: {
+              updated_at: "desc"
+            }
+          }
+        },
+      });
+    } else if (historyManga && userId) {
+      user = await prismaClient.user.findUnique({
+        where: { id: userId },
+        select: {
+          mangaHistory: {
             orderBy: {
               updated_at: "desc"
             }
@@ -499,7 +510,7 @@ export default class UserService {
       if (existing) {
         await prismaClient.animeHistory.update({
           where: { id: existing.id },
-          data: { updated_at: new Date() }
+          data: { updated_at: new Date(), watch_eps: animeMetadata.watch_eps }
         });
       } else {
         await prismaClient.animeHistory.create({

@@ -139,7 +139,7 @@
     font-family: 'Kanit', 'Nunito', sans-serif;
     font-size:28px;
     margin:0 0 8px 0;
-    color:#0F172A;
+    color: white;
     letter-spacing:0.2px;
   }
 

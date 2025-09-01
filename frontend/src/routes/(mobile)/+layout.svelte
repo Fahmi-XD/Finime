@@ -106,6 +106,10 @@
 				history.scrollRestoration = 'manual';
 			}
 
+			if (serverStatus == "maintenance") {
+				fullscreen.set(true);
+			}
+
 			if (user) {
 				interval = setInterval(() => {
 					UserMobileClient.sendOnline();
@@ -139,9 +143,6 @@
 	});
 
 	mode.set('flat');
-	if (serverStatus == "maintenance") {
-		fullscreen.set(true);
-	}
 
 	let { children } = $props();
 </script>

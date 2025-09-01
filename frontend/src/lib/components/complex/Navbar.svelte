@@ -47,11 +47,6 @@
 	onMount(async () => {
 		isLoadUser = false;
 		window.addEventListener('click', closeProfileMenu);
-
-		console.log({fullscreen: $fullscreen});
-
-		console.log((!isClearDisplay || isExClearDisplayHeader) && !$fullscreen)
-		console.log((($mode == 'flat' && !isClearDisplay) || isClearDisplayBottom) && !$fullscreen)
 	});
 
 	$: path = $page.url.pathname;

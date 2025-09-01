@@ -3,6 +3,9 @@ import type { Handle } from '@sveltejs/kit';
 import { AxiosError } from 'axios';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	const serverStatus = await fetchApi("/server/status", "GET", {});
+	event.locals.serverStatus = serverStatus.result;
+
 	try {
 		const token = event.cookies.get('token');
 
@@ -10,8 +13,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const response = await fetchApi('/user', 'GET', {}, {
 				'x-token': token
 			});
-			const serverStatus = await fetchApi("/server/status", "GET", {});
-			event.locals.serverStatus = serverStatus.result;
 
 			if (response.status === 200) {
 				event.locals.user = response.result || {};

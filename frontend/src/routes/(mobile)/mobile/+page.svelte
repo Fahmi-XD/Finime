@@ -21,7 +21,7 @@
   $: currentTab = $navigate[1]
   $: tabsCache[currentTab as keyof typeof tabs] = tabs[currentTab as keyof typeof tabs];
 
-  let time: number;
+  let time: NodeJS.Timeout;
 
   async function onPop(e: PopStateEvent) {
     if (time) clearTimeout(time);
@@ -39,7 +39,7 @@
   }
 </script>
 
-<main class="relative block w-full h-screen overflow-hidden will-change-auto" in:scale={{ duration: 200, start: 1.2 }}>
+<main class="relative block w-full h-screen overflow-hidden will-change-auto" in:scale={{ duration: 200, start: 1.01 }}>
   {#each Object.entries(tabsCache) as [key, component], i (i)}
     <section
       class="block w-full h-full overflow-x-hidden absolute bg-black transition-opacity duration-200 inset-0 {key == currentTab ? "overflow-y-auto z-10 pointer-events-auto opacity-100" : "overflow-y-hidden z-0 pointer-events-none opacity-0"}"

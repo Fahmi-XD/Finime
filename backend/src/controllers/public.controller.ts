@@ -7,6 +7,7 @@ import { StringSimilarity } from "@lib/similarity.js";
 import { Context } from "elysia";
 import axios from "axios";
 import Response from "@lib/response.js";
+import { SERVER_STATUS } from "@config/app.js";
 
 export default class PublicController {
 
@@ -51,6 +52,10 @@ export default class PublicController {
     ]
 
     return Response.standarResponse(200, badges);
+  }
+
+  static serverStatus() {
+    return Response.standarResponse(200, SERVER_STATUS);
   }
 
   static async proxyMedia(context: Context) {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../../app.css';
-	import { mode } from '$lib/stores/mode';
+	import { mode, fullscreen } from '$lib/stores/mode';
 
 	import Navbar from '$lib/components/complex/Navbar.svelte';
 	import { Toaster } from 'svelte-french-toast';
@@ -9,9 +9,12 @@
 	import { ONLINE_DELAY } from '$lib/config/app';
 	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
 
-	const user = page.data?.user;
+	import Maintenance from '$lib/components/ui/Maintenance.svelte';
 
-	let interval: number;
+	const user = page.data?.user;
+	const serverStatus = page.data?.serverStatus;
+
+	let interval: NodeJS.Timeout;
 
 	interface PushSubscriptionJSON {
 		endpoint: string;
@@ -136,10 +139,17 @@
 	});
 
 	mode.set('flat');
+	if (serverStatus == "maintenance") {
+		fullscreen.set(true);
+	}
 
 	let { children } = $props();
 </script>
 
 <Navbar />
-{@render children()}
+{#if serverStatus == "maintenance"}
+	<Maintenance />
+{:else}
+	{@render children()}
+{/if}
 <Toaster />

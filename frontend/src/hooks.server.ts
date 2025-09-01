@@ -1,7 +1,6 @@
 import { fetchApi } from '$lib/utils/fetch';
 import type { Handle } from '@sveltejs/kit';
 import { AxiosError } from 'axios';
-import Cookies from 'js-cookie';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	try {
@@ -11,6 +10,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const response = await fetchApi('/user', 'GET', {}, {
 				'x-token': token
 			});
+			const serverStatus = await fetchApi("/server/status", "GET", {});
+			event.locals.serverStatus = serverStatus.result;
 
 			if (response.status === 200) {
 				event.locals.user = response.result || {};

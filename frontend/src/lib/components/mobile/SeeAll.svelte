@@ -61,7 +61,7 @@
 	})
 </script>
 
-<div class="max-w-md pt-10 pb-5 px-6 will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="max-w-md pt-10 pb-5 px-6 will-change-auto" in:scale={{ duration: 200, start: 0.99 }}>
 	<header class="mb-10 flex items-center space-x-4">
 		<button aria-label="Back" on:click={() => window.history.back()} class="text-lg flex items-center gap-1 text-white">
 			<ArrowLeft size={20} />
@@ -120,7 +120,7 @@
 							<button
 								class="mt-3 w-max text-tiny rounded-full border-2 border-red-500 px-5 py-2 font-bold text-white"
 							>
-								Add to list
+								{$seeAllTitle == "Historimu" ? "Lanjutkan Eps " + "4" : "Favorite"}
 							</button>
 						</div>
 					</div>

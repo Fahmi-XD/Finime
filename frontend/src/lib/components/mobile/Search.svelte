@@ -170,7 +170,7 @@
 	});
 </script>
 
-<div class="pt-5 px-5 pb-[70px] text-white will-change-transform" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="pt-5 px-5 pb-[70px] text-white will-change-transform" in:scale={{ duration: 200, start: 0.99 }}>
 	<div class="block h-auto w-full bg-black">
 		<div class="flex h-auto w-full items-center justify-between">
 			<button on:click={() => window.history.back()}>

@@ -150,7 +150,7 @@
 
 <div
 	class="relative block overflow-x-hidden will-change-auto"
-	in:scale={{ duration: 200, start: 0.95 }}
+	in:scale={{ duration: 200, start: 0.99 }}
 >
 	<div class="fixed top-0 -z-[5] flex h-auto w-screen">
 		{#if isLoading}

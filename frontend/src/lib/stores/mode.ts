@@ -3,6 +3,7 @@ import { toast } from 'svelte-french-toast';
 import { toastOption } from '$lib/config/app';
 
 export const mode = writable<'colorful' | 'flat'>('colorful');
+export const fullscreen = writable<boolean>(false);
 
 mode.subscribe((value) => {
   if (value === 'colorful') {

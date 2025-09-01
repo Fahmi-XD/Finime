@@ -17,7 +17,7 @@
 	import { title, clearDisplay, exClearDisplayHeader, exClearDisplayBottom } from '$lib/config/app';
 	import { page } from '$app/stores';
 	import { PUBLIC_API } from '$env/static/public';
-	import { mode } from '$lib/stores/mode';
+	import { mode, fullscreen } from '$lib/stores/mode';
 	import { goto } from '$app/navigation';
 	import { navigate } from '$lib/stores/history';
 
@@ -47,6 +47,11 @@
 	onMount(async () => {
 		isLoadUser = false;
 		window.addEventListener('click', closeProfileMenu);
+
+		console.log({fullscreen: $fullscreen});
+
+		console.log((!isClearDisplay || isExClearDisplayHeader) && !$fullscreen)
+		console.log((($mode == 'flat' && !isClearDisplay) || isClearDisplayBottom) && !$fullscreen)
 	});
 
 	$: path = $page.url.pathname;
@@ -74,7 +79,7 @@
 	$: if (path) isClearDisplayBottom = exClearDisplayBottom.some((route) => route == path || (route.replace("fragment=", "") == $navigate[1] && path == "/mobile"))
 </script>
 
-{#if !isClearDisplay || isExClearDisplayHeader}
+{#if (!isClearDisplay || isExClearDisplayHeader) && !$fullscreen}
 	<nav class="fixed inset-x-0 top-0 z-50 bg-[hsl(var(--background)/0.8)] shadow-sm backdrop-blur-lg">
 		<div class="mx-auto w-full max-w-7xl px-4">
 			<div class="flex h-16 items-center justify-between">
@@ -185,7 +190,7 @@
 	</nav>
 {/if}
 
-{#if ($mode == 'flat' && !isClearDisplay) || isClearDisplayBottom}
+{#if (($mode == 'flat' && !isClearDisplay) || isClearDisplayBottom) && !$fullscreen}
 	<nav
 		class="fixed bottom-0 left-0 z-50 flex h-auto w-full justify-around bg-[hsl(var(--background)/0.8)] py-2 pb-4 shadow-sm backdrop-blur-lg md:hidden"
 	>

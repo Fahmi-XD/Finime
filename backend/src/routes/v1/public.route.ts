@@ -3,7 +3,6 @@
  */
 
 import PublicController from "@controllers/public.controller.js";
-import UserController from "@controllers/user.controller.js";
 import Elysia from "elysia";
 import cacheMiddleware from "@middleware/cache.middleware.js";
 
@@ -17,5 +16,5 @@ const cacheMiddlewareRoute = new Elysia()
 export const publicRoute = (app: Elysia) => app
 
   .use(cacheMiddlewareRoute)
-  // .get("/user/:username", UserController.getUserProfile)
   .get("/proxy-media", PublicController.proxyMedia)
+  .get("/server/status", PublicController.serverStatus)

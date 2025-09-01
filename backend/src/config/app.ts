@@ -5,3 +5,6 @@ export const EXCEPT_AUTH_ROUTE = [
   ["/live", "GET"],
   ["/user/history", "GET"],
 ]
+
+// Status server: "maintenance" | "active"
+export const SERVER_STATUS: "maintenance" | "active" = "maintenance";

@@ -262,7 +262,7 @@
 {#if isLoading}
 	<LoadingElements teks="Kalau ada bug atau error, biarin aja error itu fitur bos yahaha hayyuukkkk" />
 {/if}
-<div class="mx-auto max-w-md pb-20 text-white will-change-auto" in:scale={{ duration: 200, start: 0.95 }}>
+<div class="mx-auto max-w-md pb-20 text-white will-change-auto" in:scale={{ duration: 200, start: 0.99 }}>
 	{#if Array.isArray(animeDetail?.videoUrls) && animeDetail?.videoUrls.length > 0}
 		<!-- <CustomVideoPlayer videoUrl={animeDetail?.videoUrls[animeDetail?.videoUrls?.length - 1]} /> -->
 

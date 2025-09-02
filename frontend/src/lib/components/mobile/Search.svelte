@@ -10,6 +10,7 @@
 
 	import Anime from "$lib/components/mobile/Search/Anime.svelte"
 	import User from "$lib/components/mobile/Search/User.svelte"
+	import Manga from "$lib/components/mobile/Search/Manga.svelte"
 
 	const MAX_SEGMENT = 5;
 
@@ -216,11 +217,15 @@
 			<div class="flex w-full justify-around items-center pb-10">
 				<button on:click={() => currentTab = "0"} class="text-sm w-full h-11 before:transition-transform before:duration-100 relative before:block before:bg-red-500 before:w-full before:h-[2px] before:rounded-xl before:bottom-0 before:absolute {currentTab == "0" ? "before:scale-x-100" : "before:scale-x-0"}">Anime</button>
 				<p class="opacity-50">|</p>
+				<button on:click={() => currentTab = "2"} class="text-sm w-full h-11 before:transition-transform before:duration-100 relative before:block before:bg-red-500 before:w-full before:h-[2px] before:rounded-xl before:bottom-0 before:absolute {currentTab == "2" ? "before:scale-x-100" : "before:scale-x-0"}">Manga</button>
+				<p class="opacity-50">|</p>
 				<button on:click={() => currentTab = "1"} class="text-sm w-full h-11 before:transition-transform before:duration-100 relative before:block before:bg-red-500 before:w-full before:h-[2px] before:rounded-xl before:bottom-0 before:absolute {currentTab == "1" ? "before:scale-x-100" : "before:scale-x-0"}">User</button>
 			</div>
 			{#key currentTab}
 				{#if currentTab == "0"}
 					<Anime bindElement={handleBind} {animeList} {segmentList} {isLoading} />
+				{:else if currentTab == "2"}
+					<Manga {isLoading} />
 				{:else if currentTab == "1"}
 					<User users={users} {isLoading} />
 				{/if}

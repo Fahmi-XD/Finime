@@ -105,7 +105,7 @@ export class Scrape {
   ): Promise<T> {
     try {
       const response = await (cf ? this.fetchJinaAI : this.fetch)(url, false, "GET", {}, headers);
-      // console.log(response.data.data.html)
+      // console.log(response.data)
       const $ = cheerio.load((cf ? response.data.data.html : response.data));
       const parserResult = await parser($, initial);
       return parserResult as T;

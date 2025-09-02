@@ -7,6 +7,7 @@ export interface MangaData {
   ratingPercentage: string;
   type: string;
   isHot: boolean;
+  read_chapter: string;
   isColored: boolean;
   genres?: string[];
 }

@@ -72,7 +72,7 @@ const app = new Elysia()
    * Uncomment sementara kode .listen ini
    * Lalu kalau udah dan ingin di deploy, kasih komentar lagi kodenya
    */
-  .listen(PORT)
+  // .listen(PORT)
 
 /**
  * Gak usah di apa-apain, biarin aja

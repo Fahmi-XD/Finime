@@ -21,7 +21,7 @@
 
 	let playerElement: HTMLElement;
 	let player: Player;
-	let videojsResolution: HTMLButtonElement;
+	let videojsResolution: HTMLSpanElement;
 
 	const MenuItem = Videojs.getComponent("MenuItem");
 	const MenuButton = Videojs.getComponent("MenuButton");
@@ -29,11 +29,17 @@
 	class CustomMenuButton extends MenuButton {
 		constructor(player: Player, options?: any) {
 			super(player, options);
-			const component = this.addChild("button", {}, 0);
-			component.addClass("quality-btn")
-			const el = component.el()
-			videojsResolution = (el as HTMLButtonElement);
-			el.innerHTML = `<h1 id="videojs-resolution">360p</h1>`;
+			// const component = this.addChild("button", {}, 0);
+			// component.addClass("quality-btn")
+			// const el = component.el()
+			// videojsResolution = (el as HTMLButtonElement);
+			// el.innerHTML = `<h1 id="videojs-resolution">360p</h1>`;
+
+			const el = this.el() as HTMLDivElement;
+			const span = el.querySelector("button");
+			span!.classList.add(".quality-btn")
+			span!.innerHTML = `360p`;
+			videojsResolution = span as HTMLSpanElement;
 		}
 
 		createItems() {

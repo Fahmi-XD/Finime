@@ -18,7 +18,7 @@ export const kiryuuRoute = new Elysia()
   
     .get("/detail/:slug", async (ctx: Context) => {
       const slug = ctx.params.slug || "tonari-no-seki-no-inkya-joshi-ga-oshi-utaite-datta-ore-no-kyoku-wo-uttatekure"
-      return Response.standarResponse(200, await KiryuuParser.detail(slug));
+      return Response.standarResponse(200, await KiryuuParser.detail(slug.replace(/-chapter.*/gi, "")));
     })
   
     .get("/chapters/:slug", async (ctx: Context) => {

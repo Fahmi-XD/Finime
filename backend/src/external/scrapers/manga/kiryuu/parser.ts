@@ -5,6 +5,7 @@ import type { MangaData, ScrapedData } from "./genre.model.js";
 import type { ISearchModel, All } from "./search.model.js";
 import type { PageMeta, YoastSchema, Genre, Description, Rating, Chapter, PopularItem, ChapterLink, SocialShareLink, Bookmark, Popular, RelatedSeriesItem, NewSeriesItem, Breadcrumb, FirstLatest, MangaDetail } from "./detail.model.js";
 import type { CheerioAPI, Cheerio, Element } from "cheerio";
+import { title } from "node:process";
 
 export class KiryuuParser extends Scrape {
 
@@ -248,7 +249,14 @@ export class KiryuuParser extends Scrape {
       headers: data.getHeaders(),
       cf: false
     }, async (response, data) => {
-      return response.series?.[0]?.all || [];
+      if (response?.series && response?.series?.length > 0) {
+        response.series[0]?.all?.map((item) => {
+          item.post_link = item.post_link?.replace("https://kiryuu02.com/manga/", "");
+          data.push(item);
+        })
+      }
+
+      return data || [];
     })
   }
 
@@ -548,7 +556,7 @@ export class KiryuuParser extends Scrape {
 
       const genres = parseGenres($);
       const description = parseDescription($);
-      const chapters = parseChapters($);
+      let chapters = parseChapters($);
       const firstLatest = parseFirstLatest($);
       const popular = parsePopular($);
       const related = parseRelatedSeries($);
@@ -563,6 +571,11 @@ export class KiryuuParser extends Scrape {
         enabled: $('.bookmark[tk-bookmark]').length > 0,
         id: $('.bookmark[tk-bookmark]').attr('data-bookmark-id') || ''
       };
+
+      chapters = chapters.map((item) => {
+        item.url = item.url?.replace("https://kiryuu02.com/", "");
+        return item
+      })
 
       return {
         pageMeta,
@@ -607,13 +620,14 @@ export class KiryuuParser extends Scrape {
   }
 
   static async chapterImage(slug: string) {
-    return await this.htmlParser<string[]>({
+    return await this.htmlParser<any>({
       url: this.baseUrl + "/" + slug + "/",
       initial: [],
       cf: false
     }, async ($, data) => {
       // cari <noscript> di dalam div
       const noscriptContent = $('#readerarea noscript').html();
+      const titleChapter = $(".entry-title").first().text().trim();
 
       // load ulang noscript HTML ke cheerio
       const $$ = this.cheerio.load(noscriptContent || "");
@@ -621,7 +635,11 @@ export class KiryuuParser extends Scrape {
       // ambil semua <img>
       const images = $$('img').map((i, el) => $$(el).attr('src')).get();
 
-      return images;
+      return {
+        title: titleChapter,
+        images,
+        current_chapter: (titleChapter || "").match(/Chapter\s?([\d.]+)/i)?.[1] || "1"
+      };
     })
   }
 

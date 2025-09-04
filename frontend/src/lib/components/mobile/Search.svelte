@@ -1,174 +1,40 @@
 <script lang="ts">
 	import { ArrowLeft, SlidersHorizontal, Search } from '@lucide/svelte';
 	import { scale } from 'svelte/transition';
-	import { AnimeMobileClient } from '$lib/api/clients/mobile/animeClient';
-	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
-	import type { Datum } from '$lib/api/types/mobile/searchType';
 	import { runtimeData } from '$lib/stores/runtime';
-	import { onMount, onDestroy } from 'svelte';
-	import type { User as UserType } from '$lib/api/types/mobile/usersType';
 
 	import Anime from "$lib/components/mobile/Search/Anime.svelte"
 	import User from "$lib/components/mobile/Search/User.svelte"
 	import Manga from "$lib/components/mobile/Search/Manga.svelte"
 
-	const MAX_SEGMENT = 5;
-
 	let query: string = '';
 	let oldQueryAnime: string = '';
 	let oldQueryUsers: string = '';
+	let oldQueryManga: string = '';
+
+	let searchQueryAnime: string = '';
+	let searchQueryManga: string = '';
+	let searchQueryUsers: string = '';
 
 	let isLoading = false;
-	let animeList: Datum[] = [];
-	let first: boolean =  $runtimeData["first"] ?? true;
-	let segmentList: Datum[] = [];
-	let currentTab: string =  $runtimeData["currentTab"] ?? "0";
+	let first: boolean = $runtimeData["first"] ?? true;
+	let currentTab: string = $runtimeData["currentTab"] ?? "0";
 
-	let users: UserType[] = [];
-	let segmentListUsers: UserType[] = [];
-
-	let isLoadingInter = false;
-
-	let animeListElement: HTMLUListElement;
-	let lastObserved: Element | undefined;
-	let obs: IntersectionObserver;
 	let htmlInputElement: HTMLInputElement;
-
-	function searchQuery() {
-		if (currentTab == "0") {
-			if ($runtimeData['search.cache'] && $runtimeData['search.cache']?.length && query == oldQueryAnime) {
-				first = false;
-				animeList = $runtimeData['search.cache'];
-				if ($runtimeData['search.segment'] && $runtimeData['search.segment']?.length) {
-					segmentList = $runtimeData["search.segment"];
-				}
-			} else {
-				searchAnimeQuery();
-			}
-		} else if (currentTab == "1") {
-			if ($runtimeData['search.user.cache'] && $runtimeData['search.user.cache']?.length && query == oldQueryUsers) {
-				first = false;
-				users = $runtimeData['search.user.cache'];
-				if ($runtimeData['search.user.segment'] && $runtimeData['search.user.segment']?.length) {
-					segmentListUsers = $runtimeData["search.user.segment"];
-				}
-			} else {
-				searchUsersByQuery();
-			}
-		}
-	}
-
-	async function searchAnimeQuery() {
-		if (query || query.trim() != '') {
-			lastObserved = undefined;
-			htmlInputElement.blur();
-			first = false;
-			isLoading = true;
-			const response = await AnimeMobileClient.getSearch(query);
-			animeList = response;
-			segmentList = response.slice(0, MAX_SEGMENT);
-			$runtimeData['search.segment'] = segmentList;
-			$runtimeData['search.cache'] = response;
-			isLoading = false;
-			oldQueryAnime = query;
-		}
-	}
-
-	async function searchUsersByQuery() {
-		if (query || query.trim() != '') {
-			lastObserved = undefined;
-			htmlInputElement.blur();
-			first = false;
-			isLoading = true;
-			const response = await UserMobileClient.getUsersByQuery(query);
-			users = (response.users || []) as UserType[];
-			segmentListUsers = (response.users || []).slice(0, MAX_SEGMENT);
-			$runtimeData['search.user.segment'] = segmentListUsers;
-			$runtimeData['search.user.cache'] = (response.users || []);
-			isLoading = false;
-			oldQueryUsers = query;
-		}
-	}
-
-	function handleIntersect(entries: IntersectionObserverEntry[]) {
-		for (const entry of entries) {
-			if (entry.isIntersecting) {
-				// stop observing the old target
-				obs.unobserve(entry.target);
-				loadMoreSegment();
-			}
-		}
-	}
-
-	function loadMoreSegment() {
-		if (!isLoadingInter) {
-			isLoadingInter = true;
-			segmentList = animeList.slice(
-				0,
-				Math.min(segmentList.length + MAX_SEGMENT, animeList.length)
-			);
-			$runtimeData['search.segment'] = segmentList;
-			setTimeout(() => {
-				isLoadingInter = false;
-			}, 100);
-		}
-	}
-
-	function handleBind(el: HTMLUListElement) {
-    animeListElement = el;
-  }
-
-	$: {
-		if (animeListElement || isLoadingInter) {
-      const children = animeListElement.children;
-      const last = children[children.length - 1];
-      if (last && last !== lastObserved) {
-        // if (lastObserved) obs.unobserve(lastObserved);
-				if (obs) obs.observe(last);
-        lastObserved = last;
-      }
-    };
-	}
-
-	$: {
-		if (currentTab == "1") {
-			searchQuery();
-		} else if (currentTab == "0") {
-			searchQuery();
-		}
-		$runtimeData["currentTab"] = currentTab;
-	}
 
 	$: if (!first || first) {
 		$runtimeData["first"] = first;
 	}
 
-	onMount(() => {
-		obs = new IntersectionObserver(handleIntersect, { threshold: 1 });
-	
-		if (currentTab == "0") {
-			if ($runtimeData['search.cache'] && $runtimeData['search.cache']?.length) {
-				first = false;
-				animeList = $runtimeData['search.cache'];
-				if ($runtimeData['search.segment'] && $runtimeData['search.segment']?.length) {
-					segmentList = $runtimeData["search.segment"];
-				}
-			}
-		} else if (currentTab == "1") {
-			if ($runtimeData['search.user.cache'] && $runtimeData['search.user.cache']?.length) {
-				first = false;
-				users = $runtimeData['search.user.cache'];
-				if ($runtimeData['search.user.segment'] && $runtimeData['search.user.segment']?.length) {
-					segmentListUsers = $runtimeData["search.user.segment"];
-				}
-			}
-		}
+	$: if (currentTab) {
+		$runtimeData["currentTab"] = currentTab;
+	}
 
-	});
+	function searchQuery() {
+		first = false;
 
-	onDestroy(() => {
-		if (obs) obs.disconnect();
-	});
+		searchQueryAnime = searchQueryUsers = searchQueryManga = query;
+	}
 </script>
 
 <div class="pt-5 px-5 pb-[70px] text-white will-change-transform" in:scale={{ duration: 200, start: 0.99 }}>
@@ -223,11 +89,11 @@
 			</div>
 			{#key currentTab}
 				{#if currentTab == "0"}
-					<Anime bindElement={handleBind} {animeList} {segmentList} {isLoading} />
+					<Anime first={first} htmlInputElement={htmlInputElement} isLoading={isLoading} bind:oldQueryAnime={oldQueryAnime} searchQueryAnime={searchQueryAnime} query={query} />
 				{:else if currentTab == "2"}
-					<Manga {isLoading} />
+					<Manga first={first} htmlInputElement={htmlInputElement} isLoading={isLoading} bind:oldQueryManga={oldQueryManga} searchQueryManga={searchQueryManga} query={query} />
 				{:else if currentTab == "1"}
-					<User users={users} {isLoading} />
+					<User first={first} htmlInputElement={htmlInputElement} isLoading={isLoading} bind:oldQueryUsers={oldQueryUsers} searchQueryUsers={searchQueryUsers} query={query} />
 				{/if}
 			{/key}
 		{/if}

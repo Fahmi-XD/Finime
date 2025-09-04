@@ -4,39 +4,39 @@ var filesToCache = [
 ];
 
 self.addEventListener('push', event => {
-  let data = {};
-  if (event.data) {
-    data = event.data.json();
-  }
+    let data = {};
+    if (event.data) {
+        data = event.data.json();
+    }
 
-  const title = data.title || 'Notifikasi Baru';
-  const options = {
-    body: data.body || 'Ini notifikasi dari server',
-    icon: '/web-app-manifest-192x192.png',
-    badge: '/favicon-96x96.png',
-    data: { url: data.url || '/' }
-  };
+    const title = data.title || 'Notifikasi Baru';
+    const options = {
+        body: data.body || 'Ini notifikasi dari server',
+        icon: '/web-app-manifest-192x192.png',
+        badge: '/favicon-96x96.png',
+        data: { url: data.url || '/' }
+    };
 
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
 });
 
 self.addEventListener('notificationclick', event => {
-  event.notification.close();
+    event.notification.close();
 
-  event.waitUntil(
-    clients.matchAll({ type: 'window' }).then(clientList => {
-      for (const client of clientList) {
-        if (client.url === event.notification.data.url && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow(event.notification.data.url);
-      }
-    })
-  );
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(clientList => {
+            for (const client of clientList) {
+                if (client.url === event.notification.data.url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(event.notification.data.url);
+            }
+        })
+    );
 });
 
 // Cache on install
@@ -67,10 +67,41 @@ self.addEventListener('activate', event => {
 
 // Serve from Cache
 self.addEventListener("fetch", event => {
+    const dest = event.request.destination;
+
+    // Cache first untuk UI (shell)
+    if (["style", "script", "image", "font"].includes(dest)) {
+        event.respondWith(
+            caches.open("app-shell").then(cache =>
+                cache.match(event.request).then(resp =>
+                    resp ||
+                    fetch(event.request).then(networkResp => {
+                        cache.put(event.request, networkResp.clone());
+                        return networkResp;
+                    })
+                )
+            )
+        );
+        // return;
+    }
+
+    // Network first untuk API (konten)
+    if (event.request.url.includes("/api/")) {
+        event.respondWith(fetch(event.request));
+        // return;
+    }
+
+    // Document (HTML) → NetworkFirst biar fresh, fallback ke cache
+    if (dest === "document") {
+        event.respondWith(
+            fetch(event.request).catch(() => caches.match(event.request))
+        );
+        // return;
+    }
+
     const url = new URL(event.request.url);
     self.currentUrl = url.toString();
-    // console.log("Fetching: ", self.currentUrl);
-    // console.log(self.currentUrl)
+
     if (self.currentUrl.includes('https://www.googleapis.com/drive/v3/files/')) { //only add header to the endpoint i want
         event.respondWith(fetchStreaming(event));
     } else if (self.currentUrl.includes('.my.id/kdrive/')) { //only add header to the endpoint i want

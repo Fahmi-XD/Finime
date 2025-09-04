@@ -22,31 +22,38 @@ export const watchMiddleware = async ({ headers, path }: any) => {
     user = customCache.get(token);
   }
 
-  const isEpisodeRoute = path.includes("/episode");
+  const isEpisodeRoute = path.includes("/episode/");
+  const isChaptersRoute = path.includes("/chapters/");
 
-  if (user && isEpisodeRoute) {
-    const animeSlug = path.split("/").slice(-4, -2).join("/")
+  if (user && (isEpisodeRoute || isChaptersRoute)) {
+    const animeSlug = path.split("/").slice(-4, -2).join("/");
+    const mangaSlug = path.split("/").slice(-1).join("/").replace(/-chapter.*/gi, "");
     const watchEpisode = path.split("/").reverse()[1] || "1";
     const animeDetail: Partial<IAnimeDetail> = await KuramanimeParser.detailAnime(animeSlug);
 
-    Promise.all([
+    if (isEpisodeRoute) {
       UserService.increaseWatchStatistics({
         user_id: user.id,
         anime_id: animeSlug
-      }, {}),
+      }, {});
+    } else if (isChaptersRoute) {
+      UserService.increaseWatchStatistics({}, {
+        user_id: user.id,
+        manga_id: mangaSlug
+      });
+    }
 
-      UserService.updateAnimeHistory(user.id, {
-        anime_id: animeSlug,
-        cover: animeDetail.image,
-        current_eps: (animeDetail.episodeList?.length || 1).toString(),
-        date: animeDetail.airing?.from || "",
-        rating: animeDetail.score,
-        watch_eps: watchEpisode,
-        schedule: animeDetail.scheduleDay || "",
-        source: animeDetail.source,
-        title: animeDetail.title,
-        total_eps: animeDetail.episodes
-      })
-    ])
+    UserService.updateAnimeHistory(user.id, {
+      anime_id: animeSlug,
+      cover: animeDetail.image,
+      current_eps: (animeDetail.episodeList?.length || 1).toString(),
+      date: animeDetail.airing?.from || "",
+      rating: animeDetail.score,
+      watch_eps: watchEpisode,
+      schedule: animeDetail.scheduleDay || "",
+      source: animeDetail.source,
+      title: animeDetail.title,
+      total_eps: animeDetail.episodes
+    })
   }
 }

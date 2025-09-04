@@ -1,6 +1,6 @@
 # <img src="https://media.tenor.com/7hiQYhUQY2QAAAAM/dis.gif" alt="ComicHive Logo" width="30"/> Finime
 
-> **Finime** — Tempat asik buat streaming Anime & Manga gratis, dengan UI yang modern, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekedar nonton santai! 🚀
+> **Finime** — Tempat buat streaming Anime & Manga gratis, dengan UI yang modern, tanpa iklan, tanpa ribet, dan pastinya open-source. Cocok buat kamu yang suka ngulik atau sekedar nonton santai! 🚀
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)
@@ -14,8 +14,12 @@
 ![Open Source](https://img.shields.io/badge/Open--Source-%E2%9D%A4-333333?style=for-the-badge&logo=github&logoColor=white)
 
 
+</br>
+
 > [!IMPORTANT]
 > Untuk saat ini hanya support di ukuran layar *Smartphone ( < 500 )*
+
+</br>
 
 ---
 
@@ -99,81 +103,11 @@ Finime itu proyek open-source tempat streaming Anime & Manga, gratis, dan bebas 
 
 ``` 
 Finime
-├ backend                
-├─ prisma/
-├─ src/
-│  ├─ @types/
-│  ├─ controllers/
-│  ├─ databases/
-│  ├─ lib/
-│  ├─ middleware/
-│  ├─ routes/
-│  ├─ scrapers/
-│  ├─ services/
-│  ├─ validations/
-│  ├─ env.ts/                  
-│  └─ index.ts/                
-├─ bun.lock                   
-├─ package.json               
-├─ README.md                  
-├─ tsconfig.json              
-├─ vercel.json
+├ backend - API
 ├
-├ frontend                               
-├─ src                                 
-│  ├─ components/                     
-│  │  ├─ elements/        
-│  │  ├─ fragments/         
-│  │  ├─ layouts/           
-│  ├─ data/             
-│  ├─ hooks/            
-│  ├─ lib/
-│  ├─ routes/      
-│  │  ├─ 500/     
-│  │  ├─ about/  
-│  │  ├─ anime/
-│  │  │  ├─ watch/ 
-│  │  │  │  └─ [episode_id]/
-│  │  │  ├─ [anime_slug]/      
-│  │  ├─ auth/            
-│  │  │  ├─ login/
-│  │  │  ├─ logout/  
-│  │  │  └─ register/
-│  │  ├─ chapter/            
-│  │  │  └─ [chapter_slug]/          
-│  │  ├─ community/     
-│  │  ├─ dashboard/      
-│  │  ├─ genres/             
-│  │  │  └─ [genres_slug]/       
-│  │  ├─ manga/              
-│  │  │  ├─ [manga_slug]/          
-│  │  │  └─ +page.svelte               
-│  │  ├─ map.xml/      
-│  │  ├─ profile/      
-│  │  ├─ robots.txt/            
-│  │  ├─ sitemap.xml/           
-│  │  ├─ u/                
-│  │  │  └─ [username]/      
-│  ├─ stores/           
-│  ├─ types/             
-│  ├─ utils/           
-│  ├─ app.css                          
-│  ├─ app.d.ts                         
-│  ├─ app.html                         
-│  └─ env.ts                           
-├─ static/             
-├─ bun.lock                            
-├─ docker-compose.yml                  
-├─ Dockerfile                          
-├─ package-lock.json                   
-├─ package.json                        
-├─ README.md                           
-├─ svelte.config.js                    
-├─ tsconfig.json                       
-├─ vite.config.ts                      
-│
-├── tmp/
-└── README.md
+├ frontend - UI
+├
+├ mobile - Android APK
 ```
 
 <br>
@@ -264,8 +198,7 @@ PUBLIC_API=http://localhost:3000
 
 ## Sedang Dibuat
 
-[x] Mobile UI
-[ ] Desktop UI
+- Desktop UI
 
 ---
 

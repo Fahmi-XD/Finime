@@ -7,8 +7,8 @@ import { customCache } from "@lib/cache.js"
 import UserService from "@services/user.service.js";
 import { KuramanimeParser } from "@external/scrapers/anime/kuramanime/api.parser.js";
 import type { IAnimeDetail } from "@external/scrapers/anime/kuramanime/detail.model.js";
-import { MangaDetail } from "@external/scrapers/manga/kiryuu/detail.model";
-import { KiryuuParser } from "@external/scrapers/manga/kiryuu/parser";
+import { MangaDetail } from "@external/scrapers/manga/kiryuu/detail.model.js";
+import { KiryuuParser } from "@external/scrapers/manga/kiryuu/parser.js";
 
 export const watchMiddleware = async ({ headers, path }: any) => {
   const token = headers['x-token']

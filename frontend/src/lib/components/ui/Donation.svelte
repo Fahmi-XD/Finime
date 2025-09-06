@@ -1,32 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { X } from '@lucide/svelte';
-
-  import Threejs from "$lib/components/models/Threejs.svelte";
+	import { runtimeData } from '$lib/stores/runtime';
 
 	let showPopup = false;
 	let isHovering = false;
 
 	onMount(() => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('donation') !== 'false') {
+		if ($runtimeData["donation"] !== 'false') {
 			setTimeout(() => (showPopup = true), 1500);
 		}
 	});
 
 	function submitButton() {
 		// localStorage.setItem('donation', 'false');
+		$runtimeData["donation"] = "false";
 	}
 
 	function closePopup() {
 		showPopup = false;
+		$runtimeData["donation"] = "false";
 		// localStorage.setItem('donation', 'false');
 	}
 </script>
 
 {#if showPopup}
-  <div class="absolute inset-0 z-[21] pointer-events-none">
-    <Threejs />
-  </div>
 	<div
 		class="fixed inset-0 z-20 flex items-center justify-center p-4"
 		style="background: hsla(var(--background)/0.8); backdrop-filter: blur(8px)"
@@ -66,7 +64,7 @@
 						anime yang nemenin kamu hari ini 🙂
 					</p>
 
-					<div class="grid grid-cols-2 gap-3 pt-2">
+					<div class="flex w-full gap-3 pt-2">
 						<a
 							on:click={submitButton}
 							href="https://saweria.co/finime"
@@ -84,17 +82,17 @@
 						</a>
 						<a
 							on:click={submitButton}
-							href="https://trakteer.id/finime"
+							href="/chat-ai/assistant"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-purple-500 transition-all duration-200 hover:scale-[1.02]"
+							class="flex items-center ml-auto justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-purple-500 transition-all duration-200 hover:scale-[1.02]"
 							style="background: hsl(var(--secondary)); border: 1px solid hsl(var(--border))"
 						>
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
 								<path d="M12 2a10 10 0 1 0 10 10A4 4 0 0 1 12 2z"></path>
 								<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-7 3 4 4 0 0 1-6-6 4 4 0 0 1 3-7z"></path>
 							</svg>
-							Trakteer
+							Butuh Teman Ngobrol?
 						</a>
 					</div>
 

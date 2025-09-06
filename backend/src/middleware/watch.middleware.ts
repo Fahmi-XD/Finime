@@ -7,6 +7,8 @@ import { customCache } from "@lib/cache.js"
 import UserService from "@services/user.service.js";
 import { KuramanimeParser } from "@external/scrapers/anime/kuramanime/api.parser.js";
 import type { IAnimeDetail } from "@external/scrapers/anime/kuramanime/detail.model.js";
+import { MangaDetail } from "@external/scrapers/manga/kiryuu/detail.model";
+import { KiryuuParser } from "@external/scrapers/manga/kiryuu/parser";
 
 export const watchMiddleware = async ({ headers, path }: any) => {
   const token = headers['x-token']
@@ -29,31 +31,43 @@ export const watchMiddleware = async ({ headers, path }: any) => {
     const animeSlug = path.split("/").slice(-4, -2).join("/");
     const mangaSlug = path.split("/").slice(-1).join("/").replace(/-chapter.*/gi, "");
     const watchEpisode = path.split("/").reverse()[1] || "1";
-    const animeDetail: Partial<IAnimeDetail> = await KuramanimeParser.detailAnime(animeSlug);
-
+    const readChapter = path.split("/").slice(-1).join("/").match(/-chapter-(.*)/i)?.[1] || "1";
+    
     if (isEpisodeRoute) {
+      const animeDetail: Partial<IAnimeDetail> = await KuramanimeParser.detailAnime(animeSlug);
+
       UserService.increaseWatchStatistics({
         user_id: user.id,
         anime_id: animeSlug
       }, {});
+
+      UserService.updateAnimeHistory(user.id, {
+        anime_id: animeSlug,
+        cover: animeDetail.image,
+        current_eps: (animeDetail.episodeList?.length || 1).toString(),
+        date: animeDetail.airing?.from || "",
+        rating: animeDetail.score,
+        watch_eps: watchEpisode,
+        schedule: animeDetail.scheduleDay || "",
+        source: animeDetail.source,
+        title: animeDetail.title,
+        total_eps: animeDetail.episodes
+      })
     } else if (isChaptersRoute) {
+      const mangaDetail: Partial<MangaDetail> = await KiryuuParser.detail(mangaSlug);
+
       UserService.increaseWatchStatistics({}, {
         user_id: user.id,
         manga_id: mangaSlug
       });
-    }
 
-    UserService.updateAnimeHistory(user.id, {
-      anime_id: animeSlug,
-      cover: animeDetail.image,
-      current_eps: (animeDetail.episodeList?.length || 1).toString(),
-      date: animeDetail.airing?.from || "",
-      rating: animeDetail.score,
-      watch_eps: watchEpisode,
-      schedule: animeDetail.scheduleDay || "",
-      source: animeDetail.source,
-      title: animeDetail.title,
-      total_eps: animeDetail.episodes
-    })
+      UserService.updateMangaHistory(user.id, {
+        manga_id: mangaSlug,
+        cover: mangaDetail.images?.cover,
+        read_chapter: readChapter,
+        title: mangaDetail.title,
+        total_eps: String(mangaDetail.chapters?.length) || "1"
+      })
+    }
   }
 }

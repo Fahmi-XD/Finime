@@ -12,7 +12,7 @@ import { ResponseModel } from "@models/response.model.js";
 import Response from "@lib/response.js";
 import type { CreateCommentRequest } from "@models/comment.model.js";
 import { CommentValidation } from "@validations/comment.validation.js";
-import type { IAnimeHistoryModel } from "@models/history.model.js";
+import type { IAnimeHistoryModel, IMangaHistoryModel } from "@models/history.model.js";
 
 export default class UserService {
 
@@ -517,6 +517,40 @@ export default class UserService {
           data: {
             user_id,
             ...animeMetadata,
+            updated_at: new Date()
+          }
+        });
+      }
+
+      return Response.standarResponse(200, "History updated");
+    } catch (error) {
+      console.log(error);
+      return Response.standarResponse(500, "error jir");
+    }
+  }
+
+  static async updateMangaHistory(user_id: string, mangaMetadata: IMangaHistoryModel) {
+    try {
+      const existing = await prismaClient.mangaHistory.findFirst({
+        where: {
+          user_id,
+          manga_id: mangaMetadata.manga_id
+        },
+        select: {
+          id: true
+        }
+      });
+
+      if (existing) {
+        await prismaClient.mangaHistory.update({
+          where: { id: existing.id },
+          data: { updated_at: new Date(), read_chapter: mangaMetadata.read_chapter }
+        });
+      } else {
+        await prismaClient.mangaHistory.create({
+          data: {
+            user_id,
+            ...mangaMetadata,
             updated_at: new Date()
           }
         });

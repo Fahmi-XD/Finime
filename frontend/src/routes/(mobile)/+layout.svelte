@@ -90,9 +90,9 @@
 
 	async function initPush(): Promise<void> {
 		const registration = await registerServiceWorker();
-		if (registration) {
-			await subscribePush(registration);
-		}
+		// if (registration) {
+		// 	await subscribePush(registration);
+		// }
 	}
 
 	function onPop(e: PopStateEvent) {
@@ -101,6 +101,8 @@
 
 	onMount(() => {
 		if (typeof window != 'undefined') {
+			// initPush();
+
 			UserMobileClient.sendOnline();
 			if ('scrollRestoration' in history) {
 				history.scrollRestoration = 'manual';
@@ -115,10 +117,6 @@
 					UserMobileClient.sendOnline();
 				}, ONLINE_DELAY)
 			}
-		}
-
-		if (typeof window != 'undefined') {
-			// initPush();
 		}
 
     function initBackButtonInterceptor() {

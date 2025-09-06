@@ -6,6 +6,8 @@
   import Manga from "$lib/components/mobile/Manga.svelte";
   import Other from "$lib/components/mobile/Other.svelte";
 
+  import Donation from "$lib/components/ui/Donation.svelte";
+
   import { navigate, history as his } from "$lib/stores/history";
 
   const tabs = {
@@ -39,6 +41,7 @@
   }
 </script>
 
+<Donation />
 <main class="relative block w-full h-screen overflow-hidden will-change-auto" in:scale={{ duration: 200, start: 1.01 }}>
   {#each Object.entries(tabsCache) as [key, component], i (i)}
     <section

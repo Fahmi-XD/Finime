@@ -17,6 +17,7 @@
 		Filter,
 		MoreVertical,
 		TrendingUp,
+		BadgeCheckIcon,
 		Activity,
 		Settings,
 		Bell,
@@ -28,12 +29,18 @@
 		Trash2,
 		Shield,
 		Pause,
-		ChevronDown
+		ChevronDown,
+
+		RefreshCcw
+
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getInitials } from '$lib';
 	import { PUBLIC_API } from '$env/static/public';
 	import { scale } from 'svelte/transition';
+	import { UserMobileClient } from '$lib/api/clients/mobile/userClient';
+	import { checkOnline, timeAgo } from "$lib";
+	import { goto } from '$app/navigation';
 
 	const user = page.data.user;
 
@@ -115,38 +122,7 @@
 		}
 	];
 
-	let userList = [
-		{
-			id: 1,
-			name: 'Admin User',
-			username: 'admin',
-			role: 'admin',
-			email: 'admin@finime.com',
-			joined: '2023-01-01',
-			status: 'active',
-			lastLogin: '2 hours ago'
-		},
-		{
-			id: 2,
-			name: 'John Doe',
-			username: 'john_doe',
-			role: 'user',
-			email: 'john@mail.com',
-			joined: '2024-05-10',
-			status: 'active',
-			lastLogin: '1 day ago'
-		},
-		{
-			id: 3,
-			name: 'Jane Smith',
-			username: 'jane_smith',
-			role: 'moderator',
-			email: 'jane@mail.com',
-			joined: '2024-03-15',
-			status: 'active',
-			lastLogin: '3 hours ago'
-		}
-	];
+	let userList: any = [];
 
 	function toggleDark() {
 		dark = !dark;
@@ -154,11 +130,11 @@
 	}
 
 	function getStatusColor(status: string) {
-		return status === 'active' ? 'text-green-400' : 'text-red-400';
+		return status === 'Online' ? 'text-green-400' : 'text-red-400';
 	}
 
 	function getStatusBg(status: string) {
-		return status === 'active' ? 'bg-green-400/10' : 'bg-red-400/10';
+		return status === 'Online' ? 'bg-green-400/10' : 'bg-red-400/10';
 	}
 
 	function toggleSidebar() {
@@ -219,14 +195,54 @@
 				break;
 		}
 	}
+
+	async function refreshUsers() {
+		userList = [];
+		let setss: any = [];
+		const response = await UserMobileClient.getAllUser();
+
+		if (response) {
+			response.forEach((item, i) => {
+				const isOnline = checkOnline(item.lastSeen || new Date());
+				const last = timeAgo(item.lastSeen || new Date());
+
+				setss.push({
+					id: i,
+					name: item.name,
+					username: item.username,
+					role: item.role?.toLocaleLowerCase(),
+					email: item.email,
+					joined: item.created_at,
+					status: isOnline ? "Online" : "Offline",
+					lastLogin: last,
+					isVerify: item.isVerify,
+					manga: item.manga?.length || 0,
+					anime: item.anime?.length || 0,
+				});
+			});
+
+			userList = setss;
+			setss = [];
+		}
+	}
+
+	onMount(() => {
+		if (Object.keys(user).length == 0) {
+			goto("/mobile", { replaceState: true });
+		}
+		refreshUsers();
+	});
 </script>
 
-<div class="flex min-h-screen bg-black text-gray-100 will-change-transform" in:scale={{ duration: 200, start: 0.95 }}>
+<div
+	class="flex bg-black text-gray-100 will-change-transform"
+	in:scale={{ duration: 200, start: 0.99 }}
+>
 	<!-- Mobile Sidebar Overlay -->
 	{#if sidebarOpen}
 		<button
 			aria-label="Close sidebar"
-			class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+			class="absolute left-0 top-0 z-40 h-screen w-screen bg-transparent bg-opacity-50 lg:hidden"
 			on:click={closeSidebar}
 		>
 			<span class="sr-only">Close sidebar</span>
@@ -235,7 +251,7 @@
 
 	<!-- Sidebar -->
 	<aside
-		class="fixed left-0 top-0 z-50 h-full w-64 transform bg-black shadow-2xl transition-transform duration-300 lg:translate-x-0 {sidebarOpen
+		class="absolute left-0 top-0 z-50 h-screen w-64 transform bg-black shadow-2xl transition-transform duration-300 lg:translate-x-0 {sidebarOpen
 			? 'translate-x-0'
 			: '-translate-x-full'}"
 	>
@@ -303,7 +319,7 @@
 	</aside>
 
 	<!-- Main Content -->
-	<main class="flex-1 lg:ml-64">
+	<main class="h-screen flex-1 overflow-y-auto lg:ml-64">
 		<div
 			on:click={closeAllDropdowns}
 			on:keydown={(e) => e.key === 'Escape' && closeAllDropdowns()}
@@ -371,7 +387,9 @@
 							>
 								<!-- <User class="h-3 w-3 text-white lg:h-4 lg:w-4" /> -->
 								{#if user?.avatar}
-									<div class="h-7 w-7 rounded-full bg-white/50 object-cover transition-all duration-300 hover:scale-110">
+									<div
+										class="h-7 w-7 rounded-full bg-white/50 object-cover transition-all duration-300 hover:scale-110"
+									>
 										<img
 											src="{PUBLIC_API}/api/v1/proxy-media?mediaUrl={user?.avatar}"
 											alt="Profile picture of {user.name}"
@@ -479,297 +497,6 @@
 									</div>
 								{/each}
 							</div>
-						</div>
-					</div>
-
-					<!-- Content Management -->
-					<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-						<!-- Anime Management -->
-						<div class="rounded-xl border border-gray-700 bg-neutral-900">
-							<div class="border-b border-gray-700 p-4 lg:p-6">
-								<div class="flex items-center justify-between">
-									<h3 class="text-base font-semibold text-white lg:text-lg">Anime Management</h3>
-									<button
-										class="flex items-center gap-1 rounded-lg bg-white px-2 py-1.5 text-xs font-medium text-black transition-colors hover:bg-gray-100 lg:gap-2 lg:px-3 lg:py-2 lg:text-sm"
-									>
-										<Plus class="h-3 w-3 lg:h-4 lg:w-4" />
-										<span class="hidden sm:inline">Add Anime</span>
-										<span class="sm:hidden">Add</span>
-									</button>
-								</div>
-							</div>
-							<div class="p-4 lg:p-6">
-								<div class="space-y-3 lg:space-y-4">
-									{#each animeList as anime}
-										<div
-											class="flex items-center justify-between rounded-lg bg-gray-800/50 p-3 lg:p-4"
-										>
-											<div class="min-w-0 flex-1">
-												<h4 class="truncate text-sm font-medium text-white lg:text-base">
-													{anime.title}
-												</h4>
-												<div
-													class="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-400 lg:gap-4 lg:text-sm"
-												>
-													<span>{anime.episodes} episodes</span>
-													<span class="hidden sm:inline">•</span>
-													<span class="capitalize">{anime.status}</span>
-													<span class="hidden sm:inline">•</span>
-													<span>⭐ {anime.rating}</span>
-												</div>
-											</div>
-											<div class="ml-2 flex items-center gap-2">
-												<span class="hidden text-xs text-gray-400 sm:block lg:text-sm"
-													>{anime.views} views</span
-												>
-												<div class="relative">
-													<button
-														class="rounded p-1 text-gray-400 hover:bg-gray-600 hover:text-white"
-														on:click|stopPropagation={() => toggleDropdown(`anime-${anime.id}`)}
-													>
-														<MoreVertical class="h-3 w-3 lg:h-4 lg:w-4" />
-													</button>
-
-													{#if openDropdowns.has(`anime-${anime.id}`)}
-														<div
-															class="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-gray-700 bg-neutral-900 shadow-lg"
-														>
-															<div class="py-1">
-																{#each animeActions as action}
-																	<button
-																		class="flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-colors hover:bg-gray-800 {action.danger
-																			? 'text-red-400 hover:text-red-300'
-																			: 'text-gray-300 hover:text-white'}"
-																		on:click={() => handleAction(action.action, anime, 'anime')}
-																	>
-																		{#if action.icon === 'edit'}
-																			<Edit class="h-3 w-3" />
-																		{:else if action.icon === 'eye'}
-																			<Eye class="h-3 w-3" />
-																		{:else if action.icon === 'list'}
-																			<List class="h-3 w-3" />
-																		{:else if action.icon === 'trash'}
-																			<Trash2 class="h-3 w-3" />
-																		{/if}
-																		{action.label}
-																	</button>
-																{/each}
-															</div>
-														</div>
-													{/if}
-												</div>
-											</div>
-										</div>
-									{/each}
-								</div>
-							</div>
-						</div>
-
-						<!-- Manga Management -->
-						<div class="rounded-xl border border-gray-700 bg-neutral-900">
-							<div class="border-b border-gray-700 p-4 lg:p-6">
-								<div class="flex items-center justify-between">
-									<h3 class="text-base font-semibold text-white lg:text-lg">Manga Management</h3>
-									<button
-										class="flex items-center gap-1 rounded-lg bg-white px-2 py-1.5 text-xs font-medium text-black transition-colors hover:bg-gray-100 lg:gap-2 lg:px-3 lg:py-2 lg:text-sm"
-									>
-										<Plus class="h-3 w-3 lg:h-4 lg:w-4" />
-										<span class="hidden sm:inline">Add Manga</span>
-										<span class="sm:hidden">Add</span>
-									</button>
-								</div>
-							</div>
-							<div class="p-4 lg:p-6">
-								<div class="space-y-3 lg:space-y-4">
-									{#each mangaList as manga}
-										<div
-											class="flex items-center justify-between rounded-lg bg-gray-800/50 p-3 lg:p-4"
-										>
-											<div class="min-w-0 flex-1">
-												<h4 class="truncate text-sm font-medium text-white lg:text-base">
-													{manga.title}
-												</h4>
-												<div
-													class="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-400 lg:gap-4 lg:text-sm"
-												>
-													<span>{manga.chapters} chapters</span>
-													<span class="hidden sm:inline">•</span>
-													<span class="capitalize">{manga.status}</span>
-													<span class="hidden sm:inline">•</span>
-													<span>⭐ {manga.rating}</span>
-												</div>
-											</div>
-											<div class="ml-2 flex items-center gap-2">
-												<span class="hidden text-xs text-gray-400 sm:block lg:text-sm"
-													>{manga.readers} readers</span
-												>
-												<div class="relative">
-													<button
-														class="rounded p-1 text-gray-400 hover:bg-gray-600 hover:text-white"
-														on:click|stopPropagation={() => toggleDropdown(`manga-${manga.id}`)}
-													>
-														<MoreVertical class="h-3 w-3 lg:h-4 lg:w-4" />
-													</button>
-
-													{#if openDropdowns.has(`manga-${manga.id}`)}
-														<div
-															class="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-gray-700 bg-neutral-900 shadow-lg"
-														>
-															<div class="py-1">
-																{#each mangaActions as action}
-																	<button
-																		class="flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-colors hover:bg-gray-800 {action.danger
-																			? 'text-red-400 hover:text-red-300'
-																			: 'text-gray-300 hover:text-white'}"
-																		on:click={() => handleAction(action.action, manga, 'manga')}
-																	>
-																		{#if action.icon === 'edit'}
-																			<Edit class="h-3 w-3" />
-																		{:else if action.icon === 'eye'}
-																			<Eye class="h-3 w-3" />
-																		{:else if action.icon === 'list'}
-																			<List class="h-3 w-3" />
-																		{:else if action.icon === 'trash'}
-																			<Trash2 class="h-3 w-3" />
-																		{/if}
-																		{action.label}
-																	</button>
-																{/each}
-															</div>
-														</div>
-													{/if}
-												</div>
-											</div>
-										</div>
-									{/each}
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- User Management -->
-					<div class="mt-6 rounded-xl border border-gray-700 bg-neutral-900">
-						<div class="border-b border-gray-700 p-4 lg:p-6">
-							<div class="flex items-center justify-between">
-								<h3 class="text-base font-semibold text-white lg:text-lg">User Management</h3>
-								<button
-									class="flex items-center gap-1 rounded-lg bg-white px-2 py-1.5 text-xs font-medium text-black transition-colors hover:bg-gray-100 lg:gap-2 lg:px-3 lg:py-2 lg:text-sm"
-								>
-									<Plus class="h-3 w-3 lg:h-4 lg:w-4" />
-									<span class="hidden sm:inline">Add User</span>
-									<span class="sm:hidden">Add</span>
-								</button>
-							</div>
-						</div>
-						<div class="overflow-x-auto">
-							<table class="w-full">
-								<thead class="border-b border-gray-700 bg-gray-700/50">
-									<tr>
-										<th
-											class="px-3 py-3 text-left text-xs font-medium text-gray-400 lg:px-6 lg:text-sm"
-											>User</th
-										>
-										<th
-											class="hidden px-3 py-3 text-left text-xs font-medium text-gray-400 sm:table-cell lg:px-6 lg:text-sm"
-											>Role</th
-										>
-										<th
-											class="px-3 py-3 text-left text-xs font-medium text-gray-400 lg:px-6 lg:text-sm"
-											>Status</th
-										>
-										<th
-											class="hidden px-3 py-3 text-left text-xs font-medium text-gray-400 lg:table-cell lg:px-6 lg:text-sm"
-											>Joined</th
-										>
-										<th
-											class="hidden px-3 py-3 text-left text-xs font-medium text-gray-400 lg:px-6 lg:text-sm xl:table-cell"
-											>Last Login</th
-										>
-										<th class="px-3 py-3 lg:px-6"></th>
-									</tr>
-								</thead>
-								<tbody class="divide-y divide-gray-700">
-									{#each userList as user}
-										<tr class="hover:bg-gray-700/50">
-											<td class="px-3 py-4 lg:px-6">
-												<div>
-													<div class="text-sm font-medium text-white lg:text-base">{user.name}</div>
-													<div class="text-xs text-gray-400 lg:text-sm">{user.email}</div>
-												</div>
-											</td>
-											<td class="hidden px-3 py-4 sm:table-cell lg:px-6">
-												<span
-													class="inline-flex rounded-full bg-gray-700 px-2 py-1 text-xs font-medium capitalize text-white"
-												>
-													{user.role}
-												</span>
-											</td>
-											<td class="px-3 py-4 lg:px-6">
-												<span
-													class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium {getStatusBg(
-														user.status
-													)} {getStatusColor(user.status)}"
-												>
-													<div
-														class="h-1.5 w-1.5 rounded-full {user.status === 'active'
-															? 'bg-green-400'
-															: 'bg-red-400'}"
-													></div>
-													<span class="hidden sm:inline">{user.status}</span>
-												</span>
-											</td>
-											<td
-												class="hidden px-3 py-4 text-xs text-gray-400 lg:table-cell lg:px-6 lg:text-sm"
-												>{user.joined}</td
-											>
-											<td
-												class="hidden px-3 py-4 text-xs text-gray-400 lg:px-6 lg:text-sm xl:table-cell"
-												>{user.lastLogin}</td
-											>
-											<td class="px-3 py-4 lg:px-6">
-												<div class="relative">
-													<button
-														class="rounded p-1 text-gray-400 hover:bg-gray-600 hover:text-white"
-														on:click|stopPropagation={() => toggleDropdown(`user-${user.id}`)}
-													>
-														<MoreVertical class="h-3 w-3 lg:h-4 lg:w-4" />
-													</button>
-
-													{#if openDropdowns.has(`user-${user.id}`)}
-														<div
-															class="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-gray-700 bg-neutral-900 shadow-lg"
-														>
-															<div class="py-1">
-																{#each userActions as action}
-																	<button
-																		class="flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-colors hover:bg-gray-800 {action.danger
-																			? 'text-red-400 hover:text-red-300'
-																			: 'text-gray-300 hover:text-white'}"
-																		on:click={() => handleAction(action.action, user, 'user')}
-																	>
-																		{#if action.icon === 'edit'}
-																			<Edit class="h-3 w-3" />
-																		{:else if action.icon === 'eye'}
-																			<Eye class="h-3 w-3" />
-																		{:else if action.icon === 'shield'}
-																			<Shield class="h-3 w-3" />
-																		{:else if action.icon === 'pause'}
-																			<Pause class="h-3 w-3" />
-																		{:else if action.icon === 'trash'}
-																			<Trash2 class="h-3 w-3" />
-																		{/if}
-																		{action.label}
-																	</button>
-																{/each}
-															</div>
-														</div>
-													{/if}
-												</div>
-											</td>
-										</tr>
-									{/each}
-								</tbody>
-							</table>
 						</div>
 					</div>
 				{:else if activeMenu === 'anime'}
@@ -1002,6 +729,13 @@
 									<Filter class="h-4 w-4" />
 									<span class="hidden sm:inline">Filter</span>
 								</button>
+								<button
+									on:click={refreshUsers}
+									class="flex items-center gap-2 rounded-lg border border-gray-700 bg-neutral-900 px-3 py-2 text-xs font-medium text-gray-300 transition-colors hover:bg-gray-700"
+								>
+									<RefreshCcw class="h-4 w-4" />
+									<span class="hidden sm:inline">Reload</span>
+								</button>
 							</div>
 						</div>
 
@@ -1009,7 +743,7 @@
 						<div class="rounded-xl border border-gray-700 bg-neutral-900">
 							<div class="p-4 lg:p-6">
 								<div class="space-y-3 lg:space-y-4">
-									{#each userList as user}
+									{#each userList.sort((a: any, b: any) => b.role == "admin" ? 1 : -1) as user, i (i)}
 										<div
 											class="flex flex-col gap-3 rounded-lg bg-gray-800/50 p-3 sm:flex-row sm:items-center sm:justify-between lg:p-4"
 										>
@@ -1021,9 +755,14 @@
 														<User class="h-4 w-4 text-white" />
 													</div>
 													<div class="min-w-0 flex-1">
-														<h4 class="truncate text-sm font-medium text-white lg:text-base">
-															{user.name}
-														</h4>
+														<div class="flex gap-2 items-center">
+															<h4 class="truncate text-sm font-medium text-white lg:text-base">
+																{user.name}
+															</h4>
+															{#if user.role === 'admin' || user.isVerify}
+																<BadgeCheckIcon size={15} fill="#1DA1F2" />
+															{/if}
+														</div>
 														<p class="truncate text-xs text-gray-400 lg:text-sm">{user.email}</p>
 													</div>
 												</div>
@@ -1031,7 +770,7 @@
 													class="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-400 lg:text-sm"
 												>
 													<span
-														class="inline-flex rounded-full bg-gray-700 px-2 py-1 text-xs font-medium capitalize text-white"
+														class="inline-flex rounded-full {user.role == "admin" ? "bg-red-500" : "bg-gray-700"} px-2 py-1 text-xs font-medium capitalize text-white"
 													>
 														{user.role}
 													</span>
@@ -1041,7 +780,7 @@
 														)} {getStatusColor(user.status)}"
 													>
 														<div
-															class="h-1.5 w-1.5 rounded-full {user.status === 'active'
+															class="h-1.5 w-1.5 rounded-full {user.status === 'Online'
 																? 'bg-green-400'
 																: 'bg-red-400'}"
 														></div>
@@ -1051,6 +790,8 @@
 											</div>
 											<div class="flex items-center justify-between gap-2 sm:justify-end">
 												<div class="text-xs text-gray-400 lg:text-sm">
+													<div>Anime: {user.anime}</div>
+													<div>Manga: {user.manga}</div>
 													<div>Joined: {user.joined}</div>
 													<div>Last: {user.lastLogin}</div>
 												</div>

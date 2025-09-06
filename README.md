@@ -71,9 +71,9 @@ Finime itu proyek open-source tempat streaming Anime & Manga, gratis, dan bebas 
 - **User Authentication** (Login & Register)  
 - **Dashboard Admin** (Buat ngatur konten & user)  
 - **Search** Anime & Manga  
-- **No Ads** (Beneran, nggak ada iklan!)  
+- **No Ads**
 - **Database**: MongoDB  
-- **Open Source** & Super Gampang Dikembangin  
+- **Open Source**
 
 ---
 
@@ -170,7 +170,7 @@ Finime
 
 ## 🔑 Environment Variables
 
-Bikin file `.env` di masing-masing folder, isinya kayak gini:
+Bikin file `.env` di masing-masing folder, contoh isinya kayak gini:
 
 ### Backend `.env`
 
@@ -179,7 +179,7 @@ DATABASE_URL=mongodb://localhost:27017/finime
 ```
 
 ### Frontend `.env`
-
+Arahkan ke api backend
 ```env
 PUBLIC_API=http://localhost:3000
 ```
@@ -199,6 +199,9 @@ PUBLIC_API=http://localhost:3000
 ## Sedang Dibuat
 
 - Desktop UI
+- Admin Dashboard
+- Multiple Source
+- Kecepatan / Performa
 
 ---
 
@@ -231,6 +234,6 @@ Proyek ini pakai MIT License. Cek [LICENSE](./LICENSE) buat detailnya.
 ---
 
 **Selamat ngoding** 🚀
-Punya ide fitur baru atau nemu bug? Langsung aja buka issue atau submit PR, jangan malu-malu!
+Punya ide fitur baru atau nemu bug? Langsung aja buka issue atau submit PR!
 
 ![app icon](./.github/readme-images/logo.gif)

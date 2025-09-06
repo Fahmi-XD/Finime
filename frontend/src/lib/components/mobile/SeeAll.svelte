@@ -140,7 +140,7 @@
 	});
 </script>
 
-<div class="max-w-md px-6 pb-5 pt-10 will-change-auto" in:scale={{ duration: 200, start: 0.99 }}>
+<div class="max-w-md px-6 pb-5 pt-10 w-full h-screen overflow-y-auto will-change-auto" in:scale={{ duration: 200, start: 0.99 }}>
 	<header class="mb-4 flex items-center">
 		<button
 			aria-label="Back"

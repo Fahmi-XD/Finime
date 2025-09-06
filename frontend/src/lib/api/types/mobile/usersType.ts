@@ -8,15 +8,15 @@ export interface User {
     username?:   string;
     name?:       string;
     anime?:      Anime[];
-    manga?:      any[];
-    avatar?:     string;
-    banner?:     string;
+    manga?:      Anime[];
+    avatar?:     null | string;
+    banner?:     null | string;
     email?:      string;
-    pronoun?:    string;
-    lastSeen?:   Date;
+    pronoun?:    null | string;
+    lastSeen?:   Date | null;
     role?:       string;
     isVerify?:   boolean;
-    bio?:        string;
+    bio?:        null | string;
     badges?:     string[];
     created_at?: Date;
     updated_at?: null;
@@ -27,4 +27,5 @@ export interface Anime {
     anime_id?:   string;
     user_id?:    string;
     created_at?: Date;
+    manga_id?:   string;
 }

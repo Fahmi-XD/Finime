@@ -1,6 +1,7 @@
 var staticCacheName = "pwa-v" + new Date().getTime();
 var filesToCache = [
     '/mobile',
+    '/site.webmanifest'
 ];
 
 self.addEventListener('push', event => {
@@ -72,7 +73,7 @@ self.addEventListener("fetch", event => {
     // Cache first untuk UI (shell)
     if (["style", "script", "image", "font"].includes(dest)) {
         event.respondWith(
-            caches.open("app-shell").then(cache =>
+            caches.open("app-shell-" + staticCacheName).then(cache =>
                 cache.match(event.request).then(resp =>
                     resp ||
                     fetch(event.request).then(networkResp => {
@@ -82,13 +83,13 @@ self.addEventListener("fetch", event => {
                 )
             )
         );
-        // return;
+        return;
     }
 
     // Network first untuk API (konten)
     if (event.request.url.includes("/api/")) {
         event.respondWith(fetch(event.request));
-        // return;
+        return;
     }
 
     // Document (HTML) → NetworkFirst biar fresh, fallback ke cache
@@ -96,7 +97,7 @@ self.addEventListener("fetch", event => {
         event.respondWith(
             fetch(event.request).catch(() => caches.match(event.request))
         );
-        // return;
+        return;
     }
 
     const url = new URL(event.request.url);

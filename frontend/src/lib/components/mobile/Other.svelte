@@ -25,7 +25,13 @@
 		SortAsc,
 		SortDesc,
 		TrendingUp,
-		X
+		X,
+
+		Tv,
+
+		Book
+
+
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { getInitials } from '$lib';
@@ -202,6 +208,11 @@
 				toggleTheme();
 				break;
 			case 'history':
+        // seeAllTitle.set("Historimu")
+				// goto("/mobile/see-all")
+				toggleQuickActions();
+				break;
+			case 'history-anime':
         seeAllTitle.set("Historimu")
 				goto("/mobile/see-all")
 				break;
@@ -244,7 +255,6 @@
 			</div>
 			<button
 				class="rounded-full bg-white/10 p-2 text-white transition-all duration-200 hover:bg-white/20"
-				on:click={toggleQuickActions}
 			>
 				<Grid3X3 class="h-5 w-5" />
 			</button>
@@ -279,7 +289,7 @@
 		</div>
 
 		<!-- System Actions -->
-		<div>
+		<!-- <div>
 			<h2 class="mb-4 text-lg font-semibold text-white text-center">System</h2>
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
 				{#each systemActions as action}
@@ -296,15 +306,14 @@
 						<h3 class="text-xs font-medium text-white">{action.label}</h3>
 						<p class="mt-1 text-xs text-gray-400">{action.description}</p>
 						
-						<!-- Hover effect -->
 						<div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
 					</button>
 				{/each}
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Utility Actions -->
-		<div>
+		<!-- <div>
 			<h2 class="mb-4 text-lg font-semibold text-white text-center">Utilities</h2>
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
 				{#each utilityActions as action}
@@ -321,20 +330,23 @@
 						<h3 class="text-xs font-medium text-white">{action.label}</h3>
 						<p class="mt-1 text-xs text-gray-400">{action.description}</p>
 						
-						<!-- Hover effect -->
 						<div class="absolute inset-0 rounded-xl bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
 					</button>
 				{/each}
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Quick Actions Panel (Hidden by default) -->
 		{#if showQuickActions}
-			<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" transition:scale={{ duration: 200 }}>
+			<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" on:click={(event) => {
+				if (!!!(event.target as HTMLDivElement).closest(".non-click")) {
+					toggleQuickActions();
+				}
+			}} transition:scale={{ duration: 200 }}>
 				<div class="flex h-full items-center justify-center p-4">
-					<div class="w-full max-w-md rounded-2xl bg-neutral-800 p-6 shadow-2xl" in:scale={{ duration: 200 }}>
+					<div class="w-full non-click max-w-sm rounded-2xl bg-neutral-800 p-6 shadow-2xl" in:scale={{ duration: 200 }}>
 						<div class="mb-4 flex items-center justify-between">
-							<h3 class="text-lg font-semibold text-white">Quick Actions</h3>
+							<h3 class="text-sm font-semibold text-white">Coba sesekali keluar rumah :)</h3>
 							<button
 								class="rounded-full p-1 text-gray-400 hover:bg-gray-700 hover:text-white"
 								on:click={toggleQuickActions}
@@ -343,8 +355,32 @@
 							</button>
 						</div>
 						
-						<div class="grid grid-cols-3 gap-3">
-							{#each quickActions.slice(0, 6) as action}
+						<div class="grid grid-cols-2 gap-3">
+							<button
+								class="group non-click rounded-xl bg-transparent p-3 text-center transition-all duration-200 hover:bg-gray-600"
+								on:click={() => { handleQuickAction("history-anime"); toggleQuickActions(); }}
+							>
+								<div class="mb-2 flex justify-center">
+									<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
+										<svelte:component this={Tv} class="h-6 w-6 text-white" />
+									</div>
+								</div>	
+								<p class="text-xs text-white">Anime</p>
+							</button>
+
+							<button
+								class="group non-click rounded-xl bg-transparent p-3 text-center transition-all duration-200 hover:bg-gray-600"
+								on:click={() => { handleQuickAction("history-manga"); toggleQuickActions(); }}
+							>
+								<div class="mb-2 flex justify-center">
+									<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-500">
+										<svelte:component this={Book} class="h-6 w-6 text-white" />
+									</div>
+								</div>	
+								<p class="text-xs text-white">Manga</p>
+							</button>
+
+							<!-- {#each quickActions.slice(0, 2) as action}
 								<button
 									class="group rounded-xl bg-transparent p-3 text-center transition-all duration-200 hover:bg-gray-600"
 									on:click={() => { handleQuickAction(action.id); toggleQuickActions(); }}
@@ -356,7 +392,7 @@
 									</div>
 									<p class="text-xs text-white">{action.label}</p>
 								</button>
-							{/each}
+							{/each} -->
 						</div>
 					</div>
 				</div>

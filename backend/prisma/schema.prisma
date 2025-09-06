@@ -127,7 +127,7 @@ model MangaHistory {
   cover       String?
   current_eps String?
   total_eps   String?
-  anime_id    String?
+  manga_id    String?
   date        String?
   schedule    String?
   source      String?
